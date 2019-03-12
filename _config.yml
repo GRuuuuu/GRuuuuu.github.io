@@ -15,7 +15,7 @@
 minimal_mistakes_skin    : "dirt" # "default","air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
-locale                   : "en-US"
+locale                   : "ko"
 title                    : "호롤리한 하루"
 title_separator          : "-"
 name                     : "GRU"
@@ -64,8 +64,8 @@ reCaptcha:
   secret                 :
 atom_feed:
   path                   : # blank (default) uses feed.xml
-search                   : # true, false (default)
-search_full_content      : # true, false (default)
+search                   : true # true, false (default)
+search_full_content      : true # true, false (default)
 search_provider          : # lunr (default), algolia, google
 algolia:
   application_id         : # YOUR_APPLICATION_ID
@@ -106,11 +106,11 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an amazing person."
+  name             : "GRU"
+  avatar           : "/assets/images/p.png"
+  bio              : "호롤리"
   location         : "Somewhere"
-  email            :
+  email            : "sygy0509@naver.com"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
