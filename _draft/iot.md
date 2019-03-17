@@ -131,10 +131,9 @@ return msg;
 >왓슨스튜디오를 처음 사용하는 유저는 먼저 상단의 Upgrade 버튼을 누른 뒤, Watson Studio와 Knowledge Catalog Bundle들을 설치해주세요.  
 >![image](https://user-images.githubusercontent.com/15958325/54487624-7a652f00-48db-11e9-8c13-58ef8649aa53.png)
 
-새로운 프로젝트를 생성해 주세요.
+새로운 프로젝트를 생성해 주세요.  
 <img width="624" alt="22" src="https://user-images.githubusercontent.com/15958325/54487317-3ae91380-48d8-11e9-8e75-399805a199d3.PNG">  
-<img width="625" alt="23" src="https://user-images.githubusercontent.com/15958325/5448731
-8-3ae91380-48d8-11e9-8725-b6781a178de3.PNG">  
+<img width="625" alt="23" src="https://user-images.githubusercontent.com/15958325/54487318-3ae91380-48d8-11e9-8725-b6781a178de3.PNG">  
 
 프로젝트에 Object Storage를 추가해 줍니다.
 <img width="729" alt="24" src="https://user-images.githubusercontent.com/15958325/54487664-1b53ea00-48dc-11e9-8524-f86a2b2e6e61.PNG">  
