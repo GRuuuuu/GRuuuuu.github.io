@@ -30,7 +30,7 @@ masthead_title           : "호롤리한 하루" # overrides the website title d
 words_per_minute         : 200
 
 comments:
-  provider               : "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
+  provider               : "facebook" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
   disqus:
     shortname            : "gru" # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
   discourse:
