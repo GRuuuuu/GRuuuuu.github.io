@@ -1,0 +1,757 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>10.Using Grafana &amp; InfluxDB in Sawtooth - 호롤리한 하루</title>
+<meta name="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="호롤리한 하루">
+<meta property="og:title" content="10.Using Grafana &amp; InfluxDB in Sawtooth">
+<meta property="og:url" content="http://localhost:4000/sawtooth-starter/sawtooth-starter10/">
+
+
+  <meta property="og:description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-07-10T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2019-03-22T13:00:00+09:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/sawtooth-starter/sawtooth-starter10/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "GRU",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="호롤리한 하루 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">호롤리한 하루</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/" >About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Tech-Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/Something/" >Something</a>
+            </li><li class="masthead__menu-item">
+              <a href="/sitemap/" >Sitemap</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/p.png" alt="GRU" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">GRU</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        호롤리
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:sygy0509@naver.com">
+            <meta itemprop="email" content="sygy0509@naver.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="10.Using Grafana &amp; InfluxDB in Sawtooth">
+    <meta itemprop="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임">
+    <meta itemprop="datePublished" content="July 10, 2018">
+    <meta itemprop="dateModified" content="March 22, 2019">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">10.Using Grafana &amp; InfluxDB in Sawtooth
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p><code class="highlighter-rouge">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임</code></p>
+
+<h2 id="1-overview">1. Overview</h2>
+<p>이번 문서에서는 Grafana를 사용해 sawtooth의 모니터링을 할 수 있게 해보겠습니다.</p>
+
+<h2 id="2-prerequisites">2. Prerequisites</h2>
+
+<p>sawtooth-core의 클론</p>
+
+<h2 id="3-set-up-influxdb">3. Set up InfluxDB</h2>
+
+<p>다음 커맨드를 통해 Docker Hub로부터 이미지를 받습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker pull influxdb
+</code></pre></div></div>
+
+<p>다음으로는 로컬파일시스템에 InfluxDB의 저장공간을 만들어줘야 합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo mkdir /var/lib/influx-data
+</code></pre></div></div>
+
+<p>폴더까지 만들어줬으면 도커에서 실행시켜봅시다!</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d -p 8086:8086 -v /var/lib/influx-data:/var/lib/influxdb \
+ -e INFLUXDB_DB=metrics -e INFLUXDB_HTTP_AUTH_ENABLED=true \
+ -e INFLUXDB_ADMIN_USER=admin -e INFLUXDB_ADMIN_PASSWORD='{admin-pw}' \
+ -e INFLUXDB_USER=lrdata -e INFLUXDB_USER_PASSWORD='{lrdata-pw}' \
+ --name sawtooth-stats-influxdb influxdb
+</code></pre></div></div>
+<p><code class="highlighter-rouge">INFLUXDB_DB</code>: DB이름<br />
+<code class="highlighter-rouge">INFLUXDB_HTTP_AUTH_ENABLED</code>: DB에 접근하기위한 인증절차 <br />
+<code class="highlighter-rouge">INFLUXDB_ADMIN_USER</code> &amp; <code class="highlighter-rouge">INFLUXDB_ADMIN_PASSWORD</code>: 관리자계정<br />
+<code class="highlighter-rouge">INFLUXDB_USER</code> &amp; <code class="highlighter-rouge">INFLUXDB_USER_PASSWORD</code>: 일반계정</p>
+
+<blockquote>
+  <p>** <code class="highlighter-rouge">INFLUXDB_HTTP_AUTH_ENABLED</code>에 관하여…<br />
+이게 로컬에서 할 때는 별 문제없이 작동하다가 원격으로 서버에 접근하려고 할때 인증메세지가 뜨는데 저는 뭘 넣어도 인증이 안됬어요… (*서버의 슈퍼계정, 할당받은 서버계정, influxDB의 관리자계정, influxDB의 유저계정)<br />
+<b>그래서 이 속성은 빼고 진행을 했습니다.</b> 혹시 이 문제에 대해서 뭔가 아시거나 해결하신분은 메일주세오…<br />
+sygy0509@naver.com</p>
+
+  <p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/1.PNG" alt="Alt text" /></p>
+</blockquote>
+
+<h2 id="4-install-and-configure-grafana">4. Install and Configure Grafana</h2>
+
+<p>sawtooth-core에 포함된 Grafana Docker이미지를 찾고 빌드합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ cd sawtooth-core/docker
+ $ docker build . -f grafana/sawtooth-stats-grafana \
+ -t sawtooth-stats-grafana
+</code></pre></div></div>
+
+<p>다음은 Grafana를 도커에서 실행!</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d -p 3000:3000 --name sawtooth-stats-grafana \
+ sawtooth-stats-grafana
+</code></pre></div></div>
+
+<p>실행시켰다면 그라파나를 실행시킨 호스트의 주소:포트3000 (<code class="highlighter-rouge">http://{host}:3000</code>)으로 접속해봅시다!</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/2.PNG" alt="Alt text" /><br />
+초기 관리자 계정인 <code class="highlighter-rouge">id: admin</code>, <code class="highlighter-rouge">pwd: admin</code>으로 로그인이 가능합니다.<br />
+(*관리자 계정의 비밀번호를 바꾸는건 기본!)</p>
+
+<p>다음으로 Grafana에 아까 실행시켰던 InfluxDB를 연동시켜야 합니다.  좌측상단 아이콘을 누른 뒤 “Data Sources”클릭 -&gt; “Metrics”클릭하시면 다음과 같은 화면이 뜹니다.</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/3.PNG" alt="Alt text" /></p>
+
+<p>HTTP Settings-&gt;<code class="highlighter-rouge">URL</code>: influxDB가 실행되는 호스트와 포트(8086)<br />
+InfluxDB Details-&gt;<code class="highlighter-rouge">Database</code>: influxDB의 이름<br />
+InfluxDB Details-&gt;<code class="highlighter-rouge">userInfo</code>: influxDB의 유저정보(없어도됨)<br />
+다음과 같이 설정해 주시고 <code class="highlighter-rouge">Save&amp;Test</code> 버튼을 클릭하면 연동이 성공하게 됩니다.</p>
+
+<h2 id="5-configure-the-sawtooth-validatorrest-api-for-grafana">5. Configure the Sawtooth Validator&amp;REST API for Grafana</h2>
+
+<p>이제 Grafana와 InfluxDB의 연동이 성공하였으니 Sawtooth네트워크와 연동해야합니다.</p>
+<blockquote>
+  <p><a href="https://sawtooth.hyperledger.org/docs/core/nightly/master/sysadmin_guide/grafana_configuration.html#configure-the-sawtooth-validator-for-grafana">공식문서</a>에서는 docker가 아닌 우분투위에서 sawtooth네트워크를 실행하기 때문에 toml파일을 수정하는 방법을 설명하고 있습니다.
+저는 docker위에서 sawtooth를 실행시키므로 yaml파일을 수정하는 방법을 소개하겠습니다.</p>
+</blockquote>
+
+<p>실행시킬 sawtooth네트워크의 docker-compose.yaml파일을 수정해봅시다.</p>
+
+<p>먼저 validator부분을 봅시다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  validator:
+    build:
+      context: .
+      dockerfile: validator/Dockerfile
+    image: sawtooth-validator-local:${ISOLATION_ID}
+    volumes:
+      - ./:/project/sawtooth-core
+    container_name: sawtooth-validator-local
+    expose:
+      - 4004
+      - 8008
+      - 8086
+    ports:
+      - "4004:4004"
+    # start the validator with an empty genesis batch
+    command: |
+      bash -c "
+        bin/protogen
+        cd validator
+        python3 setup.py clean --all
+        python3 setup.py build
+        mkdir -p bin
+        mkdir -p lib
+        cargo build --release
+        cp ./target/release/sawtooth-validator bin/sawtooth-validator
+        cp ./target/release/libsawtooth_validator.so lib/libsawtooth_validator.so
+        sawadm keygen
+        sawtooth keygen
+        sawset genesis
+        sawadm genesis config-genesis.batch
+        sawtooth-validator -v \
+            --endpoint tcp://localhost:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 
+      "
+    stop_signal: SIGKILL
+</code></pre></div></div>
+<p>제가 사용하고 있는 yaml파일의 validator입니다. 다른부분은 필요없고 이 부분을 수정하시면 됩니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sawtooth-validator -v \
+            --endpoint tcp://localhost:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 \
+            --opentsdb-url http://{influxdb}:8086 \
+            --opentsdb-db metrics
+</code></pre></div></div>
+<p><code class="highlighter-rouge">--opentsdb-url</code>: influxDB가 실행되고 있는 호스트의 주소:포트<br />
+<code class="highlighter-rouge">--opentsdb-db</code> : influxDB의 이름</p>
+
+<p>다음은 REST-API부분</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> rest-api:
+    build:
+      context: .
+      dockerfile: rest_api/Dockerfile
+    image: sawtooth-rest-api-local:${ISOLATION_ID}
+    volumes:
+      - ./:/project/sawtooth-core
+    container_name: sawtooth-rest-api-local
+    ports:
+      - "8008:8008"
+    depends_on:
+      - validator
+    command: |
+      bash -c "
+        bin/protogen
+        cd rest_api
+        python3 setup.py clean --all
+        python3 setup.py build
+        sawtooth-rest-api -v --connect tcp://validator:4004 --bind rest-api:8008 
+      "
+    stop_signal: SIGKILL
+</code></pre></div></div>
+
+<p>validator와 마찬가지로 rest-api의 커맨드를 수정해주시면 됩니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sawtooth-rest-api -v --connect tcp://validator:4004 --bind rest-api:8008 --opentsdb-url http://{influxDB}:8086 --opentsdb-db metrics
+</code></pre></div></div>
+
+<blockquote>
+  <p>** 일부 속성 문제에 대하여…<br />
+공식문서의 toml파일을 수정하는 부분을 보시면 속성이 두 개가 더있습니다. <code class="highlighter-rouge">opentsdb_username</code>이랑 <code class="highlighter-rouge">opentsdb_password</code>인데요.. sawtooth개발자분들이 의도적으로 빼두신건지 아니면 까묵은건지 sawtooth-validator의 CLI에는 저 두 속성이 존재하지 않습니다.<br />
+물론 이 둘을 없애도 잘 돌아가긴 합니다. 저는 빼고 진행했습니다.</p>
+</blockquote>
+
+<p>–&gt;수정 후, sawtooth네트워크 실행!</p>
+
+<h2 id="6-configure-telegraf">6. Configure Telegraf</h2>
+
+<p>Telegraf는 InfluxDB의 제작사에서 제작한 시스템 모니터링 및 지표 수집 에이전트입니다. 간단히 말해서 sawtooth네트워크와 os의 여러 정보를 InfluxDB로 보내주는 역할을 합니다.</p>
+
+<p>그럼 Telegraf를 다운로드 받아봅시다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -sL https://repos.influxdata.com/influxdb.key |  sudo apt-key add -
+$ sudo apt-add-repository "deb https://repos.influxdata.com/ubuntu xenial stable"
+$ sudo apt-get update
+$ sudo apt-get install telegraf
+</code></pre></div></div>
+
+<p>다운로드가 끝났다면 InfluxDB와 연결하기 위해 Telegraf의 속성을 수정하여야 합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo vim /etc/telegraf/telegraf.conf
+</code></pre></div></div>
+<p>파일을 열어서 <code class="highlighter-rouge">OUTPUT PLUGINS</code>을 찾은다음 다음 속성을 추가합시다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Configuration for sending metrics to InfluxDB
+[[outputs.influxdb]]
+  urls = ["http://{influxDB host}:8086"]
+  database = "metrics"
+</code></pre></div></div>
+<p>이후, telegraf 명령어를 입력하면 준비완료!</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ telegraf
+</code></pre></div></div>
+
+<h2 id="7-grafana">7. Grafana</h2>
+
+<h3 id="71-graph">7.1 Graph</h3>
+<p>sawtooth네트워크를 올려봅시다. 별 문제가 없다면 다음과 같은 화면이 뜰 것입니다.<br />
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/4.PNG" alt="Alt text" /><br />
+하단에 빨간색으로 표시한 줄은 오류가 아니에요!<br />
+저는 Bad Request가 떠서 제대로 연결이 되지 않았나 해서 온갖 삽질을 했지만^^… 
+ validator에서 전달되는 값이 없어서 그런것 같습니다.</p>
+
+<p>그럼 바로 xo게임을 시험삼아 실행해서 게임을 진행해봅시다. <a href="https://github.com/GRuuuuu/sawtooth-starter/tree/master/sawtooth/%232%20xo%20transaction%20family">참고</a></p>
+
+<p>트랜잭션을 발생시키고 블록이 생성된 것을 확인했으면 Grafana페이지로 가서 Dashboard를 확인해봅시다!<br />
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/5.PNG" alt="Alt text" /><br />
+네트워크를 올리고 얼마 시간이 지나지 않아서 그래프가 많이 빈약하지만 그래프의 생성유무를 확인할 수 있습니다.</p>
+
+<p>또한, 그래프에 마우스를 올려놓으면 세부 사항도 확인할 수 있습니다.<br />
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/6.PNG" alt="Alt text" /></p>
+
+<p>실시간 모니터링(Auto-Refresh)은 Dashboard 우측 상단 시계를 클릭해서 설정할 수 있습니다.<br />
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/7.PNG" alt="Alt text" /><br />
+5초로 설정하면 5초마다 그래프가 새로고침됩니다.</p>
+
+<h3 id="72-user">7.2 User</h3>
+
+<p>Dashboard를 볼 수 있는 유저를 추가하는 방법입니다.<br />
+좌측상단 똥글뱅이문양을 누르고 Admin-&gt;Grobal Users-&gt;Add new User<br />
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/8.PNG" alt="Alt text" /><br />
+정보를 기입하고 생성을 누르면 다음과 같이 유저계정을 만들 수 있습니다.</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/9.PNG" alt="Alt text" /><br />
+생성한 유저의 권한 관리는 우측의 Edit버튼을 통해 관리할 수 있습니다.</p>
+
+<h2 id="8-마치며">8. 마치며</h2>
+
+<p>sawtooth공식 doc에 있는 내용을 거의 다 해봤네요! 꺄오꺄오! 다음에 또 만나요!</p>
+
+<hr />
+
+<hr />
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#sawtooth-starter" class="page__taxonomy-item" rel="tag">Sawtooth-Starter</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2019-03-22">March 22, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=10.Using+Grafana+%26+InfluxDB+in+Sawtooth%20http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter10%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter10%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter10%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/sawtooth-starter/sawtooth-starter09/" class="pagination--pager" title="09.Building and Submitting Transactions with js
+">이전</a>
+    
+    
+      <a href="/simple-tutorial/iot-tutorial/" class="pagination--pager" title="Simple IoT accelerometer game Tutorial
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/simple-tutorial/iot-tutorial/" rel="permalink">Simple IoT accelerometer game Tutorial
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio
+1. Overview
+디바이스의 센서데이터를 clou...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter09/" rel="permalink">09.Building and Submitting Transactions with js
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter08/" rel="permalink">08.Configuring Permission
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter07/" rel="permalink">07.Make Custom Processor and Connect to Validator
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 GRU. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+  
+
+
+
+  </body>
+</html>

@@ -1,0 +1,730 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>01.hyperledger sawtooth를 docker for window에서 돌릴수있게 해보자! - 호롤리한 하루</title>
+<meta name="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="호롤리한 하루">
+<meta property="og:title" content="01.hyperledger sawtooth를 docker for window에서 돌릴수있게 해보자!">
+<meta property="og:url" content="http://localhost:4000/sawtooth-starter/sawtooth-starter01/">
+
+
+  <meta property="og:description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-07-01T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2019-03-22T13:00:00+09:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/sawtooth-starter/sawtooth-starter01/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "GRU",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="호롤리한 하루 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">호롤리한 하루</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/" >About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Tech-Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/Something/" >Something</a>
+            </li><li class="masthead__menu-item">
+              <a href="/sitemap/" >Sitemap</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/p.png" alt="GRU" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">GRU</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        호롤리
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:sygy0509@naver.com">
+            <meta itemprop="email" content="sygy0509@naver.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="01.hyperledger sawtooth를 docker for window에서 돌릴수있게 해보자!">
+    <meta itemprop="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+    <meta itemprop="datePublished" content="July 01, 2018">
+    <meta itemprop="dateModified" content="March 22, 2019">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">01.hyperledger sawtooth를 docker for window에서 돌릴수있게 해보자!
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p><code class="highlighter-rouge">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</code></p>
+
+<h2 id="1-docker-for-windows설치">1. Docker for windows설치</h2>
+
+<p><a href="https://docs.docker.com/docker-for-windows/install/">Install Docker for windows</a></p>
+
+<h2 id="2-starting-sawtooth">2. Starting Sawtooth</h2>
+
+<p>도커의 초기설정이 끝나고 도커를 켜기 전에
+원하는 위치에 폴더를 생성합니다.<br />
+이후, 이 문서에 첨부되어있는 <a href="https://github.com/GRuuuuu/sawtooth-starter/blob/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/sawtooth-default.yaml">sawtooth-default.yaml</a>을 
+생성한 폴더에 다운받아 주세요.</p>
+
+<p>그다음 도커를 실행해보도록 하겠습니다.</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/1.png" alt="Alt text" /></p>
+
+<p>powershell이든 cmd이든 상관없지만 이 문서에서는 
+Windows PowerShell을 사용하도록 하겠습니다.</p>
+
+<p>다음 커맨드를 실행하여 Sawtooth이미지를 다운받습니다. 주의 해야할 점은 이 커맨드를 사용할 폴더에 sawtooth-default.yaml이 있어야 합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% docker-compose -f sawtooth-default.yaml up
+</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/2.png" alt="Alt text" /></p>
+
+<p>전부 다운이 받아지면 docker의 kitematic을 켜서 확인할 수 있습니다.</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/3.png" alt="Alt text" /><br />
+돌아가고있는것을 확인할 수 있습니다.</p>
+
+<h2 id="3-stopping-sawtooth">3. Stopping Sawtooth</h2>
+
+<p>sawtooth를 종료하려면 <code class="highlighter-rouge">CTRL-c</code>를 몇 회 누른 뒤,</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% docker-compose -f sawtooth-default.yaml down
+</code></pre></div></div>
+<p>커맨드를 입력합니다. 이를 통해 완전히 종료할 수 있습니다.</p>
+
+<h2 id="4-logging-into-the-client-contatiner">4. Logging Into The Client Contatiner</h2>
+
+<p>이 커맨드를 통해 sawtooth가 실행중인 상태여야 합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% docker-compose -f sawtooth-default.yaml up
+</code></pre></div></div>
+
+<p>sawtooth가 실행중인 상태에서 다음 커맨드를 통해 client container에 접근할 수 있습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% docker exec -it sawtooth-shell-default bash
+</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/4.png" alt="Alt text" /> 
+root~~~이런식으로 실행되면 성공입니다</p>
+
+<h3 id="confirming-connectivity">Confirming Connectivity</h3>
+
+<p>Validator가 동작중인것을 확인하기 위해 root에서 <code class="highlighter-rouge">curl</code>커맨드를 사용할 수 있습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/# curl http://rest-api:8008/blocks
+</code></pre></div></div>
+<p>만약 validator가 실행중이고 접근이 가능하다면 output은 이런식으로 비슷하게 출력될 것입니다.</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/5.png" alt="Alt text" /></p>
+
+<p>만약 validator에 문제가 있다면 <code class="highlighter-rouge">curl</code>커맨드는 타임아웃하거나 아무것도 반환하지 않을것입니다.</p>
+
+<h2 id="5-using-sawtooth-commands">5. Using Sawtooth Commands</h2>
+
+<h3 id="creating-and-submitting-transactions-with-intkey">Creating and Submitting Transactions with intkey</h3>
+
+<p><code class="highlighter-rouge">intkey</code> 커맨드는 간단한 샘플 트랜잭션을 생성하여 테스팅할수있게 합니다. <code class="highlighter-rouge">intkey</code>커맨드는 뭔가 엄청 중요한 커맨드가 아니라 단순히 테스팅하는 용도로 사용하는 커맨드라고 생각하면 조금 머리가 편해집니다.</p>
+
+<p>다음 스텝은 <code class="highlighter-rouge">intkey</code>를 사용하여 intkey transactions의 랜덤값을 가진 몇개의 key로 구성된 배치파일을 생성하게됩니다. 이 배치파일은 로컬에 저장되고 validator에 전달합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ intkey create_batch --count 10 --key-count 5
+$ intkey load -f batches.intkey -U http://rest-api:8008
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/6.png" alt="Alt text" /></p>
+
+<h3 id="viewing-the-list-of-blocks--particular-block">Viewing the List of Blocks &amp; Particular Block</h3>
+
+<p>다음 커맨드를 통해 블록의 리스트를 확인할 수 있습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sawtooth block list --url http://rest-api:8008
+</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/7.png" alt="Alt text" /> 
+방금전에 사용했던 intkey커맨드의 결과로 생성된 블록들을 확인할 수 있습니다.</p>
+
+<p>특정 블록의 상태를 확인하고 싶다면 다음 커맨드를 이용합니다. BLOCK_ID에는 리스트에서 확인한 아이디중 하나를 집어넣으면 됩니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sawtooth block show --url http://rest-api:8008 {BLOCK_ID}
+</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/8.png" alt="Alt text" /> 
+블럭의 상태를 확인할 수 있습니다. 헤더, 헤더의 시그니처, 트랜잭션등을 확인할 수 있습니다.</p>
+
+<h3 id="viewing-global-state">Viewing Global State</h3>
+
+<p>다음 커맨드로 머클트리의 노드리스트를 확인할 수 있습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sawtooth state list --url http://rest-api:8008
+</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/9.png" alt="Alt text" /></p>
+
+<h3 id="viewing-data-at-an-address">Viewing Data at an Address</h3>
+<p><code class="highlighter-rouge">sawtooth state list</code>커맨드를 통해 나온 address로 data를 확인할 수 있습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sawtooth state show --url http://rest-api:8008 {STATE_ADDRESS}
+</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/10.png" alt="Alt text" /></p>
+
+<h2 id="6-connecting-to-the-rest-api">6. Connecting to the REST API</h2>
+<p><code class="highlighter-rouge">curl</code>를 사용해 REST API에 접근할 수 있습니다.</p>
+
+<h3 id="from-client-containter">From Client Containter</h3>
+<p>클라이언트 컨테이너에서는 다음 커맨드를 사용합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl http://rest-api:8008/blocks
+</code></pre></div></div>
+
+<h3 id="from-host-operating-system">From Host Operating System</h3>
+<p>호스트 시스템에서는 다음 커맨드를 사용합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl http://localhost:8008/blocks
+</code></pre></div></div>
+
+<h2 id="7-connecting-to-each-container">7. Connecting to Each Container</h2>
+
+<h3 id="the-client-container">The Client Container</h3>
+
+<ul>
+  <li>트랜잭션 submit</li>
+  <li>sawtooth 커맨드 실행</li>
+  <li>Container name : <code class="highlighter-rouge">sawtooth-shell-default</code></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% docker exec -it sawtooth-shell-default bash
+</code></pre></div></div>
+
+<h3 id="the-validator-container">The Validator Container</h3>
+
+<ul>
+  <li>단일 Validator 실행</li>
+  <li>port 4004(default)에서 사용가능</li>
+  <li>Hostname : <code class="highlighter-rouge">validator</code></li>
+  <li>Container name : <code class="highlighter-rouge">sawtooth-validator-default</code></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker exec -it sawtooth-validator-default bash
+</code></pre></div></div>
+
+<h3 id="the-rest-api-container">The REST API Container</h3>
+
+<ul>
+  <li>REST API 실행</li>
+  <li>port 8008에서 사용가능</li>
+  <li>Container name : <code class="highlighter-rouge">sawtooth-rest-api-default</code></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker exec -it sawtooth-rest-api-default bash
+</code></pre></div></div>
+
+<h3 id="the-settings-transaction-processor-container">The Settings Transaction Processor Container</h3>
+
+<ul>
+  <li>단일 Setting Transaction 프로세서 실행</li>
+  <li>Setting Transaction 패밀리의 트랜잭션을 다룸</li>
+  <li>Hostname : <code class="highlighter-rouge">settings-tp</code></li>
+  <li>Container name : <code class="highlighter-rouge">sawtooth-settings-tp-default</code></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker exec -it sawtooth-settings-tp-default bash
+</code></pre></div></div>
+
+<h3 id="the-integerkey-transaction-processor-container">The IntegerKey Transaction Processor Container</h3>
+
+<ul>
+  <li>단일 IntegerKey Transaction 프로세서 실행</li>
+  <li>IntegerKey Transaction 패밀리의 트랜잭션을 다룸</li>
+  <li>Hostname : <code class="highlighter-rouge">intkey-tp-python</code></li>
+  <li>Container name : <code class="highlighter-rouge">sawtooth-intkey-tp-python-default</code></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker exec -it sawtooth-intkey-tp-python-default bash
+</code></pre></div></div>
+
+<h3 id="the-xo-transaction-processor-container">The XO Transaction Processor Container</h3>
+
+<ul>
+  <li>단일 XO Transaction 프로세서 실행</li>
+  <li>XO Transaction 패밀리의 트랜잭션을 다룸</li>
+  <li>Hostname : <code class="highlighter-rouge">xo-tp-python</code></li>
+  <li>Container name : <code class="highlighter-rouge">sawtooth-xo-tp-python-default</code></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker exec -it sawtooth-xo-tp-python-default bash
+</code></pre></div></div>
+
+<p>위의 컴포넌트가 실행되고있는 것을 확인하려면 <code class="highlighter-rouge">ps</code>커맨드를 사용
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/12.png" alt="Alt text" /></p>
+
+<h2 id="8-viewing-log-files">8. Viewing Log Files</h2>
+
+<p>로그파일을 보기 위해서는 다음 커맨드를 사용<br />
+<code class="highlighter-rouge">{CONTAINER}</code>에는 <code class="highlighter-rouge">sawtooth-validator-default</code>같은 컨테이너 이름이 들어가야한다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker logs {CONTAINER}
+</code></pre></div></div>
+
+<h2 id="9-마치며">9. 마치며</h2>
+
+<p>본 문서는 <a href="https://sawtooth.hyperledger.org/docs/core/releases/latest/app_developers_guide/docker.html">hyperledger sawtooth docs</a> 의 튜토리얼을 보고 따라해본 문서입니당</p>
+
+<hr />
+
+<p><img width="100" height="100" src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2301%20using%20sawtooth%20with%20docker/img/p.png" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#sawtooth-starter" class="page__taxonomy-item" rel="tag">Sawtooth-Starter</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2019-03-22">March 22, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=01.hyperledger+sawtooth%EB%A5%BC+docker+for+window%EC%97%90%EC%84%9C+%EB%8F%8C%EB%A6%B4%EC%88%98%EC%9E%88%EA%B2%8C+%ED%95%B4%EB%B3%B4%EC%9E%90%21%20http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter01%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter01%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter01%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">이전</a>
+    
+    
+      <a href="/sawtooth-starter/sawtooth-starter02/" class="pagination--pager" title="02.XO Transaction Family
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/simple-tutorial/iot-tutorial/" rel="permalink">Simple IoT accelerometer game Tutorial
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio
+1. Overview
+디바이스의 센서데이터를 clou...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter10/" rel="permalink">10.Using Grafana &amp; InfluxDB in Sawtooth
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter09/" rel="permalink">09.Building and Submitting Transactions with js
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter08/" rel="permalink">08.Configuring Permission
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 GRU. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+  
+
+
+
+  </body>
+</html>

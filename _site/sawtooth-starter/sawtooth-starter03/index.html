@@ -1,0 +1,594 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>03.Transaction Processor Tutorial Java 1 - 호롤리한 하루</title>
+<meta name="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="호롤리한 하루">
+<meta property="og:title" content="03.Transaction Processor Tutorial Java 1">
+<meta property="og:url" content="http://localhost:4000/sawtooth-starter/sawtooth-starter03/">
+
+
+  <meta property="og:description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-07-03T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2019-03-22T13:00:00+09:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/sawtooth-starter/sawtooth-starter03/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "GRU",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="호롤리한 하루 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">호롤리한 하루</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/" >About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Tech-Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/Something/" >Something</a>
+            </li><li class="masthead__menu-item">
+              <a href="/sitemap/" >Sitemap</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/p.png" alt="GRU" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">GRU</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        호롤리
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:sygy0509@naver.com">
+            <meta itemprop="email" content="sygy0509@naver.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="03.Transaction Processor Tutorial Java 1">
+    <meta itemprop="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+    <meta itemprop="datePublished" content="July 03, 2018">
+    <meta itemprop="dateModified" content="March 22, 2019">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">03.Transaction Processor Tutorial Java 1
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p><code class="highlighter-rouge">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</code></p>
+
+<h2 id="1-overview">1. Overview</h2>
+<p>이전 문서에서는 xo게임을 powershell환경에서 실행해보는것을 해봤습니다. 이번 문서에서는 Sawtooth SDK에 기반하여 Java언어로 구성된 Sawtooth transaction family를 다뤄보겠습니다. 소스코드에 관한 자세한 설명은 다음문서에서 계속!</p>
+<blockquote>
+  <p>첨부된 sdk폴더에는 xo게임의 완전히 구현된 버전이 포함되어있습니다. 이번 문서와 다음문서에서는 완전한 구현을 만드는 대신 만들어진 소스코드의 개념을 설명하는 것에 초점을 맞췄습니다. SDK는 여러 언어로 구성되어있으므로 <a href="https://github.com/hyperledger/sawtooth-core/tree/master/sdk">여기</a> 를 참조해주세요.</p>
+</blockquote>
+
+<h2 id="2-prerequisites">2. Prerequisites</h2>
+
+<p><a href="https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%232/XO%20Transaction%20Family.md">이전문서</a>에서 xo게임을 실행까지 성공하고 따라해주세요.</p>
+
+<h3 id="download-java-sdk">Download Java sdk</h3>
+
+<blockquote>
+  <p>Intellij에서 프로젝트를 만들었습니다.</p>
+</blockquote>
+
+<p>첨부된 sawtooth폴더와 protos폴더, <code class="highlighter-rouge">pom.xml</code>를 다운로드<br />
+첨부된 파일들은 <a href="https://github.com/GRuuuuu/sawtooth-starter/tree/master/sawtooth/%2303%20transaction%20processor%20tutorial">이곳</a>을 참고</p>
+
+<p>Java project를 생성한 뒤, sawtooth폴더는 src밑으로, protos와 pom.xml은 각각 알아서 추가해줍시다.</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/1.PNG" alt="Alt text" /></p>
+
+<p>프로젝트 구성을 마치고나서 build하게되면 pom.xml에 적힌 dependancy가 외부라이브러리로 다운받아지게되고 소스코드의 빨간줄이 사라지게 됩니다. (야-호!)</p>
+
+<blockquote>
+  <p>이 구성을 제대로 설명해둔데가 없어서 매우 고생함^^</p>
+</blockquote>
+
+<h3 id="address-setting">Address Setting</h3>
+
+<p>자바 프로그램을 빌드하기 전, main파라미터의 값으로 sawtooth가 돌아가고있는 도커의 ip와 포트를 적어줘야 합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">TransactionProcessor</span> <span class="n">transactionProcessor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TransactionProcessor</span><span class="o">(</span><span class="s">"tcp://validator의ip(도커의ip):4004"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>만약 로컬에서 돌리고있다면 이렇게 적어주면 됩니다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">TransactionProcessor</span> <span class="n">transactionProcessor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TransactionProcessor</span><span class="o">(</span><span class="s">"tcp://localhost:4004"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h2 id="3-run">3. Run</h2>
+
+<h3 id="run-program">Run program</h3>
+
+<p><code class="highlighter-rouge">sawtooth-shell-default bash</code>가 실행되고 있는 상태부터 시작<br />
+구성을 끝낸 뒤의 자바 프로그램을 실행해봅시다.<br />
+현재는 아무런 트랜잭션이 오고가고 있지 않으므로 빈 화면입니다.
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/2.PNG" alt="Alt text" /></p>
+
+<p>두명의 플레이어의 key를 구성해준뒤, 게임판을 만들어봅시다.
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/3.PNG" alt="Alt text" />
+자바 프로그램에 game을 만들었다는 화면이 디스플레이 됩니다.</p>
+
+<p>다음 첫번째 플레이어부터 마킹을 시작해봅시다.
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/4.PNG" alt="Alt text" />
+java프로그램에서 트랜잭션의 결과를 확인할 수 있습니다.</p>
+
+<p>트랜잭션이 실패하였을 때 exception처리도 이곳에서 확인할 수 있습니다.
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/5.PNG" alt="Alt text" /></p>
+
+<hr />
+
+<p><img width="100" height="100" src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/p.png" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#sawtooth-starter" class="page__taxonomy-item" rel="tag">Sawtooth-Starter</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2019-03-22">March 22, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=03.Transaction+Processor+Tutorial+Java+1%20http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter03%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter03%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter03%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/sawtooth-starter/sawtooth-starter02/" class="pagination--pager" title="02.XO Transaction Family
+">이전</a>
+    
+    
+      <a href="/sawtooth-starter/sawtooth-starter04/" class="pagination--pager" title="04.Transaction Processor Tutorial Java 2
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/simple-tutorial/iot-tutorial/" rel="permalink">Simple IoT accelerometer game Tutorial
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio
+1. Overview
+디바이스의 센서데이터를 clou...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter10/" rel="permalink">10.Using Grafana &amp; InfluxDB in Sawtooth
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter09/" rel="permalink">09.Building and Submitting Transactions with js
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter08/" rel="permalink">08.Configuring Permission
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 GRU. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+  
+
+
+
+  </body>
+</html>

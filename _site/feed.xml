@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-24T00:41:21+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">호롤리한 하루</title><subtitle>호롤리</subtitle><author><name>GRU</name><email>sygy0509@naver.com</email></author><entry><title type="html">Simple IoT accelerometer game Tutorial</title><link href="http://localhost:4000/simple-tutorial/iot-tutorial/" rel="alternate" type="text/html" title="Simple IoT accelerometer game Tutorial" /><published>2019-03-19T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/simple-tutorial/iot-tutorial</id><content type="html" xml:base="http://localhost:4000/simple-tutorial/iot-tutorial/">&lt;p&gt;Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-24T21:00:38+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">호롤리한 하루</title><subtitle>호롤리</subtitle><author><name>GRU</name><email>sygy0509@naver.com</email></author><entry><title type="html">Simple IoT accelerometer game Tutorial</title><link href="http://localhost:4000/simple-tutorial/iot-tutorial/" rel="alternate" type="text/html" title="Simple IoT accelerometer game Tutorial" /><published>2019-03-19T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/simple-tutorial/iot-tutorial</id><content type="html" xml:base="http://localhost:4000/simple-tutorial/iot-tutorial/">&lt;p&gt;Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio&lt;/p&gt;
 &lt;h2 id=&quot;1-overview&quot;&gt;1. Overview&lt;/h2&gt;
 &lt;p&gt;디바이스의 센서데이터를 cloud상에 저장시키고, 저장된 데이터를 왓슨스튜디오로 분석하여 센싱데이터의 에너지 총량을 도출할 수 있는 application입니다.&lt;/p&gt;
 
@@ -228,4 +228,1437 @@ energy값으로 내림차순&lt;/p&gt;
 &lt;p&gt;-튜토리얼 끗-&lt;/p&gt;
 
 &lt;hr /&gt;
-&lt;p&gt;&lt;img width=&quot;100&quot; height=&quot;100&quot; src=&quot;https://user-images.githubusercontent.com/15958325/54489815-c58b3c00-48f3-11e9-81a1-b2e2afcd0ae7.png&quot; /&gt;&lt;/p&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio 1. Overview 디바이스의 센서데이터를 cloud상에 저장시키고, 저장된 데이터를 왓슨스튜디오로 분석하여 센싱데이터의 에너지 총량을 도출할 수 있는 application입니다.</summary></entry></feed>
+&lt;p&gt;&lt;img width=&quot;100&quot; height=&quot;100&quot; src=&quot;https://user-images.githubusercontent.com/15958325/54489815-c58b3c00-48f3-11e9-81a1-b2e2afcd0ae7.png&quot; /&gt;&lt;/p&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio 1. Overview 디바이스의 센서데이터를 cloud상에 저장시키고, 저장된 데이터를 왓슨스튜디오로 분석하여 센싱데이터의 에너지 총량을 도출할 수 있는 application입니다.</summary></entry><entry><title type="html">10.Using Grafana &amp;amp; InfluxDB in Sawtooth</title><link href="http://localhost:4000/sawtooth-starter/sawtooth-starter10/" rel="alternate" type="text/html" title="10.Using Grafana &amp; InfluxDB in Sawtooth" /><published>2018-07-10T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/sawtooth-starter/sawtooth-starter10</id><content type="html" xml:base="http://localhost:4000/sawtooth-starter/sawtooth-starter10/">&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-overview&quot;&gt;1. Overview&lt;/h2&gt;
+&lt;p&gt;이번 문서에서는 Grafana를 사용해 sawtooth의 모니터링을 할 수 있게 해보겠습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-prerequisites&quot;&gt;2. Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;sawtooth-core의 클론&lt;/p&gt;
+
+&lt;h2 id=&quot;3-set-up-influxdb&quot;&gt;3. Set up InfluxDB&lt;/h2&gt;
+
+&lt;p&gt;다음 커맨드를 통해 Docker Hub로부터 이미지를 받습니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ docker pull influxdb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음으로는 로컬파일시스템에 InfluxDB의 저장공간을 만들어줘야 합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo mkdir /var/lib/influx-data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;폴더까지 만들어줬으면 도커에서 실행시켜봅시다!&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ docker run -d -p 8086:8086 -v /var/lib/influx-data:/var/lib/influxdb \
+ -e INFLUXDB_DB=metrics -e INFLUXDB_HTTP_AUTH_ENABLED=true \
+ -e INFLUXDB_ADMIN_USER=admin -e INFLUXDB_ADMIN_PASSWORD='{admin-pw}' \
+ -e INFLUXDB_USER=lrdata -e INFLUXDB_USER_PASSWORD='{lrdata-pw}' \
+ --name sawtooth-stats-influxdb influxdb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;INFLUXDB_DB&lt;/code&gt;: DB이름&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;INFLUXDB_HTTP_AUTH_ENABLED&lt;/code&gt;: DB에 접근하기위한 인증절차 &lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;INFLUXDB_ADMIN_USER&lt;/code&gt; &amp;amp; &lt;code class=&quot;highlighter-rouge&quot;&gt;INFLUXDB_ADMIN_PASSWORD&lt;/code&gt;: 관리자계정&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;INFLUXDB_USER&lt;/code&gt; &amp;amp; &lt;code class=&quot;highlighter-rouge&quot;&gt;INFLUXDB_USER_PASSWORD&lt;/code&gt;: 일반계정&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;** &lt;code class=&quot;highlighter-rouge&quot;&gt;INFLUXDB_HTTP_AUTH_ENABLED&lt;/code&gt;에 관하여…&lt;br /&gt;
+이게 로컬에서 할 때는 별 문제없이 작동하다가 원격으로 서버에 접근하려고 할때 인증메세지가 뜨는데 저는 뭘 넣어도 인증이 안됬어요… (*서버의 슈퍼계정, 할당받은 서버계정, influxDB의 관리자계정, influxDB의 유저계정)&lt;br /&gt;
+&lt;b&gt;그래서 이 속성은 빼고 진행을 했습니다.&lt;/b&gt; 혹시 이 문제에 대해서 뭔가 아시거나 해결하신분은 메일주세오…&lt;br /&gt;
+sygy0509@naver.com&lt;/p&gt;
+
+  &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/1.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;4-install-and-configure-grafana&quot;&gt;4. Install and Configure Grafana&lt;/h2&gt;
+
+&lt;p&gt;sawtooth-core에 포함된 Grafana Docker이미지를 찾고 빌드합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd sawtooth-core/docker
+ $ docker build . -f grafana/sawtooth-stats-grafana \
+ -t sawtooth-stats-grafana
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음은 Grafana를 도커에서 실행!&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ docker run -d -p 3000:3000 --name sawtooth-stats-grafana \
+ sawtooth-stats-grafana
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;실행시켰다면 그라파나를 실행시킨 호스트의 주소:포트3000 (&lt;code class=&quot;highlighter-rouge&quot;&gt;http://{host}:3000&lt;/code&gt;)으로 접속해봅시다!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/2.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+초기 관리자 계정인 &lt;code class=&quot;highlighter-rouge&quot;&gt;id: admin&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;pwd: admin&lt;/code&gt;으로 로그인이 가능합니다.&lt;br /&gt;
+(*관리자 계정의 비밀번호를 바꾸는건 기본!)&lt;/p&gt;
+
+&lt;p&gt;다음으로 Grafana에 아까 실행시켰던 InfluxDB를 연동시켜야 합니다.  좌측상단 아이콘을 누른 뒤 “Data Sources”클릭 -&amp;gt; “Metrics”클릭하시면 다음과 같은 화면이 뜹니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/3.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;HTTP Settings-&amp;gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;URL&lt;/code&gt;: influxDB가 실행되는 호스트와 포트(8086)&lt;br /&gt;
+InfluxDB Details-&amp;gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Database&lt;/code&gt;: influxDB의 이름&lt;br /&gt;
+InfluxDB Details-&amp;gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;userInfo&lt;/code&gt;: influxDB의 유저정보(없어도됨)&lt;br /&gt;
+다음과 같이 설정해 주시고 &lt;code class=&quot;highlighter-rouge&quot;&gt;Save&amp;amp;Test&lt;/code&gt; 버튼을 클릭하면 연동이 성공하게 됩니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-configure-the-sawtooth-validatorrest-api-for-grafana&quot;&gt;5. Configure the Sawtooth Validator&amp;amp;REST API for Grafana&lt;/h2&gt;
+
+&lt;p&gt;이제 Grafana와 InfluxDB의 연동이 성공하였으니 Sawtooth네트워크와 연동해야합니다.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://sawtooth.hyperledger.org/docs/core/nightly/master/sysadmin_guide/grafana_configuration.html#configure-the-sawtooth-validator-for-grafana&quot;&gt;공식문서&lt;/a&gt;에서는 docker가 아닌 우분투위에서 sawtooth네트워크를 실행하기 때문에 toml파일을 수정하는 방법을 설명하고 있습니다.
+저는 docker위에서 sawtooth를 실행시키므로 yaml파일을 수정하는 방법을 소개하겠습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;실행시킬 sawtooth네트워크의 docker-compose.yaml파일을 수정해봅시다.&lt;/p&gt;
+
+&lt;p&gt;먼저 validator부분을 봅시다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  validator:
+    build:
+      context: .
+      dockerfile: validator/Dockerfile
+    image: sawtooth-validator-local:${ISOLATION_ID}
+    volumes:
+      - ./:/project/sawtooth-core
+    container_name: sawtooth-validator-local
+    expose:
+      - 4004
+      - 8008
+      - 8086
+    ports:
+      - &quot;4004:4004&quot;
+    # start the validator with an empty genesis batch
+    command: |
+      bash -c &quot;
+        bin/protogen
+        cd validator
+        python3 setup.py clean --all
+        python3 setup.py build
+        mkdir -p bin
+        mkdir -p lib
+        cargo build --release
+        cp ./target/release/sawtooth-validator bin/sawtooth-validator
+        cp ./target/release/libsawtooth_validator.so lib/libsawtooth_validator.so
+        sawadm keygen
+        sawtooth keygen
+        sawset genesis
+        sawadm genesis config-genesis.batch
+        sawtooth-validator -v \
+            --endpoint tcp://localhost:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 
+      &quot;
+    stop_signal: SIGKILL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;제가 사용하고 있는 yaml파일의 validator입니다. 다른부분은 필요없고 이 부분을 수정하시면 됩니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sawtooth-validator -v \
+            --endpoint tcp://localhost:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 \
+            --opentsdb-url http://{influxdb}:8086 \
+            --opentsdb-db metrics
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--opentsdb-url&lt;/code&gt;: influxDB가 실행되고 있는 호스트의 주소:포트&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;--opentsdb-db&lt;/code&gt; : influxDB의 이름&lt;/p&gt;
+
+&lt;p&gt;다음은 REST-API부분&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; rest-api:
+    build:
+      context: .
+      dockerfile: rest_api/Dockerfile
+    image: sawtooth-rest-api-local:${ISOLATION_ID}
+    volumes:
+      - ./:/project/sawtooth-core
+    container_name: sawtooth-rest-api-local
+    ports:
+      - &quot;8008:8008&quot;
+    depends_on:
+      - validator
+    command: |
+      bash -c &quot;
+        bin/protogen
+        cd rest_api
+        python3 setup.py clean --all
+        python3 setup.py build
+        sawtooth-rest-api -v --connect tcp://validator:4004 --bind rest-api:8008 
+      &quot;
+    stop_signal: SIGKILL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;validator와 마찬가지로 rest-api의 커맨드를 수정해주시면 됩니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; sawtooth-rest-api -v --connect tcp://validator:4004 --bind rest-api:8008 --opentsdb-url http://{influxDB}:8086 --opentsdb-db metrics
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;** 일부 속성 문제에 대하여…&lt;br /&gt;
+공식문서의 toml파일을 수정하는 부분을 보시면 속성이 두 개가 더있습니다. &lt;code class=&quot;highlighter-rouge&quot;&gt;opentsdb_username&lt;/code&gt;이랑 &lt;code class=&quot;highlighter-rouge&quot;&gt;opentsdb_password&lt;/code&gt;인데요.. sawtooth개발자분들이 의도적으로 빼두신건지 아니면 까묵은건지 sawtooth-validator의 CLI에는 저 두 속성이 존재하지 않습니다.&lt;br /&gt;
+물론 이 둘을 없애도 잘 돌아가긴 합니다. 저는 빼고 진행했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;–&amp;gt;수정 후, sawtooth네트워크 실행!&lt;/p&gt;
+
+&lt;h2 id=&quot;6-configure-telegraf&quot;&gt;6. Configure Telegraf&lt;/h2&gt;
+
+&lt;p&gt;Telegraf는 InfluxDB의 제작사에서 제작한 시스템 모니터링 및 지표 수집 에이전트입니다. 간단히 말해서 sawtooth네트워크와 os의 여러 정보를 InfluxDB로 보내주는 역할을 합니다.&lt;/p&gt;
+
+&lt;p&gt;그럼 Telegraf를 다운로드 받아봅시다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -sL https://repos.influxdata.com/influxdb.key |  sudo apt-key add -
+$ sudo apt-add-repository &quot;deb https://repos.influxdata.com/ubuntu xenial stable&quot;
+$ sudo apt-get update
+$ sudo apt-get install telegraf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다운로드가 끝났다면 InfluxDB와 연결하기 위해 Telegraf의 속성을 수정하여야 합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo vim /etc/telegraf/telegraf.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;파일을 열어서 &lt;code class=&quot;highlighter-rouge&quot;&gt;OUTPUT PLUGINS&lt;/code&gt;을 찾은다음 다음 속성을 추가합시다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Configuration for sending metrics to InfluxDB
+[[outputs.influxdb]]
+  urls = [&quot;http://{influxDB host}:8086&quot;]
+  database = &quot;metrics&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;이후, telegraf 명령어를 입력하면 준비완료!&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ telegraf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;7-grafana&quot;&gt;7. Grafana&lt;/h2&gt;
+
+&lt;h3 id=&quot;71-graph&quot;&gt;7.1 Graph&lt;/h3&gt;
+&lt;p&gt;sawtooth네트워크를 올려봅시다. 별 문제가 없다면 다음과 같은 화면이 뜰 것입니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/4.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+하단에 빨간색으로 표시한 줄은 오류가 아니에요!&lt;br /&gt;
+저는 Bad Request가 떠서 제대로 연결이 되지 않았나 해서 온갖 삽질을 했지만^^… 
+ validator에서 전달되는 값이 없어서 그런것 같습니다.&lt;/p&gt;
+
+&lt;p&gt;그럼 바로 xo게임을 시험삼아 실행해서 게임을 진행해봅시다. &lt;a href=&quot;https://github.com/GRuuuuu/sawtooth-starter/tree/master/sawtooth/%232%20xo%20transaction%20family&quot;&gt;참고&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;트랜잭션을 발생시키고 블록이 생성된 것을 확인했으면 Grafana페이지로 가서 Dashboard를 확인해봅시다!&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/5.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+네트워크를 올리고 얼마 시간이 지나지 않아서 그래프가 많이 빈약하지만 그래프의 생성유무를 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;또한, 그래프에 마우스를 올려놓으면 세부 사항도 확인할 수 있습니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/6.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;실시간 모니터링(Auto-Refresh)은 Dashboard 우측 상단 시계를 클릭해서 설정할 수 있습니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/7.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+5초로 설정하면 5초마다 그래프가 새로고침됩니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;72-user&quot;&gt;7.2 User&lt;/h3&gt;
+
+&lt;p&gt;Dashboard를 볼 수 있는 유저를 추가하는 방법입니다.&lt;br /&gt;
+좌측상단 똥글뱅이문양을 누르고 Admin-&amp;gt;Grobal Users-&amp;gt;Add new User&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/8.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+정보를 기입하고 생성을 누르면 다음과 같이 유저계정을 만들 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2310%20using%20grfana%20%26%20influxdb/img/9.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+생성한 유저의 권한 관리는 우측의 Edit버튼을 통해 관리할 수 있습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;8-마치며&quot;&gt;8. 마치며&lt;/h2&gt;
+
+&lt;p&gt;sawtooth공식 doc에 있는 내용을 거의 다 해봤네요! 꺄오꺄오! 다음에 또 만나요!&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임</summary></entry><entry><title type="html">09.Building and Submitting Transactions with js</title><link href="http://localhost:4000/sawtooth-starter/sawtooth-starter09/" rel="alternate" type="text/html" title="09.Building and Submitting Transactions with js" /><published>2018-07-09T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/sawtooth-starter/sawtooth-starter09</id><content type="html" xml:base="http://localhost:4000/sawtooth-starter/sawtooth-starter09/">&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-overview&quot;&gt;1. Overview&lt;/h2&gt;
+&lt;p&gt;이번 문서에서는 자바스크립트 코드로 트랜잭션을 만들고, validator에 제출해보도록 하겠습니다.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;node.js사용&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;2-prerequisites&quot;&gt;2. Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/GRuuuuu/sawtooth-starter/blob/master/sawtooth/%238%20configuring%20permission/Configuring%20Permission.md&quot;&gt;이전 문서&lt;/a&gt;에서 했던 과정을 그대로 따라해주시고 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose&lt;/code&gt;커맨드로 sawtooth를 실행시켜주시기 바랍니다.&lt;/p&gt;
+
+&lt;p&gt;같은 폴더 안에 있는 package.json과 compile_protobuf.js파일, protobuf폴더와 protos폴더를 클론받아 프로젝트에 추가시켜주세요.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-install-package&quot;&gt;3. Install Package&lt;/h2&gt;
+
+&lt;p&gt;cmd창에서 다음 커맨드를 통해 패키지를 설치합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;패키지를 설치하고 나면 프로젝트 구조는 다음과 같이 구성됩니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2309%20build%26submit%20transactions%20with%20js/img/1.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+node_moudules에는 package.json에 기재되어있던 의존모듈이 추가되고 &lt;code class=&quot;highlighter-rouge&quot;&gt;scripts&lt;/code&gt;의 &lt;code class=&quot;highlighter-rouge&quot;&gt;prepublish&lt;/code&gt;를 통해 compile_protobuf.js가 컴파일되고 &lt;code class=&quot;highlighter-rouge&quot;&gt;payload&lt;/code&gt;를 인코딩할 수 있는 protobuf_bundle.json이 추가됩니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-protobuf_bundlejson&quot;&gt;4. protobuf_bundle.json&lt;/h2&gt;
+
+&lt;p&gt;protobuf_bundle.json파일은 compile_protobuf.js파일을 컴파일함으로써 protos폴더 안의 proto파일을 json형식으로 나타낸 것입니다. 이를 통해 Payload가 어떤식으로 구성되어야하는지를 알 수 있게됩니다.&lt;/p&gt;
+
+&lt;p&gt;proto 파일에 대한 정보는 &lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/overview&quot;&gt;여기&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;5-payload-구성&quot;&gt;5. Payload 구성&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Payload를 구성함에 있어 가장 주의깊게 봐야할 부분은 &lt;code class=&quot;highlighter-rouge&quot;&gt;Encoding&lt;/code&gt;하는 부분입니다. 모든 트랜잭션 패밀리에서 payload를 parsing하는 방법이 다르기 때문에 보내는 방법도 각양각색입니다.&lt;br /&gt;
+반드시 참고해야할 트랜잭션 패밀리의 핸들러 소스코드와 &lt;code class=&quot;highlighter-rouge&quot;&gt;proto&lt;/code&gt;파일을 읽어보셔야합니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;51-intkey&quot;&gt;5.1 Intkey&lt;/h3&gt;
+&lt;p&gt;intkey 트랜잭션 패밀리는 payload를 &lt;code class=&quot;highlighter-rouge&quot;&gt;CBOR&lt;/code&gt;로 encoding하고 json형식으로 작성해야합니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cbor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cbor'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;Verb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'set'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;payloadBytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cbor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;52-xo&quot;&gt;5.2 Xo&lt;/h3&gt;
+&lt;p&gt;Xo 트랜잭션 패밀리는 payload를 작성하는 방법이 &lt;code class=&quot;highlighter-rouge&quot;&gt;Intkey&lt;/code&gt;와는 사뭇 다릅니다. payload를 핸들링하는 &lt;a href=&quot;https://github.com/hyperledger/sawtooth-core/blob/master/sdk/examples/xo_python/sawtooth_xo/processor/xo_payload.py&quot;&gt;소스코드&lt;/a&gt;를 참고하면서 봐주세요.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;XoPayload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;# The payload is csv utf-8 encoded string
+&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;space&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;,&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ValueError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InvalidTransaction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Invalid payload serialization&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;xo트랜잭션의 payload를 핸들링하는 소스코드의 일부입니다. try문 안을 보면 &lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;action&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;space&lt;/code&gt;의 순서대로 “&lt;code class=&quot;highlighter-rouge&quot;&gt;,&lt;/code&gt;“를 기준으로 parsing하고 있습니다.&lt;/p&gt;
+
+&lt;p&gt;xo 트랜잭션의 payload를 구성할 때는 &lt;code class=&quot;highlighter-rouge&quot;&gt;json&lt;/code&gt;형식으로 구성한다면 &lt;code class=&quot;highlighter-rouge&quot;&gt;InvalidTransaction&lt;/code&gt; 에러가 뜰 수 밖에 없습니다.&lt;/p&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;game1,create,&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;payloadBytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cbor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;위와 같이 페이로드를 구성하면 됩니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;53-identity&quot;&gt;5.3 Identity&lt;/h3&gt;
+
+&lt;p&gt;세 번째 예시는 Identity 트랜잭션 패밀리입니다. 제가 예시를 들어볼 트랜잭션은 policy를 생성하는 트랜잭션입니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Identity 트랜잭션을 만드려면 &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install&lt;/code&gt;하기전에 protos 폴더에 identities.proto 파일이 존재해야합니다.&lt;br /&gt;
+sawtooth-core의 protos폴더에는 identities.proto파일이 존재하지 않고, &lt;a href=&quot;https://github.com/hyperledger/sawtooth-core/tree/master/families/identity/protos&quot;&gt;여기&lt;/a&gt;에 있으니 참고하시기 바랍니다. 현재 문서의 protos 폴더에는 identities.proto를 추가시켜놨습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;단순히 require(“protobuf”)를 하게 되면, &lt;code class=&quot;highlighter-rouge&quot;&gt;node_modules&lt;/code&gt;를 참조하게 됩니다. 하지만 우리는 identities.proto를 임의로 추가시켜 protobuf_bundle파일을 생성했으니 &lt;code class=&quot;highlighter-rouge&quot;&gt;node_modules&lt;/code&gt;가 아닌 로컬의 protobuf파일을 참조하게 해야합니다.&lt;/p&gt;
+
+  &lt;p&gt;따라서 이와같이 작성하여야 합니다.&lt;/p&gt;
+  &lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Policy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;IdentityPayload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;TransactionHeader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Transaction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;BatchHeader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Batch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;BatchList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;../protobuf&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+&lt;/blockquote&gt;
+
+&lt;p&gt;protobuf_bundle.json 파일로 가서 payload를 만들기 위한 양식을 찾아봅시다. Policy나 Role을 세팅하기 위한 json 포맷은 다음과 같습니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;w&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;IdentityPayload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fields&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;IdentityType&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;data&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bytes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;nested&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;IdentityType&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;values&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;IDENTITY_TYPE_UNSET&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;POLICY&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ROLE&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;먼저 최종적으로 &lt;code class=&quot;highlighter-rouge&quot;&gt;IdentityPayload&lt;/code&gt;에 들어가야할 내용은 type과 data입니다. type은 &lt;code class=&quot;highlighter-rouge&quot;&gt;IdentityType&lt;/code&gt;을 참고하고 있고, &lt;code class=&quot;highlighter-rouge&quot;&gt;IdentityType&lt;/code&gt;은 하단의 nested안에서 확인할 수 있습니다.&lt;br /&gt;
+제가 예시로 들 내용은 policy를 세팅하는 것이니 type은 1이 될 것입니다.&lt;/p&gt;
+
+&lt;p&gt;다음으로는 data입니다. data에는 policy에 세팅할 정보가 들어가게 될 것입니다.&lt;/p&gt;
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;w&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Policy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fields&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;string&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;entries&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;rule&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;repeated&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Entry&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;nested&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;EntryType&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;values&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ENTRY_TYPE_UNSET&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;PERMIT_KEY&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;DENY_KEY&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Entry&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fields&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+              &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;EntryType&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+              &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+              &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;string&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+              &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Policy는 name과 entries가 필요합니다. name은 String형, entries는 Entry형이고 반복될수있습니다.&lt;/p&gt;
+
+&lt;p&gt;다음과 같은 커맨드는&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sawtooth identity policy create p1_name &quot;PERMIT_KEY *&quot; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;이렇게 구성될 수 있습니다.&lt;/p&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;policyBytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Policy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;p1_name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;entries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;//PERMIT_KEY&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;*&quot;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;finish&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;payloadBytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;IdentityPayload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;//policy&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;policyBytes&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;finish&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;CBOR을 사용하지 않고, protocol buffer의 encode를 사용하고 있습니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;identity는 트랜잭션을 보낼 때 allowed_key로 정해진 key만 sign이 가능합니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;6-signer&quot;&gt;6. Signer&lt;/h2&gt;
+
+&lt;p&gt;공식 문서의 &lt;a href=&quot;https://sawtooth.hyperledger.org/docs/core/nightly/master/_autogen/sdk_submit_tutorial_js.html&quot;&gt;예시&lt;/a&gt;에서는 랜덤으로 privateKey를 생성하여 트랜잭션과 배치에 서명하게 되어있습니다.&lt;br /&gt;
+특정 privateKey로 서명하고 싶다면 다음과 같이 하면 됩니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;        &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;secp256k1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//암호화 컨텍스트&lt;/span&gt;
+        
+        &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;privateKey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Secp256k1PrivateKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fromHex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;8a0d61af0a9518bcf4d60f013edc5da6876fcd4dad9ee0f3a832a0c67122faae&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;signer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CryptoFactory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newSigner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;privateKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;7-transaction-header&quot;&gt;7. Transaction Header&lt;/h2&gt;
+&lt;p&gt;트랜잭션의 헤더는 다음과 같이 작성할 수 있습니다.&lt;/p&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;transactionHeaderBytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;TransactionHeader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;familyName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;sawtooth_identity&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//보내려는 트랜잭션의 패밀리 네임&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;familyVersion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1.0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;000000&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;00001d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;         &lt;span class=&quot;c1&quot;&gt;//input : read from&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;outputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;00001d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;//output : write to&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;signer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getPublicKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;signerPublicKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;signer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getPublicKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;privateKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;asHex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// In this example, we're signing the batch with the same private key,&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// but the batch can be signed by another party, in which case, the&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// public key will need to be associated with that key.&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;batcherPublicKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;signer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getPublicKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;privateKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;asHex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// In this example, there are no dependencies.  This list should include&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// an previous transaction header signatures that must be applied for&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// this transaction to successfully commit.&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// For example,&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// dependencies:['540a6803971d1880ec73a96cb97815a95d374cbad5d865925e5aa0432fcf1931539afe10310c122c5eaae15df61236079abbf4f258889359c4d175516934484a'],&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;payloadSha512&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createHash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sha512&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;payloadBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;digest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hex&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;finish&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;input과 output에 관한 정보는 &lt;a href=&quot;https://github.com/hyperledger/sawtooth-core/blob/master/cli/sawtooth_cli/identity.py&quot;&gt;여기&lt;/a&gt;의 line 49처럼 define된 변수가 있거나 공식문서의 트랜잭션패밀리를 다룬 &lt;a href=&quot;https://sawtooth.hyperledger.org/docs/core/nightly/master/transaction_family_specifications/identity_transaction_family.html&quot;&gt;부분&lt;/a&gt;의 Addressing을 확인하면 됩니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2309%20build%26submit%20transactions%20with%20js/img/3.png&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+만약 input과 output을 틀리게 적었다면 위와같은 오류가 발생합니다.&lt;/p&gt;
+
+&lt;p&gt;이 뒤의 내용은 공식문서의 예시와 같으니 참고하시면 됩니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;8-마치며&quot;&gt;8. 마치며&lt;/h2&gt;
+
+&lt;p&gt;수고하셧읍니다^^7 점점 새로 공부해야하는 내용이 많아지네요. 다음 문서는 뭐로 작성하면 좋을지 고민중..&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임</summary></entry><entry><title type="html">08.Configuring Permission</title><link href="http://localhost:4000/sawtooth-starter/sawtooth-starter08/" rel="alternate" type="text/html" title="08.Configuring Permission" /><published>2018-07-08T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/sawtooth-starter/sawtooth-starter08</id><content type="html" xml:base="http://localhost:4000/sawtooth-starter/sawtooth-starter08/">&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-overview&quot;&gt;1. Overview&lt;/h2&gt;
+&lt;p&gt;이번 문서에서는 Transaction과 Batch의 권한 생성 및 설정에 대해서 다뤄보겠습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-prerequisites&quot;&gt;2. Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;이번 문서부터는 os를 ubuntu환경으로 바꾸었습니다. 도커기반인건 바뀌지 않았지만 core에서 코드를 내려받아서 그대로 실행할것이기 때문에 참고하시기 바랍니다.&lt;/p&gt;
+
+&lt;p&gt;먼저 &lt;a href=&quot;https://github.com/hyperledger/sawtooth-core&quot;&gt;sawtooth-core&lt;/a&gt;를 클론해주세요&lt;/p&gt;
+
+&lt;p&gt;폴더 만들고 폴더안에서 다음 커맨드 입력&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/hyperledger/sawtooth-core
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;3-일단-실행하기-전에&quot;&gt;3. 일단 실행하기 전에&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;처음엔 윈도우 환경 하에서 sawtooth-core를 올려보려고 했지만 개발자체가 리눅스 환경하에서 만들어진것같아서 파이썬 소스코드를 실행할 때, 인코딩문제가 좀 있는거 같더군요.&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/bin/env: ‘python3\r’: No such file or directory
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;p&gt;위와 같은 오류에 대해 몇가지 해결방법이 있긴 하지만 생각보다 까다롭고 귀찮아서 os를 리눅스로 바꿨습니다.&lt;br /&gt;
+윈도우 유저분들은 VirtualBox나 Hyper-V와 같은 가상머신을 사용하는 것을 추천합니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;linux에서의 도커설정도 윈도우와 마찬가지입니다. 하나 참고해야할 점은 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose&lt;/code&gt; 버전이 최신버전이어야 합니다. 제가 core를 돌렸을 때의 버전은 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose version 1.22.0, build f46880fe&lt;/code&gt; 입니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;다운로드 받은 폴더에 들어가서 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose.yaml&lt;/code&gt; 파일을 열어봅시다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim docker-compose.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;현재 &lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth-core&lt;/code&gt;내의 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose.yaml&lt;/code&gt;파일 안에는 identity에 대한 이미지 설정이 들어있지 않습니다.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;대신 &lt;code class=&quot;highlighter-rouge&quot;&gt;devmode-rust&lt;/code&gt;라는게 들어가있는데, 이것까지 포함해서 yaml파일을 실행시켜 policy 설정 및 &lt;code class=&quot;highlighter-rouge&quot;&gt;identity&lt;/code&gt;관련 커맨드를 입력하면 devmode-rust 프로세서는 죽더군요… &lt;code class=&quot;highlighter-rouge&quot;&gt;poet-engine&lt;/code&gt;이라는 이미지는 실행만하면 죽던데 사실 이 두개의 프로세서의 역할과 왜 죽는지는 해결하지 못했습니다. 추후 알아내면 업데이트하겠습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;우선 &lt;code class=&quot;highlighter-rouge&quot;&gt;devmode-rust&lt;/code&gt;와 &lt;code class=&quot;highlighter-rouge&quot;&gt;poet-engine&lt;/code&gt;를 제외하고 &lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth-identity&lt;/code&gt;를 추가해서 실행시켜보도록 하겠습니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  identity-tp:
+    build:
+      context: .
+      dockerfile: families/identity/Dockerfile 
+    image: sawtooth-identity-local:${ISOLATION_ID}
+    volumes:
+      - ./:/project/sawtooth-core
+    container_name: sawtooth-identity-local
+    depends_on:
+      - validator
+    command: |
+      bash -c &quot;
+        bin/protogen
+        cd families/identity
+        python3 setup.py clean --all
+        python3 setup.py build
+        identity-tp -vv -C tcp://validator:4004
+      &quot;
+    stop_signal: SIGKILL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;위와 같은 코드를 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose.yaml&lt;/code&gt;파일에 추가시킨 뒤, yaml파일을 돌려봅시다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;docker-compose에 따로 파일이름을 기재하지 않는 이유는 파일이름이 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose.yaml&lt;/code&gt;이기 때문입니다. 만약 파일이름이 &lt;code class=&quot;highlighter-rouge&quot;&gt;a.yaml&lt;/code&gt;이라면&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose -f a.yaml up 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;p&gt;위와 같이 나오겠죠.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;4-기다림기다림기다림&quot;&gt;4. 기다림기다림기다림&lt;/h2&gt;
+
+&lt;p&gt;파일이 많아서 그런지 아주 오래 기다려야합니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-authorized_keys&quot;&gt;5. authorized_keys&lt;/h2&gt;
+&lt;p&gt;블록체인 상에서 다른 transactor들의 권한을 관리할 수 있는 transactor는 (아무런 설정을 하지 않았을 시) genesis block을 서명한 transactor입니다. genesis block을 서명한 transactor는 도커파일을 보면 알 수 있는데,&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    sawadm keygen            //  etc/sawtooth/keys/validator.priv와 pub키생성
+    sawtooth keygen          //  root/.sawtooth/keys/root.priv와 pub키생성
+    sawset genesis           //root.priv로 서명
+    sawadm genesis config-genesis.batch
+    sawtooth-validator -v \
+        --endpoint tcp://localhost:8800 \
+        --bind component:tcp://eth0:4004 \
+        --bind network:tcp://eth0:8800 \
+        --bind consensus:tcp://eth0:5050 \
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;위 코드는 root의 비밀키로 genesis블록을 서명하여 생성합니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2308%20configuring%20permission/img/1.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+위 사진은 root의 비밀키와 공개키입니다. 다음 사진은 genesis block인데 signer의 공개키가 root의 공개키와 같다는 것을 볼 수 있습니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2308%20configuring%20permission/img/2.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;또한 다음사진은 genesis block에 담긴 payload를 Base64 디코딩한 사진입니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2308%20configuring%20permission/img/3.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth.settings.vote.authorized_keys&lt;/code&gt;는 다음과 같은 의미를 지니고 있습니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2308%20configuring%20permission/img/4.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;쉽게 얘기해서 &lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth&lt;/code&gt;의 설정을 변경할 때 &lt;code class=&quot;highlighter-rouge&quot;&gt;authorized_keys&lt;/code&gt;가 하나일경우 인증받은 키 하나만 동의하면 설정이 변경되고, &lt;code class=&quot;highlighter-rouge&quot;&gt;authorized_keys&lt;/code&gt;가 여러개일 경우, 일정 퍼센트 이상이 동의해야 설정을 변경할 수 있습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;즉 root의 공개키는 &lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth&lt;/code&gt;의 설정을 변경할 수 있는 키가 되었다는 것이고, 이제 Transactor와 Validator의 권한설정을 위해 필요한 권한을 원하는 키에 할당해 주어야 합니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;6-allowed_keys&quot;&gt;6. allowed_keys&lt;/h2&gt;
+&lt;p&gt;identity 프로세서를 통해 권한을 설정할 수 있는 권한을 가진 키는&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sawset proposal create sawtooth.identity.allowed_keys=&amp;lt;public key&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;를 통해 설정할 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth&lt;/code&gt;에서 지정할 수 있는 정책은 두가지입니다.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;PERMIT_KEY &lt;transactor의 공개키=&quot;&quot;&gt;: 허가  
+DENY_KEY &lt;transactor의 공개키=&quot;&quot;&gt;: 거절&lt;/transactor의&gt;&lt;/transactor의&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;현재 &lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth&lt;/code&gt;에서 설정할 수 있는 Transactor의 role은 5개로 다음과 같습니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;default:&lt;br /&gt;
+  기본 설정은 “PERMIT_KEY *” 임. 특정 role을 지정해주지 않았다면 default가 됨.&lt;/p&gt;
+
+  &lt;p&gt;transactor:&lt;br /&gt;
+  transaction과 batch를 서명할 수 있는 최상위 role. 만약 transactor에 DENY_KEY를 준다면 transactor와 batch에 관한 요청 모두 거절됨.&lt;/p&gt;
+
+  &lt;p&gt;transactor.transaction_signer:&lt;br /&gt;
+  transaction의 서명에 관한 role&lt;/p&gt;
+
+  &lt;p&gt;transactor.transaction_signer.{tp_name}:&lt;br /&gt;
+  특정 transaction processor(Family)의 서명에 관한 role&lt;/p&gt;
+
+  &lt;p&gt;transactor.batch_signer:&lt;br /&gt;
+  batch의 서명에 관한 role&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+&lt;p&gt;role에 정책을 적용할 때는 다음과 같이 작성합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;transactor.SUB_ROLE = POLICY_NAME
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;예시)&lt;br /&gt;
+sawtooth identity policy create policy_1 “DENY_KEY *”&lt;br /&gt;
+sawtooth identity role create transactor policy_1&lt;/p&gt;
+
+  &lt;p&gt;모든 키에대해 DENY하는 정책인 policy_1을 만들고, policy_1을 transaction과 batch를 서명할 수 있는 최상위 role에 부여합니다.&lt;br /&gt;
+이러면 모든 키는 transaction과 batch에 서명할 수 없게 됩니다.(본인포함)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;정말 주의해야할 점은, policy는 순차적으로 적용된다는 것입니다. (if-else를 생각하면 이해가 쉬움.)&lt;/p&gt;
+
+&lt;p&gt;예시1)&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;a,b,c의 키쌍이 있음&lt;/li&gt;
+  &lt;li&gt;a,b,c의 &lt;공개키&gt;를 이용해 정책을 만듬&lt;/공개키&gt;&lt;/li&gt;
+  &lt;li&gt;DENY_KEY a =&amp;gt; transactor에 적용(위 예시참고)&lt;/li&gt;
+  &lt;li&gt;우리 모두의 생각: a만 transactor에 관한 권한이 DENY되겠지, b와 c는 PERMIT일거야&lt;/li&gt;
+  &lt;li&gt;현실: 전부 DENY됨&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;예시2)&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;a,b,c의 키쌍이 있음&lt;/li&gt;
+  &lt;li&gt;각 공개키를 사용해 정책을 만들것&lt;/li&gt;
+  &lt;li&gt;DENY_KEY a, PERMIT_KEY *, DENY_KEY b 의 정책을 만든 뒤&lt;/li&gt;
+  &lt;li&gt;DENY_KEY a&lt;br /&gt;
+PERMIT_KEY *&lt;br /&gt;
+DENY_KEY b  의 순으로 transactor에 정책 적용&lt;/li&gt;
+  &lt;li&gt;예상: a와 b는 DENY되고 c는 PERMIT될거야!&lt;/li&gt;
+  &lt;li&gt;현실: a만 DENY되고 b와 c는 PERMIT됨&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;위의 두 예시를 잘 보면 순서대로 정책이 적용되는 것을 볼 수 있습니다. switch-case처럼 해당되는 정책에 빨려들어가서 break가 걸려서 switch문을 빠져나오는것과 같습니다.&lt;/p&gt;
+
+&lt;p&gt;예시2를 실제로 실행해봅시다. 이전에 authorized_keys로 설정된 키로 allowed_keys를 설정해줄겁니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sawset proposal create sawtooth.identity.allowed_keys=038d91da5969ac3958649a25b27165c78c1ee46a3bc93aecea660a47a843bd5b6d --url http://rest-api:8008
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;현재 문서에서는 authorized_keys는 genesis 블록을 서명한 root입니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sawset를 통해 제안하는 커맨드의 default 키설정은 root/.sawtooth/keys의 root.priv입니다. 따라서 위와 똑같은 커맨드를 작성하려면 root/.sawtooth/keys의 root가 authorized되어야하며 커맨드를 입력하는 폴더가 root/.sawtooth/keys 안이어야 합니다.&lt;/p&gt;
+
+  &lt;p&gt;만약, root.priv가 아닌 다른 키로 설정하려면 다음과 같이 -k 옵션을 달아주면 됩니다.&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sawset proposal create sawtooth.identity.allowed_keys=&amp;lt;공개키&amp;gt; -k 설정하려고하는 다른키의 위치/다른키.priv --url ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sawtooth keygen a
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;a,b,c의 키를 생성한 뒤, 예제2와같이 정책을 설정&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sawtooth identity policy create p1 &quot;DENY_KEY &amp;lt;a공개키&amp;gt;&quot; &quot;PERMIT_KEY *&quot; &quot;DENY_KEY &amp;lt;b공개키&amp;gt;&quot; --url http://rest-api:8008
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2308%20configuring%20permission/img/5.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sawtooth identity policy list --url http://rest-api:8008
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;위와같은 커맨드를 통해 현재 만들어진 정책들의 list를 볼 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2308%20configuring%20permission/img/6.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+예제2와같이 transactor에 정책을 설정해주고&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sawtooth identity role list --url http://rest-api:8008
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;위와같은 커맨드를 통해 현재 설정된 role의 list를 볼 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;그럼 테스트로 xo게임을 create하는 트랜잭션을 만들어 보겠습니다. 예제2의 예상대로면 a와 b는 트랜잭션이 거절되어야하고 c만 xo게임이 만들어져야 합니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2308%20configuring%20permission/img/7.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+하지만 a의 트랜잭션만 거절되고 나머지 b와 c는 제대로 트랜잭션이 들어간 것을 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;현재 &lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth&lt;/code&gt;에서 설정할 수 있는 Validator의 role은 2개로 다음과 같습니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;network:&lt;br /&gt;
+peer를 붙이는(현재 validator에 붙으려는 요청)요청이 올 때, 그 요청을 보내는 public key가 policy에 의하여 거절되었다면 이 요청은 거절되고 &lt;code class=&quot;highlighter-rouge&quot;&gt;AuthorizationViolation&lt;/code&gt; 메세지가 리턴되고 커넥션은 끊어지게 됩니다.&lt;/p&gt;
+
+  &lt;p&gt;network.consensus:&lt;br /&gt;
+validator가 새로운 블록을 만들자는 GossipMessage를 받았을 때, 그 요청을 보내는 public key가 policy에 의해 거절되었다면 요청거절-&amp;gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;AuthorizationViolation&lt;/code&gt; 메세지가 리턴되고 커넥션 종료&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;7-마치며&quot;&gt;7. 마치며&lt;/h2&gt;
+
+&lt;p&gt;공식doc를 열심히 봅시다^^….&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임</summary></entry><entry><title type="html">07.Make Custom Processor and Connect to Validator</title><link href="http://localhost:4000/sawtooth-starter/sawtooth-starter07/" rel="alternate" type="text/html" title="07.Make Custom Processor and Connect to Validator" /><published>2018-07-07T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/sawtooth-starter/sawtooth-starter07</id><content type="html" xml:base="http://localhost:4000/sawtooth-starter/sawtooth-starter07/">&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-overview&quot;&gt;1. Overview&lt;/h2&gt;
+&lt;p&gt;이번 문서에서는 커스텀 프로세서를 만들어 validator에 연결해보도록 하겠습니다. 빠른 진행을 위해 xo게임을 수정해서 붙여보겠습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-prerequisites&quot;&gt;2. Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;이전문서에서는 validator들을 서로 다른 네트워크에서 이어보는 작업을 진행했습니다. 이번 문서의 작업을 제대로 이해하기 위해서는 이전문서를 꼭 읽어보고 오시기 바랍니당&lt;/p&gt;
+
+&lt;p&gt;먼저 &lt;a href=&quot;https://github.com/GRuuuuu/Learning_Sawtooth/tree/master/sawtooth/sawtooth%20running%20%237&quot;&gt;NEWxo.jar&lt;/a&gt;와 &lt;a href=&quot;https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%237/Dockerfile&quot;&gt;Dockerfile&lt;/a&gt;그리고 &lt;a href=&quot;https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%237/sawtooth-default-poet.yaml&quot;&gt;YAML파일&lt;/a&gt;을 다운로드 받아주세요&lt;/p&gt;
+
+&lt;h2 id=&quot;3-일단-실행&quot;&gt;3. 일단 실행&lt;/h2&gt;
+
+&lt;p&gt;다운로드 받은 폴더에서 yaml 파일을 실행해봅시다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose -f sawtooth-default-poet.yaml up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2307%20making%20custom%20processor/img/1.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+jar파일을 build해서 이미지로 만드는 과정입니다. 이 과정을 통해서 커스텀 프로세서를 구현하고 validator에 붙여 sawtooth 네트워크를 구성할 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;새롭게 추가한 new-xoGAME의 달라진 기능은 별거없습니다. X표시가 A표시로 바뀐것 뿐입니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2307%20making%20custom%20processor/img/2.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+xo커맨드를 사용하여 게임을 만들고 각 플레이어끼리 게임을 진행한 뒤, 게임판을 show하니 X표시가 A표시로 바뀐 것을 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-java-to-jar&quot;&gt;4. JAVA to Jar&lt;/h2&gt;
+
+&lt;p&gt;자바프로그램은 sawtooth sdk예제로 나온 &lt;a href=&quot;https://github.com/hyperledger/sawtooth-core/tree/master/sdk/examples/xo_java&quot;&gt;xo transaction&lt;/a&gt;을 사용하였고, X를 저장하는 부분의 코드를 A로 바꿨습니다.&lt;/p&gt;
+
+&lt;p&gt;자바프로그램을 Jar파일로 바꾸는 과정은 인터넷을 참고 ㄱㄱ&lt;br /&gt;
+또한 자바프로그램이 제대로 실행되지 않는 파일이라면 당연히 Jar파일을 쓸수없습니당&lt;/p&gt;
+
+&lt;h2 id=&quot;5-dockerfile-뜯어보기&quot;&gt;5. Dockerfile 뜯어보기&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM anapsix/alpine-java                      //자바
+MAINTAINER new-xoGAME:1.0                     //이름:버전
+COPY new-xoGAME.jar /home/new-xoGAME.jar      //현재위치폴더의 jar를 docker내 home폴더로 이동시킴
+CMD [&quot;java&quot;,&quot;-cp&quot;,&quot;/home/new-xoGAME.jar&quot;, &quot;src.sawtooth.examples.xo.XoTransactionProcessor&quot;,&quot;tcp://validator-0:4004&quot;]
+//java, -cp, jar파일이름.jar, jar파일내 main이 존재하는 class이름, main의 argument
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;main의 argument를 집어넣는 부분은 yaml파일의&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2307%20making%20custom%20processor/img/3.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+command부분과 형식이 같습니다.&lt;br /&gt;
+이 부분은 현재 실행되고있는 validator에 붙이는 부분입니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;6-yaml파일-뜯어보기&quot;&gt;6. YAML파일 뜯어보기&lt;/h2&gt;
+
+&lt;h3 id=&quot;새로-추가된-new-xogame&quot;&gt;새로 추가된 new-xoGAME&lt;/h3&gt;
+&lt;p&gt;기본적으로 이전문서의 yaml구성과 비슷합니다. dockerfile을 통해 이미지를 생성하는 방법은 주의깊게 봐주시기 바랍니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  new-xogame-1:
+    build:                                    //빌드할것
+      context: .
+      dockerfile: ./Dockerfile                //현재위치 폴더의 도커파일을 불러옴
+    image: sawtooth-new-xogame:1.0
+    container_name: new-xogame
+    expose:
+      - 4004
+    ports:
+      - &quot;4004:4004&quot;
+    stop_signal: SIGKILL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;외에는 똑같음.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-마치며&quot;&gt;5. 마치며&lt;/h2&gt;
+
+&lt;p&gt;생각보다 자료가 정말 없어서 정말 고생했던것 같습니다. 최대한 쉽게 커스텀 프로세서를 추가하는 방법을 다뤄봤습니다. 이제는 원하는 작업을 만들어서 validator에 붙이기만 하면 내가원하는 블럭체인 네트워크 완-성!&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</summary></entry><entry><title type="html">06.Connect multi validator in Remote network</title><link href="http://localhost:4000/sawtooth-starter/sawtooth-starter06/" rel="alternate" type="text/html" title="06.Connect multi validator in Remote network" /><published>2018-07-06T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/sawtooth-starter/sawtooth-starter06</id><content type="html" xml:base="http://localhost:4000/sawtooth-starter/sawtooth-starter06/">&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-overview&quot;&gt;1. Overview&lt;/h2&gt;
+&lt;p&gt;이번 문서에서는 서로다른 네트워크에서 validator를 연결해보도록 하겠습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-prerequisites&quot;&gt;2. Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;이전문서에서는 validator 2개를 로컬환경에서 연결하는 작업을 했었음. 이번 문서의 작업을 제대로 이해하기 위해서는 이전문서를 꼭 읽어보고 오시기 바랍니당&lt;/p&gt;
+
+&lt;p&gt;먼저 &lt;a href=&quot;https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%236/genesis/sawtooth-default-poet.yaml&quot;&gt;제네시스블럭을 생성하는 YAML&lt;/a&gt;과 &lt;a href=&quot;https://github.com/GRuuuuu/Learning_Sawtooth/tree/master/sawtooth/sawtooth%20running%20%236/validator&quot;&gt;기타 validator의 YAML&lt;/a&gt;을 다운로드 받아주세요&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;이 문서는 포트를 다루고 있기 때문에 로컬환경에서 작업하던 이전 문서와 달리 예상치못한 네트워크 관련 문제가 (매우)많이 생길 수 있습니다.&lt;br /&gt;
+실제로 매우매우매우 고생했기 때문에…몇가지 해결방법을 미리 기술합니다.&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;방화벽을 확인한다. 방화벽 고급설정의 인바운드 아웃바운드 규칙을 만들어줍시다.&lt;/li&gt;
+    &lt;li&gt;yaml파일의 bind와 endpoint, seeds 그리고 connect 부분을 확인합니다.&lt;/li&gt;
+    &lt;li&gt;사용하는 공유기 또는 컴퓨터의 환경에 따라서 컴퓨터 자체의 로컬ip와(자기 자신을 가리키는) 외부에서 자신을 가리키는 ip가 다를 수 있습니다. 이런 경우에는 yaml파일에서는 자기자신을 가리키는 로컬ip를 사용해야하고 외부에서 블럭의 내용을 볼 때는 외부ip를 사용합니다.&lt;/li&gt;
+    &lt;li&gt;공유기를 사용하는 경우-&amp;gt; 일부 공유기는 특정 포트를 막아놓는 경우가 있습니다. 포트포워딩으로 뚫어줍시다.&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;&quot;&gt;ssh키교환&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;다했는데 안된다 -&amp;gt; 끄고 자면됨 -&amp;gt; 행복&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;3-일단-실행&quot;&gt;3. 일단 실행&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;genesis block이 있는 컴퓨터를 com-1, 기타 validator가 있는 컴퓨터를 com-2로 하겠습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;com-1과 com-2에서 다운받은 yaml파일을 실행해봅시다. genesis block을 생성하는 com-1에서 먼저 실행하고 그다음 com-2의 yaml파일을 실행해봅시다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose -f sawtooth-default-poet.yaml up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;yaml파일에 미리 기록해두었던 이미지들이 실행될겁니다.&lt;/p&gt;
+
+&lt;p&gt;com-1에서 실행한 결과:&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2306%20connect%20multi%20validator%20in%20remote/img/1.png&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+yaml파일에 기술되어있던 이미지들이 handler에 의해 validator에 붙게되고 chain heead를 생성한 뒤, 블럭의 top을 쌓게 됩니다. 그리고 다른 peer나 트랜잭션이 올 때까지 대기하게 됩니다.&lt;/p&gt;
+
+&lt;p&gt;com-1의 ip:8008/blocks를 주소창에 쳐보면 블럭이 생성된 모습을 확인할 수 있습니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2306%20connect%20multi%20validator%20in%20remote/img/2.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;com-2에서 실행한 결과(비정상):&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2306%20connect%20multi%20validator%20in%20remote/img/3.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+이 뒤로 아무것도 뜨지 않는다면 제대로 연결되지 않았음을 의미합니다.&lt;br /&gt;
+원인은 3가지정도가 있는데,&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;연결하려는 validator의 ip가 정확하지 않다.&lt;/li&gt;
+  &lt;li&gt;연결하고자하는 컴퓨터의 포트나 내 컴퓨터의 포트가 제대로 열려있지 않다.&lt;/li&gt;
+  &lt;li&gt;연결하고자하는 validator의 준비가 되지 않았다.&lt;br /&gt;
+이 경우는 com-2를 먼저 실행하고 com-1을 나중에 실행하는 경우가 되겠네요.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;제대로 연결되지 않는다면 블럭이 제대로 생성되지 않아,&lt;br /&gt;
+com-2 ip:8008/blocks 을 주소에 쳤을 경우 이런 화면이 뜨게 됩니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2306%20connect%20multi%20validator%20in%20remote/img/4.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;com-2에서 실행한 결과(정상):&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2306%20connect%20multi%20validator%20in%20remote/img/5.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+위의 결과이후에 block을 building하기 시작합니다. 이러면 com-1과 연결이 성공했음을 알 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;com-1의 화면을 잠깐 보면&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2306%20connect%20multi%20validator%20in%20remote/img/6.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+같은 화면처럼 보이겠지만 두 사진은 서로 다른 네트워크에서 작업한 것입니다. 빨간 밑줄을 친 부분을 보면 block의 검증을 진행하고 검증이 완료되면 블럭을 업데이트하는 모습을 볼 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;그럼 이제 com-2 ip:8008/blocks 을 주소에 쳐보겠습니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2306%20connect%20multi%20validator%20in%20remote/img/7.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;br /&gt;
+블럭의 길이가 1 증가된 모습을 확인할 수 있습니다. com-1의 blocks도 확인해보면 똑같은 블럭을 갖고 있는 모습을 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-yaml파일-뜯어보기&quot;&gt;4. YAML파일 뜯어보기&lt;/h2&gt;
+
+&lt;h3 id=&quot;validator&quot;&gt;validator&lt;/h3&gt;
+&lt;p&gt;기본적으로 이전문서의 yaml구성과 비슷합니다. 하지만 정확한 ip를 명시해줘야 한다는 점을 잊으면 안됩니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  validator-0:                                       //com-1의 validator(genesis)
+    image: hyperledger/sawtooth-validator:1.0
+    container_name: sawtooth-validator-default-0
+    expose:
+      - 4004
+      - 8800
+    ports:
+      - &quot;8800:8800&quot;
+    command: &quot;bash -c \&quot;\
+        sawadm keygen --force &amp;amp;&amp;amp; \
+        sawset genesis \
+          -k /etc/sawtooth/keys/validator.priv \
+          -o config-genesis.batch &amp;amp;&amp;amp; \
+        sawset proposal create \
+          -k /etc/sawtooth/keys/validator.priv \
+          sawtooth.consensus.algorithm=poet \
+          sawtooth.poet.report_public_key_pem=\
+          \\\&quot;$$(cat /etc/sawtooth/simulator_rk_pub.pem)\\\&quot; \
+          sawtooth.poet.valid_enclave_measurements=$$(poet enclave measurement) \
+          sawtooth.poet.valid_enclave_basenames=$$(poet enclave basename) \
+          -o config.batch &amp;amp;&amp;amp; \
+        poet registration create -k /etc/sawtooth/keys/validator.priv -o poet.batch &amp;amp;&amp;amp; \
+        sawset proposal create \
+          -k /etc/sawtooth/keys/validator.priv \
+             sawtooth.poet.target_wait_time=5 \
+             sawtooth.poet.initial_wait_time=25 \
+             sawtooth.publisher.max_batches_per_block=100 \
+          -o poet-settings.batch &amp;amp;&amp;amp; \
+        sawadm genesis \
+          config-genesis.batch config.batch poet.batch poet-settings.batch &amp;amp;&amp;amp; \
+        sawtooth-validator -v \
+          --bind network:tcp://eth0:8800 \
+          --bind component:tcp://eth0:4004 \
+          --peering dynamic \
+          --endpoint tcp://--.--.--.--:8800         //com-1의 ip주소
+    \&quot;&quot;
+    environment:
+      PYTHONPATH: &quot;/project/sawtooth-core/consensus/poet/common:\
+        /project/sawtooth-core/consensus/poet/simulator:\
+        /project/sawtooth-core/consensus/poet/core&quot;
+    stop_signal: SIGKILL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  validator-1:                                        //com-2의 validator
+    image: hyperledger/sawtooth-validator:1.0
+    container_name: sawtooth-validator-default-1
+    expose:
+      - 4004
+      - 8800
+    ports:
+      - &quot;8800:8800&quot;
+    command: |
+      bash -c &quot;
+        sawadm keygen --force &amp;amp;&amp;amp; \
+        sawtooth-validator -v \
+            --bind network:tcp://eth0:8800 \
+            --bind component:tcp://eth0:4004 \
+            --peering dynamic \
+            --endpoint tcp://--.--.--.--:8800 \      //com-2의 ip주소
+            --seeds tcp://--.--.--.--:8800 \        //com-1의 ip주소
+            --scheduler serial \
+            --network trust
+      &quot;
+    environment:
+      PYTHONPATH: &quot;/project/sawtooth-core/consensus/poet/common:\
+        /project/sawtooth-core/consensus/poet/simulator:\
+        /project/sawtooth-core/consensus/poet/core&quot;
+    stop_signal: SIGKILL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;얘네 외에는 똑같음. endpoint에 주의!&lt;/p&gt;
+
+&lt;h2 id=&quot;5-마치며&quot;&gt;5. 마치며&lt;/h2&gt;
+
+&lt;p&gt;validator를 서로다른 네트워크 안에서 이어보는 작업을 하였고, 다음 문서에서는 커스텀이미지(processor)를 구축한 뒤, 실제로 validator에 붙여보는 작업을 할 것!&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</summary></entry><entry><title type="html">05.Connect multi validator in local server</title><link href="http://localhost:4000/sawtooth-starter/sawtooth-starter05/" rel="alternate" type="text/html" title="05.Connect multi validator in local server" /><published>2018-07-05T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/sawtooth-starter/sawtooth-starter05</id><content type="html" xml:base="http://localhost:4000/sawtooth-starter/sawtooth-starter05/">&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-overview&quot;&gt;1. Overview&lt;/h2&gt;
+&lt;p&gt;이번 문서에서는 여태까지 단일 validator에서 진행하던 sawtooth network를 키워서 멀-티 validator를 만들어보도록 하겠습니다! 로컬환경에서 진행하겠습니다. 다른 네트워크상에서 이어보는건 다음문서에서!&lt;/p&gt;
+
+&lt;h2 id=&quot;2-prerequisites&quot;&gt;2. Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;공식 doc에서는 validator를 4개를 사용하여 연결되는 것을 보여주고있습니다.&lt;br /&gt;
+–&amp;gt; &lt;a href=&quot;https://sawtooth.hyperledger.org/docs/core/nightly/master/app_developers_guide/sawtooth-default-poet.yaml&quot;&gt;참고링크&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;이 문서에서는 보다 간편하게 설명하기 위해서 validator 2개만 가지고 설명할것임.&lt;br /&gt;
+우선 &lt;a href=&quot;https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%235/sawtooth-default-poet.yaml&quot;&gt;요걸&lt;/a&gt; 다운로드 받아주세요&lt;/p&gt;
+
+&lt;h2 id=&quot;3-일단-실행&quot;&gt;3. 일단 실행&lt;/h2&gt;
+
+&lt;p&gt;다운로드받은 yaml파일이 있는 폴더로 이동해서 shell(이하 shell-1)에서 다음 커맨드를 쳐봅시다&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose -f sawtooth-default-poet.yaml up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;yaml파일에 미리 기록해두었던 이미지들이 실행될겁니다. 정상적으로 실행된다면 다음과같은 화면이 보일거에요.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2305%20connect%20multi%20validator%20in%20local/img/1.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;연결확인&quot;&gt;연결확인&lt;/h3&gt;
+
+&lt;p&gt;지금 켜져있는 shell-1을 끄지말고(로그 확인용) 하나 더켜서(이하 shell-2) bash를 실행&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker exec -it sawtooth-shell-default bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt;커맨드로 peer가 제대로 연결되었는지 확인해봅시다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl http://sawtooth-rest-api-default-0:8008/peers
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;data에 validator-1이 존재하는 것을 확인할 수 있습니다.&lt;br /&gt;
+이는 validator-0(제네시스 블럭)과 validator-1이 연결되어 있다는 의미입니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2305%20connect%20multi%20validator%20in%20local/img/2.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;xo게임-실행&quot;&gt;xo게임 실행&lt;/h3&gt;
+
+&lt;p&gt;두개의 validator 실행에 성공하였다면 xo게임생성을 통해 블럭이 쌓이는 모습을 확인해보겠습니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;이전 문서를 참고해서 키 만들고 xo게임생성 ㄱㄱ
+xo create example --username a --url http://rest-api-0:8008
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;이전 문서에서는 단순히 rest-api:8008만 했지만 yaml 파일을 생성할때 validator0번의 rest-api가 rest-api-0으로 명명되었으므로 이렇게 작성해 주어야함&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;실행하게되면 shell-2에는 Response가 오게될 것
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2305%20connect%20multi%20validator%20in%20local/img/3.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;이전에 띄워놓았던 shell-1을 확인해보면 validator 1개를 쓸 때보다 많은양의 로그가 기록되어있는것을 확인할 수 있음. 두개의 validator 모두 검증작업을 진행하기 때문이다.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;로그의 내용은 따로 설명하지 않을 것. 읽으면 자연스레 알게되는 내용★&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;두개의 validator 모두 게임이 정상적으로 생성된 것을 확인할 수 있음!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2305%20connect%20multi%20validator%20in%20local/img/4.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;4-yaml파일-뜯어보기&quot;&gt;4. YAML파일 뜯어보기&lt;/h2&gt;
+
+&lt;h3 id=&quot;validator&quot;&gt;validator&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  validator-0:                                      //제네시스 블럭
+    image: hyperledger/sawtooth-validator:1.0       //이미지 이름
+    container_name: sawtooth-validator-default-0    //컨테이너 이름
+    expose:                                         //사용할 포트
+      - 4004
+      - 8800
+    command: &quot;bash -c \&quot;\                           //제네시스블럭을 생성
+        sawadm keygen --force &amp;amp;&amp;amp; \
+        sawset genesis \
+          -k /etc/sawtooth/keys/validator.priv \
+          -o config-genesis.batch &amp;amp;&amp;amp; \
+        sawset proposal create \
+          -k /etc/sawtooth/keys/validator.priv \
+          sawtooth.consensus.algorithm=poet \
+          sawtooth.poet.report_public_key_pem=\
+          \\\&quot;$$(cat /etc/sawtooth/simulator_rk_pub.pem)\\\&quot; \
+          sawtooth.poet.valid_enclave_measurements=$$(poet enclave measurement) \
+          sawtooth.poet.valid_enclave_basenames=$$(poet enclave basename) \
+          -o config.batch &amp;amp;&amp;amp; \
+        poet registration create -k /etc/sawtooth/keys/validator.priv -o poet.batch &amp;amp;&amp;amp; \
+        sawset proposal create \
+          -k /etc/sawtooth/keys/validator.priv \
+             sawtooth.poet.target_wait_time=5 \
+             sawtooth.poet.initial_wait_time=25 \
+             sawtooth.publisher.max_batches_per_block=100 \
+          -o poet-settings.batch &amp;amp;&amp;amp; \
+        sawadm genesis \
+          config-genesis.batch config.batch poet.batch poet-settings.batch &amp;amp;&amp;amp; \
+        sawtooth-validator -v \                    //validator 설정
+          --bind network:tcp://eth0:8800 \         //bind : 포트를 고정시킴
+          --bind component:tcp://eth0:4004 \
+          --peering dynamic \                      //동적으로 peer를 붙임
+          --endpoint tcp://validator-0:8800 \      //작업이 실제로 수행되는 지점
+          --scheduler serial \                     //스케줄링은 serial하게(병렬도 있음)
+          --network trust                          //신뢰하는 네트워크만
+    \&quot;&quot;
+    environment:                                   //환경변수
+      PYTHONPATH: &quot;/project/sawtooth-core/consensus/poet/common:\
+        /project/sawtooth-core/consensus/poet/simulator:\
+        /project/sawtooth-core/consensus/poet/core&quot;
+    stop_signal: SIGKILL                          //종료는 ctrl+c
+
+  validator-1:                                    //제네시스 블럭에 붙을 1번노드   
+    image: hyperledger/sawtooth-validator:1.0 
+    container_name: sawtooth-validator-default-1
+    expose:
+      - 4004
+      - 8800
+    command: |                                    //제네시스 블럭과 달리 블럭을  
+      bash -c &quot;                                   //생성할 필요가 없음!!!
+        sawadm keygen --force &amp;amp;&amp;amp; \
+        sawtooth-validator -v \
+            --bind network:tcp://eth0:8800 \
+            --bind component:tcp://eth0:4004 \
+            --peering dynamic \
+            --endpoint tcp://validator-1:8800 \
+            --seeds tcp://validator-0:8800 \      //붙을 노드의 ip(로컬에서는 이름)
+            --scheduler serial \
+            --network trust
+      &quot;
+    environment:
+      PYTHONPATH: &quot;/project/sawtooth-core/consensus/poet/common:\
+        /project/sawtooth-core/consensus/poet/simulator:\
+        /project/sawtooth-core/consensus/poet/core&quot;
+    stop_signal: SIGKILL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;rest-api외-다른-이미지들&quot;&gt;rest-api외 다른 이미지들&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  rest-api-0:                                      //validator에 붙일 이미지의 이름
+    image: hyperledger/sawtooth-rest-api:1.0
+    container_name: sawtooth-rest-api-default-0
+    expose:
+      - 4004
+      - 8008
+    command: |
+      bash -c &quot;
+        sawtooth-rest-api \
+          --connect tcp://validator-0:4004 \      //반드시 해당 블럭의 validator에 connect
+          --bind rest-api-0:8008&quot;
+    stop_signal: SIGKILL
+
+  rest-api-1:
+    image: hyperledger/sawtooth-rest-api:1.0
+    container_name: sawtooth-rest-api-default-1
+    expose:
+      - 4004
+      - 8008
+    command: |
+      bash -c &quot;
+        sawtooth-rest-api \
+          --connect tcp://validator-1:4004 \
+          --bind rest-api-1:8008&quot;
+    stop_signal: SIGKILL
+    
+    ...
+
+  xo-tp-0:
+    image: hyperledger/sawtooth-xo-tp-python:1.0
+    container_name: sawtooth-xo-tp-python-default-0
+    expose:
+      - 4004
+    command: xo-tp-python -vv -C tcp://validator-0:4004
+    stop_signal: SIGKILL
+
+  xo-tp-1:
+    image: hyperledger/sawtooth-xo-tp-python:1.0
+    container_name: sawtooth-xo-tp-python-default-1
+    expose:
+      - 4004
+    command: xo-tp-python -vv -C tcp://validator-1:4004
+    stop_signal: SIGKILL
+   
+    //나머지 이미지들도 비슷
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;5-마치며&quot;&gt;5. 마치며&lt;/h2&gt;
+
+&lt;p&gt;여러개의 validator를 로컬 서버안에서 다뤄보는 작업을 하였고, 다음 문서에서는 서로 다른 네트워크상에서 validator를 이어보는 작업을 해볼것&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</summary></entry><entry><title type="html">04.Transaction Processor Tutorial Java 2</title><link href="http://localhost:4000/sawtooth-starter/sawtooth-starter04/" rel="alternate" type="text/html" title="04.Transaction Processor Tutorial Java 2" /><published>2018-07-04T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/sawtooth-starter/sawtooth-starter04</id><content type="html" xml:base="http://localhost:4000/sawtooth-starter/sawtooth-starter04/">&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-overview&quot;&gt;1. Overview&lt;/h2&gt;
+&lt;p&gt;이번 문서에서는 이전 문서에서 실행해보았던 Java 코드의 핵심 모듈을 뜯어보겠습니다. ^ㅇ^!&lt;/p&gt;
+
+&lt;h2 id=&quot;2-prerequisites&quot;&gt;2. Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%233/XO%20Transaction%20Family.md&quot;&gt;이전문서&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;3-소스코드-뜯&quot;&gt;3. 소스코드 뜯&lt;/h2&gt;
+
+&lt;h3 id=&quot;xotransactionprocessorjava&quot;&gt;XoTransactionProcessor.java&lt;/h3&gt;
+
+&lt;p&gt;프로그램의 시작점입니다.&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;XoTransactionProcessor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;cm&quot;&gt;/**
+   * TransactionProcessor가 들어있는 Thread를 실행
+   */&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;cm&quot;&gt;/*
+    * args[0]에 들어가야할 것 
+    * tcp://validator의ip또는 docker의 ip:4004
+    */&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;TransactionProcessor&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactionProcessor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TransactionProcessor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;transactionProcessor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addHandler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;XoHandler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thread&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionProcessor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;TransactionProcessor&lt;/code&gt;에서는 validator의 ip나 docker의 ip를 받아 포트 4004로 sawtooth와 연결.&lt;br /&gt;
+핸들러로 XoHandler를 추가, 그다음 thread로 실행시킵니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;xohandlerjava&quot;&gt;XoHandler.java&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;TransactionHandler&lt;/code&gt;를 implements하여 API를 오버라이드하여 다양한 메소드를 활용할 수 있습니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;XoHandler&lt;/span&gt;
+ &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;XoHandler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;xoNameSpace&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Utils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hash512&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;transactionFamilyName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBytes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;UTF-8&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;substring&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UnsupportedEncodingException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;usee&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;usee&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;xoNameSpace&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;transactionFamilyName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;cm&quot;&gt;/*transaction의 family name을 리턴*/&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;xo&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getVersion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;cm&quot;&gt;/*현재 버전 리턴*/&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;1.0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getNameSpaces&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;namespaces&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;namespaces&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;xoNameSpace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;namespaces&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;사용할 TransactionData와 GameData를 구성&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TransactionData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;space&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;TransactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;space&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gameName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;space&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;space&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GameData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;board&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playerOne&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playerTwo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;GameData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;board&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playerOne&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playerTwo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gameName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;board&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;board&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;playerOne&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playerOne&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;playerTwo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playerTwo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;메소드&lt;/span&gt;
+  &lt;span class=&quot;cm&quot;&gt;/*
+  * apply메소드는 두개의 argument를 받습니다.
+  * transactionRequest : 실행된 커맨드를 받습니다. (예: take space, create game)
+  * stateStore : 게임의 현재상태를 저장한 상태정보
+  * */&lt;/span&gt;
+  &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TpProcessRequest&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactionRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;State&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stateStore&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InvalidTransactionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InternalError&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;//리퀘스트 데이터를 unpack해서 transactionData에 저장&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;TransactionData&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getUnpackedTransaction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// transaction의 서명자는 플레이어&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;player&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;TransactionHeader&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;header&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactionRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getHeader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;player&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSignerPublicKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;cm&quot;&gt;/*이 밑으로는 처음 트랜잭션을 받았을 때 처리해야할 exception들을 정의해둠*/&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//게임이름이 빠진경우&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;InvalidTransactionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Name is required&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;|&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//게임이름의 특수경우&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;InvalidTransactionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Game name cannot contain '|'&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//액션이빠짐&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;InvalidTransactionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Action is required&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;take&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//take 커맨드 사용&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;space&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;space&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//마킹할 장소(space)&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;space&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;space&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//마킹할 장소는 1~9사이여야함&lt;/span&gt;
+          &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;InvalidTransactionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+              &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Invalid space: %s&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;space&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NumberFormatException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;InvalidTransactionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Space could not be converted to an integer.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;cm&quot;&gt;/*커맨드가 take와 create가 아닌 경우*/&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;take&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;create&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;InvalidTransactionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Invalid action: %s&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;makeGameAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// stateStore.get() returns a list.&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// If no data has been stored yet at the given address, it will be empty.&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 현재상태의 주소값을 가져옴. singletonList: 생성후 변경불가능한객체&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stateEntry&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stateStore&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Collections&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;singletonList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//만든 게임의 상태&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//그 상태의 주소&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toStringUtf8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    
+    &lt;span class=&quot;c1&quot;&gt;//현재 게임의 상태를 stateData에 저장&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;GameData&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stateData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getStateData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stateEntry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;gameName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    
+    &lt;span class=&quot;c1&quot;&gt;//상태데이터와 커맨드데이터, 누가(주체)플레이중인지 로 업데이트된 게임데이터&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;GameData&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;updatedGameData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playXo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactionData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stateData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;player&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    
+    &lt;span class=&quot;c1&quot;&gt;//저-장 (게임의주소, 업데이트된 게임데이터, 현재게임상태 주소, 현재게임상태)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;storeGameData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;updatedGameData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stateEntry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stateStore&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;나머지 메소드는 생략&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</summary></entry><entry><title type="html">03.Transaction Processor Tutorial Java 1</title><link href="http://localhost:4000/sawtooth-starter/sawtooth-starter03/" rel="alternate" type="text/html" title="03.Transaction Processor Tutorial Java 1" /><published>2018-07-03T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/sawtooth-starter/sawtooth-starter03</id><content type="html" xml:base="http://localhost:4000/sawtooth-starter/sawtooth-starter03/">&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-overview&quot;&gt;1. Overview&lt;/h2&gt;
+&lt;p&gt;이전 문서에서는 xo게임을 powershell환경에서 실행해보는것을 해봤습니다. 이번 문서에서는 Sawtooth SDK에 기반하여 Java언어로 구성된 Sawtooth transaction family를 다뤄보겠습니다. 소스코드에 관한 자세한 설명은 다음문서에서 계속!&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;첨부된 sdk폴더에는 xo게임의 완전히 구현된 버전이 포함되어있습니다. 이번 문서와 다음문서에서는 완전한 구현을 만드는 대신 만들어진 소스코드의 개념을 설명하는 것에 초점을 맞췄습니다. SDK는 여러 언어로 구성되어있으므로 &lt;a href=&quot;https://github.com/hyperledger/sawtooth-core/tree/master/sdk&quot;&gt;여기&lt;/a&gt; 를 참조해주세요.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;2-prerequisites&quot;&gt;2. Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%232/XO%20Transaction%20Family.md&quot;&gt;이전문서&lt;/a&gt;에서 xo게임을 실행까지 성공하고 따라해주세요.&lt;/p&gt;
+
+&lt;h3 id=&quot;download-java-sdk&quot;&gt;Download Java sdk&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Intellij에서 프로젝트를 만들었습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;첨부된 sawtooth폴더와 protos폴더, &lt;code class=&quot;highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt;를 다운로드&lt;br /&gt;
+첨부된 파일들은 &lt;a href=&quot;https://github.com/GRuuuuu/sawtooth-starter/tree/master/sawtooth/%2303%20transaction%20processor%20tutorial&quot;&gt;이곳&lt;/a&gt;을 참고&lt;/p&gt;
+
+&lt;p&gt;Java project를 생성한 뒤, sawtooth폴더는 src밑으로, protos와 pom.xml은 각각 알아서 추가해줍시다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/1.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;프로젝트 구성을 마치고나서 build하게되면 pom.xml에 적힌 dependancy가 외부라이브러리로 다운받아지게되고 소스코드의 빨간줄이 사라지게 됩니다. (야-호!)&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;이 구성을 제대로 설명해둔데가 없어서 매우 고생함^^&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;address-setting&quot;&gt;Address Setting&lt;/h3&gt;
+
+&lt;p&gt;자바 프로그램을 빌드하기 전, main파라미터의 값으로 sawtooth가 돌아가고있는 도커의 ip와 포트를 적어줘야 합니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;TransactionProcessor&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactionProcessor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TransactionProcessor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;tcp://validator의ip(도커의ip):4004&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;만약 로컬에서 돌리고있다면 이렇게 적어주면 됩니다.&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;TransactionProcessor&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transactionProcessor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TransactionProcessor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;tcp://localhost:4004&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;3-run&quot;&gt;3. Run&lt;/h2&gt;
+
+&lt;h3 id=&quot;run-program&quot;&gt;Run program&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth-shell-default bash&lt;/code&gt;가 실행되고 있는 상태부터 시작&lt;br /&gt;
+구성을 끝낸 뒤의 자바 프로그램을 실행해봅시다.&lt;br /&gt;
+현재는 아무런 트랜잭션이 오고가고 있지 않으므로 빈 화면입니다.
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/2.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;두명의 플레이어의 key를 구성해준뒤, 게임판을 만들어봅시다.
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/3.PNG&quot; alt=&quot;Alt text&quot; /&gt;
+자바 프로그램에 game을 만들었다는 화면이 디스플레이 됩니다.&lt;/p&gt;
+
+&lt;p&gt;다음 첫번째 플레이어부터 마킹을 시작해봅시다.
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/4.PNG&quot; alt=&quot;Alt text&quot; /&gt;
+java프로그램에서 트랜잭션의 결과를 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;트랜잭션이 실패하였을 때 exception처리도 이곳에서 확인할 수 있습니다.
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/5.PNG&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img width=&quot;100&quot; height=&quot;100&quot; src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2303%20transaction%20processor%20tutorial/img/p.png&quot; /&gt;&lt;/p&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</summary></entry><entry><title type="html">02.XO Transaction Family</title><link href="http://localhost:4000/sawtooth-starter/sawtooth-starter02/" rel="alternate" type="text/html" title="02.XO Transaction Family" /><published>2018-07-02T00:00:00+09:00</published><updated>2019-03-22T13:00:00+09:00</updated><id>http://localhost:4000/sawtooth-starter/sawtooth-starter02</id><content type="html" xml:base="http://localhost:4000/sawtooth-starter/sawtooth-starter02/">&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1-xo게임&quot;&gt;1. XO게임?&lt;/h2&gt;
+&lt;p&gt;XO는 Sawtooth SDK에 포함되어있는 transaction family 예제임. 쉽게 틱택토라고 생각하면 됨. 2인용 게임이며 보통 3x3크기의 테이블에 한명씩 돌아가면서 마킹을 하게 되고 1줄을 먼저 잇는사람이 우승하는 게임&lt;br /&gt;
+틱택토에 대해 더 자세한 설명은 &lt;a href=&quot;https://namu.wiki/w/%ED%8B%B1%ED%83%9D%ED%86%A0&quot;&gt;여기&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2-playing-xo-with-the-xo-client&quot;&gt;2. Playing XO with the XO Client&lt;/h2&gt;
+
+&lt;h3 id=&quot;xo게임을-시작하기-전에-필요한것들&quot;&gt;XO게임을 시작하기 전에 필요한것들&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;최소 하나의 validator&lt;/li&gt;
+  &lt;li&gt;XO family transaction processor&lt;/li&gt;
+  &lt;li&gt;The REST API&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;먼저 sawtooth를 실행해줍니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;% docker-compose -f sawtooth-default.yaml up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음 &lt;code class=&quot;highlighter-rouge&quot;&gt;sawtooth-shell-default bash&lt;/code&gt;를 실행해줍니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;% docker exec -it sawtooth-shell-default bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;create-players&quot;&gt;Create Players&lt;/h3&gt;
+
+&lt;p&gt;게임에 참여할 두명의 플레이어의 키를 생성합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sawtooth keygen jack
+$ sawtooth keygen jill
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/1.png&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;create-a-game&quot;&gt;Create a Game&lt;/h3&gt;
+
+&lt;p&gt;다음으로는 게임을 진행할 게임판을 생성해야합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ xo create {Game name} --username jack --url http://rest-api:8008 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;username의 파라미터값으로 온 jack은 Player1이 됩니다.&lt;/p&gt;
+
+&lt;p&gt;다음 이미지와 같이 Response가 온다면 제대로 게임이 생성된 것입니다.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/3.png&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;간혹 &lt;code class=&quot;highlighter-rouge&quot;&gt;--url&lt;/code&gt;을 적지 않으면&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Error: Failed to connect to http://127.0.0.1:8008/batches: HTTPConnectionPool(host='127.0.0.1', port=8008): Max retries exceeded with url: /batches (Caused by NewConnectionError('&amp;lt;requests.packages.urllib3.connection.HTTPConnection object at 0x7f78baf33cc0&amp;gt;: Failed to establish a new connection: [Errno 111] Connection refused',))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;p&gt;이런 오류가 생기는데 url을 적어주면 문제가 해결됩니다.&lt;/p&gt;
+
+  &lt;p&gt;XO클라이언트는 부분적으로 인증을 지원합니다. 그래서 REST API가 인증프록시에 연결되어있다면 xo커맨드를 사용할때 &lt;code class=&quot;highlighter-rouge&quot;&gt;--url&lt;/code&gt;인자를 추가해주어야합니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;생성한 게임의 리스트를 확인하기 위해서는 다음 커맨드를 사용합니다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ xo list --url http://rest-api:8008 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/4.png&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;현재 생성한 게임인 &lt;code class=&quot;highlighter-rouge&quot;&gt;example&lt;/code&gt;을 확인하기 위해서는 다음 커맨드를 사용합니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ xo show {Game name} --url http://rest-api:8008 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/5.png&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;현재 게임의 상태 : Player1(Jack)의 차례&lt;br /&gt;
+게임판에 아무런 마킹이 없는 것을 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;playing&quot;&gt;Playing&lt;/h3&gt;
+
+&lt;p&gt;Player1과 Player2가 차례로 마킹해보도록 하겠습니다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ xo take game 5 --username jack --url http://rest-api:8008
+$ xo take game 1 --username jill --url http://rest-api:8008
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/6.png&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ xo show {Game name} --url http://rest-api:8008 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/7.png&quot; alt=&quot;Alt text&quot; /&gt;
+5번자리와 1번자리에 마킹된 모습을 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;unexpected-event&quot;&gt;Unexpected Event&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;자신의 차례가 아닌데 마킹하려는 경우&lt;br /&gt;
+Player1의 차례에 Player2가 마킹을 시도
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/8.png&quot; alt=&quot;Alt text&quot; /&gt;
+요청이 반영되지 않는것을 확인할 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;이미 마킹되어 있는곳에 마킹을 시도&lt;br /&gt;
+위와 마찬가지로 요청이 반영되지 않는다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;game-end&quot;&gt;Game End&lt;/h3&gt;
+
+&lt;p&gt;게임이 종료되는 경우는 두가지로&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;한 명의 플레이어가 한 줄을 이었을 경우&lt;/li&gt;
+  &lt;li&gt;모든 칸이 마킹되어 더이상 마킹할 칸이 남아있지 않을 경우&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Plyaer1이 이긴 경우(P1-WIN)
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/9.png&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;더이상 마킹할 칸이 남아있지 않은 경우(TIE)&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/10.png&quot; height=&quot;200px&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img width=&quot;100&quot; height=&quot;100&quot; src=&quot;https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/p.png&quot; /&gt;&lt;/p&gt;</content><author><name>GRU</name><email>sygy0509@naver.com</email></author><summary type="html">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</summary></entry></feed>

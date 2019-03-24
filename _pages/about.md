@@ -12,5 +12,19 @@ layouts_gallery:
 #    image_path: /assets/images/mm-layout-archive.png
  #   alt: "archive layout example"
 last_modified_at: 2019-01-23T20:23:03-05:00
-toc: true
 ---
+
+----
+![p2_png](https://user-images.githubusercontent.com/15958325/54878211-cd575d00-4e6c-11e9-94d2-b58ae9476aef.png)
+
+## Profile
+공부한 것들, 이것저것 올리는 블로그입니다.  
+
+## TimeLine
+1996 05 09 출생  
+2012 03 01 백석고등학교 입학  
+2015 03 01 동국대학교 컴퓨터공학과 입학  
+2019 02 18 대학교 졸업  
+2019 03 01 IBM Korea 입사 (Systems H/W Lab SVC)  
+
+

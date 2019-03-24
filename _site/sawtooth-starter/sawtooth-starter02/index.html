@@ -1,0 +1,640 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>02.XO Transaction Family - 호롤리한 하루</title>
+<meta name="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="호롤리한 하루">
+<meta property="og:title" content="02.XO Transaction Family">
+<meta property="og:url" content="http://localhost:4000/sawtooth-starter/sawtooth-starter02/">
+
+
+  <meta property="og:description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-07-02T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2019-03-22T13:00:00+09:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/sawtooth-starter/sawtooth-starter02/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "GRU",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="호롤리한 하루 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">호롤리한 하루</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/" >About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Tech-Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/Something/" >Something</a>
+            </li><li class="masthead__menu-item">
+              <a href="/sitemap/" >Sitemap</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/p.png" alt="GRU" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">GRU</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        호롤리
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:sygy0509@naver.com">
+            <meta itemprop="email" content="sygy0509@naver.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="02.XO Transaction Family">
+    <meta itemprop="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+    <meta itemprop="datePublished" content="July 02, 2018">
+    <meta itemprop="dateModified" content="March 22, 2019">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">02.XO Transaction Family
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p><code class="highlighter-rouge">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</code></p>
+
+<h2 id="1-xo게임">1. XO게임?</h2>
+<p>XO는 Sawtooth SDK에 포함되어있는 transaction family 예제임. 쉽게 틱택토라고 생각하면 됨. 2인용 게임이며 보통 3x3크기의 테이블에 한명씩 돌아가면서 마킹을 하게 되고 1줄을 먼저 잇는사람이 우승하는 게임<br />
+틱택토에 대해 더 자세한 설명은 <a href="https://namu.wiki/w/%ED%8B%B1%ED%83%9D%ED%86%A0">여기</a></p>
+
+<h2 id="2-playing-xo-with-the-xo-client">2. Playing XO with the XO Client</h2>
+
+<h3 id="xo게임을-시작하기-전에-필요한것들">XO게임을 시작하기 전에 필요한것들</h3>
+<ol>
+  <li>최소 하나의 validator</li>
+  <li>XO family transaction processor</li>
+  <li>The REST API</li>
+</ol>
+
+<p>먼저 sawtooth를 실행해줍니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% docker-compose -f sawtooth-default.yaml up
+</code></pre></div></div>
+
+<p>다음 <code class="highlighter-rouge">sawtooth-shell-default bash</code>를 실행해줍니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% docker exec -it sawtooth-shell-default bash
+</code></pre></div></div>
+
+<h3 id="create-players">Create Players</h3>
+
+<p>게임에 참여할 두명의 플레이어의 키를 생성합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sawtooth keygen jack
+$ sawtooth keygen jill
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/1.png" alt="Alt text" /></p>
+
+<h3 id="create-a-game">Create a Game</h3>
+
+<p>다음으로는 게임을 진행할 게임판을 생성해야합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ xo create {Game name} --username jack --url http://rest-api:8008 
+</code></pre></div></div>
+<p>username의 파라미터값으로 온 jack은 Player1이 됩니다.</p>
+
+<p>다음 이미지와 같이 Response가 온다면 제대로 게임이 생성된 것입니다.<br />
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/3.png" alt="Alt text" /></p>
+
+<blockquote>
+  <p>간혹 <code class="highlighter-rouge">--url</code>을 적지 않으면</p>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: Failed to connect to http://127.0.0.1:8008/batches: HTTPConnectionPool(host='127.0.0.1', port=8008): Max retries exceeded with url: /batches (Caused by NewConnectionError('&lt;requests.packages.urllib3.connection.HTTPConnection object at 0x7f78baf33cc0&gt;: Failed to establish a new connection: [Errno 111] Connection refused',))
+</code></pre></div>  </div>
+  <p>이런 오류가 생기는데 url을 적어주면 문제가 해결됩니다.</p>
+
+  <p>XO클라이언트는 부분적으로 인증을 지원합니다. 그래서 REST API가 인증프록시에 연결되어있다면 xo커맨드를 사용할때 <code class="highlighter-rouge">--url</code>인자를 추가해주어야합니다.</p>
+</blockquote>
+
+<p>생성한 게임의 리스트를 확인하기 위해서는 다음 커맨드를 사용합니다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ xo list --url http://rest-api:8008 
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/4.png" alt="Alt text" /></p>
+
+<p>현재 생성한 게임인 <code class="highlighter-rouge">example</code>을 확인하기 위해서는 다음 커맨드를 사용합니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ xo show {Game name} --url http://rest-api:8008 
+</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/5.png" alt="Alt text" /></p>
+
+<p>현재 게임의 상태 : Player1(Jack)의 차례<br />
+게임판에 아무런 마킹이 없는 것을 확인할 수 있습니다.</p>
+
+<h3 id="playing">Playing</h3>
+
+<p>Player1과 Player2가 차례로 마킹해보도록 하겠습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ xo take game 5 --username jack --url http://rest-api:8008
+$ xo take game 1 --username jill --url http://rest-api:8008
+</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/6.png" alt="Alt text" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ xo show {Game name} --url http://rest-api:8008 
+</code></pre></div></div>
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/7.png" alt="Alt text" />
+5번자리와 1번자리에 마킹된 모습을 확인할 수 있습니다.</p>
+
+<h3 id="unexpected-event">Unexpected Event</h3>
+
+<ul>
+  <li>
+    <p>자신의 차례가 아닌데 마킹하려는 경우<br />
+Player1의 차례에 Player2가 마킹을 시도
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/8.png" alt="Alt text" />
+요청이 반영되지 않는것을 확인할 수 있다.</p>
+  </li>
+  <li>
+    <p>이미 마킹되어 있는곳에 마킹을 시도<br />
+위와 마찬가지로 요청이 반영되지 않는다.</p>
+  </li>
+</ul>
+
+<h3 id="game-end">Game End</h3>
+
+<p>게임이 종료되는 경우는 두가지로</p>
+<ol>
+  <li>한 명의 플레이어가 한 줄을 이었을 경우</li>
+  <li>모든 칸이 마킹되어 더이상 마킹할 칸이 남아있지 않을 경우</li>
+</ol>
+
+<p>Plyaer1이 이긴 경우(P1-WIN)
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/9.png" alt="Alt text" /></p>
+
+<p>더이상 마킹할 칸이 남아있지 않은 경우(TIE)<br />
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/10.png" height="200px" /></p>
+
+<hr />
+
+<p><img width="100" height="100" src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2302%20xo%20transaction%20family/img/p.png" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#sawtooth-starter" class="page__taxonomy-item" rel="tag">Sawtooth-Starter</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2019-03-22">March 22, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=02.XO+Transaction+Family%20http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter02%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter02%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter02%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/sawtooth-starter/sawtooth-starter01/" class="pagination--pager" title="01.hyperledger sawtooth를 docker for window에서 돌릴수있게 해보자!
+">이전</a>
+    
+    
+      <a href="/sawtooth-starter/sawtooth-starter03/" class="pagination--pager" title="03.Transaction Processor Tutorial Java 1
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/simple-tutorial/iot-tutorial/" rel="permalink">Simple IoT accelerometer game Tutorial
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio
+1. Overview
+디바이스의 센서데이터를 clou...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter10/" rel="permalink">10.Using Grafana &amp; InfluxDB in Sawtooth
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter09/" rel="permalink">09.Building and Submitting Transactions with js
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter08/" rel="permalink">08.Configuring Permission
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 GRU. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+  
+
+
+
+  </body>
+</html>

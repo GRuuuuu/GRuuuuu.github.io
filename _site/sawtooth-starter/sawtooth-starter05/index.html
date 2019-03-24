@@ -1,0 +1,714 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>05.Connect multi validator in local server - 호롤리한 하루</title>
+<meta name="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="호롤리한 하루">
+<meta property="og:title" content="05.Connect multi validator in local server">
+<meta property="og:url" content="http://localhost:4000/sawtooth-starter/sawtooth-starter05/">
+
+
+  <meta property="og:description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-07-05T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2019-03-22T13:00:00+09:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/sawtooth-starter/sawtooth-starter05/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "GRU",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="호롤리한 하루 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">호롤리한 하루</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/" >About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Tech-Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/Something/" >Something</a>
+            </li><li class="masthead__menu-item">
+              <a href="/sitemap/" >Sitemap</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/p.png" alt="GRU" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">GRU</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        호롤리
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:sygy0509@naver.com">
+            <meta itemprop="email" content="sygy0509@naver.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="05.Connect multi validator in local server">
+    <meta itemprop="description" content="이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임">
+    <meta itemprop="datePublished" content="July 05, 2018">
+    <meta itemprop="dateModified" content="March 22, 2019">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">05.Connect multi validator in local server
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p><code class="highlighter-rouge">이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임</code></p>
+
+<h2 id="1-overview">1. Overview</h2>
+<p>이번 문서에서는 여태까지 단일 validator에서 진행하던 sawtooth network를 키워서 멀-티 validator를 만들어보도록 하겠습니다! 로컬환경에서 진행하겠습니다. 다른 네트워크상에서 이어보는건 다음문서에서!</p>
+
+<h2 id="2-prerequisites">2. Prerequisites</h2>
+
+<p>공식 doc에서는 validator를 4개를 사용하여 연결되는 것을 보여주고있습니다.<br />
+–&gt; <a href="https://sawtooth.hyperledger.org/docs/core/nightly/master/app_developers_guide/sawtooth-default-poet.yaml">참고링크</a></p>
+
+<p>이 문서에서는 보다 간편하게 설명하기 위해서 validator 2개만 가지고 설명할것임.<br />
+우선 <a href="https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%235/sawtooth-default-poet.yaml">요걸</a> 다운로드 받아주세요</p>
+
+<h2 id="3-일단-실행">3. 일단 실행</h2>
+
+<p>다운로드받은 yaml파일이 있는 폴더로 이동해서 shell(이하 shell-1)에서 다음 커맨드를 쳐봅시다</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose -f sawtooth-default-poet.yaml up
+</code></pre></div></div>
+<p>yaml파일에 미리 기록해두었던 이미지들이 실행될겁니다. 정상적으로 실행된다면 다음과같은 화면이 보일거에요.</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2305%20connect%20multi%20validator%20in%20local/img/1.PNG" alt="Alt text" /></p>
+
+<h3 id="연결확인">연결확인</h3>
+
+<p>지금 켜져있는 shell-1을 끄지말고(로그 확인용) 하나 더켜서(이하 shell-2) bash를 실행</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it sawtooth-shell-default bash
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">curl</code>커맨드로 peer가 제대로 연결되었는지 확인해봅시다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://sawtooth-rest-api-default-0:8008/peers
+</code></pre></div></div>
+
+<p>data에 validator-1이 존재하는 것을 확인할 수 있습니다.<br />
+이는 validator-0(제네시스 블럭)과 validator-1이 연결되어 있다는 의미입니다.</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2305%20connect%20multi%20validator%20in%20local/img/2.PNG" alt="Alt text" /></p>
+
+<h3 id="xo게임-실행">xo게임 실행</h3>
+
+<p>두개의 validator 실행에 성공하였다면 xo게임생성을 통해 블럭이 쌓이는 모습을 확인해보겠습니다.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>이전 문서를 참고해서 키 만들고 xo게임생성 ㄱㄱ
+xo create example --username a --url http://rest-api-0:8008
+</code></pre></div></div>
+<blockquote>
+  <p>이전 문서에서는 단순히 rest-api:8008만 했지만 yaml 파일을 생성할때 validator0번의 rest-api가 rest-api-0으로 명명되었으므로 이렇게 작성해 주어야함</p>
+</blockquote>
+
+<p>실행하게되면 shell-2에는 Response가 오게될 것
+<img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2305%20connect%20multi%20validator%20in%20local/img/3.PNG" alt="Alt text" /></p>
+
+<p>이전에 띄워놓았던 shell-1을 확인해보면 validator 1개를 쓸 때보다 많은양의 로그가 기록되어있는것을 확인할 수 있음. 두개의 validator 모두 검증작업을 진행하기 때문이다.</p>
+<blockquote>
+  <p>로그의 내용은 따로 설명하지 않을 것. 읽으면 자연스레 알게되는 내용★</p>
+</blockquote>
+
+<p>두개의 validator 모두 게임이 정상적으로 생성된 것을 확인할 수 있음!</p>
+
+<p><img src="https://raw.githubusercontent.com/GRuuuuu/sawtooth-starter/master/sawtooth/%2305%20connect%20multi%20validator%20in%20local/img/4.PNG" alt="Alt text" /></p>
+
+<h2 id="4-yaml파일-뜯어보기">4. YAML파일 뜯어보기</h2>
+
+<h3 id="validator">validator</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  validator-0:                                      //제네시스 블럭
+    image: hyperledger/sawtooth-validator:1.0       //이미지 이름
+    container_name: sawtooth-validator-default-0    //컨테이너 이름
+    expose:                                         //사용할 포트
+      - 4004
+      - 8800
+    command: "bash -c \"\                           //제네시스블럭을 생성
+        sawadm keygen --force &amp;&amp; \
+        sawset genesis \
+          -k /etc/sawtooth/keys/validator.priv \
+          -o config-genesis.batch &amp;&amp; \
+        sawset proposal create \
+          -k /etc/sawtooth/keys/validator.priv \
+          sawtooth.consensus.algorithm=poet \
+          sawtooth.poet.report_public_key_pem=\
+          \\\"$$(cat /etc/sawtooth/simulator_rk_pub.pem)\\\" \
+          sawtooth.poet.valid_enclave_measurements=$$(poet enclave measurement) \
+          sawtooth.poet.valid_enclave_basenames=$$(poet enclave basename) \
+          -o config.batch &amp;&amp; \
+        poet registration create -k /etc/sawtooth/keys/validator.priv -o poet.batch &amp;&amp; \
+        sawset proposal create \
+          -k /etc/sawtooth/keys/validator.priv \
+             sawtooth.poet.target_wait_time=5 \
+             sawtooth.poet.initial_wait_time=25 \
+             sawtooth.publisher.max_batches_per_block=100 \
+          -o poet-settings.batch &amp;&amp; \
+        sawadm genesis \
+          config-genesis.batch config.batch poet.batch poet-settings.batch &amp;&amp; \
+        sawtooth-validator -v \                    //validator 설정
+          --bind network:tcp://eth0:8800 \         //bind : 포트를 고정시킴
+          --bind component:tcp://eth0:4004 \
+          --peering dynamic \                      //동적으로 peer를 붙임
+          --endpoint tcp://validator-0:8800 \      //작업이 실제로 수행되는 지점
+          --scheduler serial \                     //스케줄링은 serial하게(병렬도 있음)
+          --network trust                          //신뢰하는 네트워크만
+    \""
+    environment:                                   //환경변수
+      PYTHONPATH: "/project/sawtooth-core/consensus/poet/common:\
+        /project/sawtooth-core/consensus/poet/simulator:\
+        /project/sawtooth-core/consensus/poet/core"
+    stop_signal: SIGKILL                          //종료는 ctrl+c
+
+  validator-1:                                    //제네시스 블럭에 붙을 1번노드   
+    image: hyperledger/sawtooth-validator:1.0 
+    container_name: sawtooth-validator-default-1
+    expose:
+      - 4004
+      - 8800
+    command: |                                    //제네시스 블럭과 달리 블럭을  
+      bash -c "                                   //생성할 필요가 없음!!!
+        sawadm keygen --force &amp;&amp; \
+        sawtooth-validator -v \
+            --bind network:tcp://eth0:8800 \
+            --bind component:tcp://eth0:4004 \
+            --peering dynamic \
+            --endpoint tcp://validator-1:8800 \
+            --seeds tcp://validator-0:8800 \      //붙을 노드의 ip(로컬에서는 이름)
+            --scheduler serial \
+            --network trust
+      "
+    environment:
+      PYTHONPATH: "/project/sawtooth-core/consensus/poet/common:\
+        /project/sawtooth-core/consensus/poet/simulator:\
+        /project/sawtooth-core/consensus/poet/core"
+    stop_signal: SIGKILL
+</code></pre></div></div>
+
+<h3 id="rest-api외-다른-이미지들">rest-api외 다른 이미지들</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  rest-api-0:                                      //validator에 붙일 이미지의 이름
+    image: hyperledger/sawtooth-rest-api:1.0
+    container_name: sawtooth-rest-api-default-0
+    expose:
+      - 4004
+      - 8008
+    command: |
+      bash -c "
+        sawtooth-rest-api \
+          --connect tcp://validator-0:4004 \      //반드시 해당 블럭의 validator에 connect
+          --bind rest-api-0:8008"
+    stop_signal: SIGKILL
+
+  rest-api-1:
+    image: hyperledger/sawtooth-rest-api:1.0
+    container_name: sawtooth-rest-api-default-1
+    expose:
+      - 4004
+      - 8008
+    command: |
+      bash -c "
+        sawtooth-rest-api \
+          --connect tcp://validator-1:4004 \
+          --bind rest-api-1:8008"
+    stop_signal: SIGKILL
+    
+    ...
+
+  xo-tp-0:
+    image: hyperledger/sawtooth-xo-tp-python:1.0
+    container_name: sawtooth-xo-tp-python-default-0
+    expose:
+      - 4004
+    command: xo-tp-python -vv -C tcp://validator-0:4004
+    stop_signal: SIGKILL
+
+  xo-tp-1:
+    image: hyperledger/sawtooth-xo-tp-python:1.0
+    container_name: sawtooth-xo-tp-python-default-1
+    expose:
+      - 4004
+    command: xo-tp-python -vv -C tcp://validator-1:4004
+    stop_signal: SIGKILL
+   
+    //나머지 이미지들도 비슷
+</code></pre></div></div>
+
+<h2 id="5-마치며">5. 마치며</h2>
+
+<p>여러개의 validator를 로컬 서버안에서 다뤄보는 작업을 하였고, 다음 문서에서는 서로 다른 네트워크상에서 validator를 이어보는 작업을 해볼것</p>
+
+<hr />
+
+<hr />
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#sawtooth-starter" class="page__taxonomy-item" rel="tag">Sawtooth-Starter</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2019-03-22">March 22, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=05.Connect+multi+validator+in+local+server%20http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter05%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter05%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsawtooth-starter%2Fsawtooth-starter05%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/sawtooth-starter/sawtooth-starter04/" class="pagination--pager" title="04.Transaction Processor Tutorial Java 2
+">이전</a>
+    
+    
+      <a href="/sawtooth-starter/sawtooth-starter06/" class="pagination--pager" title="06.Connect multi validator in Remote network
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/simple-tutorial/iot-tutorial/" rel="permalink">Simple IoT accelerometer game Tutorial
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio
+1. Overview
+디바이스의 센서데이터를 clou...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter10/" rel="permalink">10.Using Grafana &amp; InfluxDB in Sawtooth
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter09/" rel="permalink">09.Building and Submitting Transactions with js
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/sawtooth-starter/sawtooth-starter08/" rel="permalink">08.Configuring Permission
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 GRU. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+  
+
+
+
+  </body>
+</html>
