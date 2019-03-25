@@ -28,13 +28,10 @@ author_profile: true
 ~~~bash
 #현재 서버의 hostname 파악 (Master&Node)
 $ hostname 
-
 #hostname 변경 (Master&Node)
 $ hostnamectl set-hostname --static {변경할 이름}
-
 #DNS에 등록 (ex)Master)
 $ vim etc/hosts
-
     127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
     ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
     #밑에 추가
@@ -46,13 +43,11 @@ $ vim etc/hosts
 #(모든 서버에서 수행)
 #key 생성 (enter연타)
 $ ssh-keygen
-
 #공개키 배포 
 $ for host in 172.29.160.69 \
 172.29.160.236; \
 do ssh-copy-id -i ~/.ssh/id_rsa.pub $host; \
 done
-
 #ping test
 $ ping {test할 node}
 ~~~
@@ -98,13 +93,13 @@ $ subscription-manager repos \
     --enable="rhel-7-for-power-9-ose-3.10-rpms"
 ~~~
 > repository가 붙는데 시간이 오래걸릴수 있습니다. pool id를 정확히 붙였는데도 repository에서 찾을수 없다는 에러가 발생한다면, 일단 컴퓨터를 끄고 정신을 수양하는 시간을 가집시다. (원인을 알수없음)
+
 ### Install Package
-설치에 필요한 파일들을 인스톨합니다.
+설치에 필요한 파일들을 인스톨합니다.  
 ~~~bash
 $ yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
 $ yum -y update
 $ reboot
-
 $ yum -y install openshift-ansible
 $ yum -y install cri-o
 ~~~
