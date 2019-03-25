@@ -15,7 +15,7 @@ last_modified_at: 2019-01-23T20:23:03-05:00
 ---
 
 ----
-![p2_png](https://user-images.githubusercontent.com/15958325/54878211-cd575d00-4e6c-11e9-94d2-b58ae9476aef.png)
+![p2_png](https://user-images.githubusercontent.com/15958325/54924026-c6088000-4f4e-11e9-97ed-02847553514b.png)
 
 ## Profile
 공부한 것들, 이것저것 올리는 블로그입니다.  
