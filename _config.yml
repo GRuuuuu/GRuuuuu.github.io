@@ -113,9 +113,6 @@ author:
   location         : "Korea"
   email            : "sygy0509@naver.com"
   links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: mailto:sygy0509@naver.com
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/Kon_GRu"
@@ -125,6 +122,9 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/GRuuuuu/GRuuuuu.github.io"
+    - label: "linkedin"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/%EC%8A%B9%EC%97%B0-%EC%9D%B4-583186167/"
 
 # Site Footer
 footer:
