@@ -46,7 +46,8 @@ Docker+Kubernetes+DevOps
 >   - Auto Scaler를 통한 부하상황에 알맞은 확장 제공
 >- 모니터링
 >   - 애플리케이션 로그 모니터링 제공 
->   - Pod Cpu, Memory 모니터링 제공
+>   - Pod Cpu, Memory 모니터링 제공  
+
 ### DevOps
 - S2I빌드 및 배포  
     ![1](https://user-images.githubusercontent.com/15958325/54922737-221dd500-4f4c-11e9-9669-75c08fa8d184.png)  
