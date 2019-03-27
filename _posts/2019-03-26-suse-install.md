@@ -94,15 +94,15 @@ lpar7을 골라주고 `Select Boot Options`를 선택
 ![image](https://user-images.githubusercontent.com/15958325/55074987-1dd0f380-50d5-11e9-9c96-3127490ac452.png)  
  
 
-`Select Install/Boot Device`를 선택
+`Select Install/Boot Device`를 선택  
 ![image](https://user-images.githubusercontent.com/15958325/55075041-448f2a00-50d5-11e9-86a6-c8c17ef961e0.png)  
 
-`List all Devices`를 선택
+`List all Devices`를 선택  
 ![image](https://user-images.githubusercontent.com/15958325/55075098-6a1c3380-50d5-11e9-9ac8-c15649a3ea56.png)   
 VIOS에 저장된 이미지 정보를 불러옵니다. 여기서 실습할 것은 SUSE이므로 4번을 선택  
-![image](https://user-images.githubusercontent.com/15958325/55075132-7d2f0380-50d5-11e9-8d42-3b59e666d02b.png)
+![image](https://user-images.githubusercontent.com/15958325/55075132-7d2f0380-50d5-11e9-8d42-3b59e666d02b.png)  
 
-`Normal Mode Boot`를 선택  
+`Normal Mode Boot`를 선택   
 ![image](https://user-images.githubusercontent.com/15958325/55075285-e9aa0280-50d5-11e9-8aaa-f504acd502e3.png)  
 
 부팅을 기다렸다가 GRUB메뉴가 뜨면 e를 눌러서 edit화면으로 들어가야 합니다. 
@@ -112,10 +112,10 @@ VIOS에 저장된 이미지 정보를 불러옵니다. 여기서 실습할 것�
 
 ![image](https://user-images.githubusercontent.com/15958325/55075315-fdedff80-50d5-11e9-9a4c-ac2826d8d901.png)  
 
-위 사진에서 e를 연타했다가는 이상한 설정파일로 들어갈수 있습니다. GRUB메뉴에서 `Installation`의 설정을 변경해야 하는데 다른 설정파일로 들어갔다면 `esc`를 누르고 메뉴로 다시 나와서 `Installation`으로 들어가면 됩니다.
+위 사진에서 e를 연타했다가는 이상한 설정파일로 들어갈수 있습니다. GRUB메뉴에서 `Installation`의 설정을 변경해야 하는데 다른 설정파일로 들어갔다면 `esc`를 누르고 메뉴로 다시 나와서 `Installation`으로 들어가면 됩니다.  
 ![image](https://user-images.githubusercontent.com/15958325/55075363-237b0900-50d6-11e9-8099-87d6bbf6ff0f.png)  
 
-`Installation`의 설정파일로 들어왔다면  
+`Installation`의 설정파일로 들어왔다면   
 ~~~
  linux /boot/ppc64le/linux
 ~~~
