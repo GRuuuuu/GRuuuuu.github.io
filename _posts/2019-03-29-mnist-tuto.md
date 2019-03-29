@@ -12,6 +12,8 @@ This tutorial guides you through using the MNIST computer vision data set to tra
 최근 ML(Machine Learning)에 대한 관심이 높아지면서 너도나도 ML에 발을 담그고 있습니다. 하지만 ML은 매우 많은 연산량을 요구하고 보통의 컴퓨터로는 결과를 내려면 굉장히 많은 시간이 소요됩니다.  
 이번 문서에서는 IBM Cloud와 IBM Watson Studio를 통해 빠르고 쉽게 모델을 training 시키고, deploy하는 과정을 진행하겠습니다.  
 
+[CLI tutorial: Build a TensorFlow model to recognize handwritten digits using the MNIST data set](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml_dlaas_tutorial_tensorflow_cli.html?linkInPage=true#step3)을 직접 해보고 작성한 튜토리얼입니다.
+
 ## 2. Prerequisites
 `IBM Cloud`와 `IBM Watson`계정을 만들어주세요.  
 `IBM Cloud` : [link](https://console.bluemix.net)  
@@ -50,12 +52,12 @@ credential 정보를 생성하면 json형식의 데이터를 확인할 수 있�
 ![image](https://user-images.githubusercontent.com/15958325/55232946-5d7d1400-526a-11e9-8e61-58421c0b6fe8.png)   
 
 그다음 터미널을 열어서 환경변수를 세팅해 줍니다.   
-환경변수 | credentials info
---------|------------------
-ML_ENV | url
-ML_USERNAME | username
-ML_PASSWORD | password
-ML_INSTANCE | instance_id  
+| 환경변수 | credentials info |  
+-----------|------------------  
+| ML_ENV | url |
+| ML_USERNAME | username |   
+| ML_PASSWORD | password |  
+| ML_INSTANCE | instance_id |  
 
 window의 경우  
 ~~~bash
@@ -136,13 +138,14 @@ link : [http://yann.lecun.com/exdb/mnist/](http://yann.lecun.com/exdb/mnist/)
 - Training labels
 - Test images
 - Test labels  
+
 모두 트레이닝 시킬 데이터셋 버킷에 저장해 둡니다.  
 
 ![image](https://user-images.githubusercontent.com/15958325/55235569-3413b680-5271-11e9-9838-8b7687885195.png)  
 
 ## 5. Train the Model
 이제 본격적으로 모델을 트레이닝해보겠습니다.  
-모델을 빌드할 convolutional_network.py와 MNIST데이터를 다운로드하고 읽을 input_data.py가 담겨있는 [tf-model]() 파일과, 이 파일들을 실행시키고 설정값들을 부여할 [tf-train.yaml]()파일을 다운로드합시다.  
+모델을 빌드할 convolutional_network.py와 MNIST데이터를 다운로드하고 읽을 input_data.py가 담겨있는 [tf-model](https://github.com/GRuuuuu/GRuuuuu.github.io/blob/master/assets/resources/simple-tutorial/tf-model.zip) 파일과, 이 파일들을 실행시키고 설정값들을 부여할 [tf-train.yaml](https://raw.githubusercontent.com/GRuuuuu/GRuuuuu.github.io/master/assets/resources/simple-tutorial/tf-train.yaml)파일을 다운로드합시다.  
 파일을 다 받고 나면 yaml파일은 몇군데 수정해줘야할 부분이 있습니다.  
 ~~~yaml
 model_definition:
@@ -216,7 +219,7 @@ $ bx ml deploy {Model-ID} "{deploy-model-name}"
 
 마지막으로, deploy한 모델을 가지고 테스트를 해보겠습니다.  
 
-숫자 5와 4의 사진의 raw데이터를 가지고 있는 [json파일]()을 다운로드 받아봅시다.  
+숫자 5와 4의 사진의 raw데이터를 가지고 있는 [json파일](https://raw.githubusercontent.com/GRuuuuu/GRuuuuu.github.io/master/assets/resources/simple-tutorial/tf-mnist-test-payload.json)을 다운로드 받아봅시다.  
 
 json파일도 몇군데 수정해야합니다.
 ~~~json
@@ -238,5 +241,7 @@ $ bx ml score tf-mnist-test-payload.json
 ~~~
 ![image](https://user-images.githubusercontent.com/15958325/55239376-e8193f80-5279-11e9-92f6-408a20188b12.png)  
 일정 시간이 지난뒤, 제대로 5와 4라고 예측하는 것을 확인할 수 있습니다.  
+
+튜토리얼 끝!
 
 ----
