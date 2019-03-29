@@ -53,8 +53,8 @@ credential 정보를 생성하면 json형식의 데이터를 확인할 수 있�
 
 그다음 터미널을 열어서 환경변수를 세팅해 줍니다.   
 | 환경변수 | credentials info |  
------------|------------------  
-| ML_ENV | url |
+|-----------|------------------|  
+| ML_ENV | url |  
 | ML_USERNAME | username |   
 | ML_PASSWORD | password |  
 | ML_INSTANCE | instance_id |  
