@@ -13,7 +13,7 @@ author_profile: true
 
 ## 2. Prerequisites
 
-[이전 문서](https://github.com/GRuuuuu/sawtooth-starter/blob/master/sawtooth/%238%20configuring%20permission/Configuring%20Permission.md)에서 했던 과정을 그대로 따라해주시고 `docker-compose`커맨드로 sawtooth를 실행시켜주시기 바랍니다.  
+[이전 문서](https://gruuuuu.github.io/sawtooth-starter/sawtooth-starter08/#)에서 했던 과정을 그대로 따라해주시고 `docker-compose`커맨드로 sawtooth를 실행시켜주시기 바랍니다.  
 
 같은 폴더 안에 있는 package.json과 compile_protobuf.js파일, protobuf폴더와 protos폴더를 클론받아 프로젝트에 추가시켜주세요.
 

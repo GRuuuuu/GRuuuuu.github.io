@@ -9,11 +9,11 @@ author_profile: true
 
 ## 1. Overview
 이전 문서에서는 xo게임을 powershell환경에서 실행해보는것을 해봤습니다. 이번 문서에서는 Sawtooth SDK에 기반하여 Java언어로 구성된 Sawtooth transaction family를 다뤄보겠습니다. 소스코드에 관한 자세한 설명은 다음문서에서 계속!
->첨부된 sdk폴더에는 xo게임의 완전히 구현된 버전이 포함되어있습니다. 이번 문서와 다음문서에서는 완전한 구현을 만드는 대신 만들어진 소스코드의 개념을 설명하는 것에 초점을 맞췄습니다. SDK는 여러 언어로 구성되어있으므로 [여기](https://github.com/hyperledger/sawtooth-core/tree/master/sdk) 를 참조해주세요.
+>첨부된 sdk폴더에는 xo게임의 완전히 구현된 버전이 포함되어있습니다. 이번 문서와 다음문서에서는 완전한 구현을 만드는 대신 만들어진 소스코드의 개념을 설명하는 것에 초점을 맞췄습니다. SDK는 여러 언어로 구성되어있으므로 [여기](https://sawtooth.hyperledger.org/docs/core/releases/1.0/app_developers_guide/sdk_table.html) 를 참조해주세요.
 
 ## 2. Prerequisites
 
-[이전문서](https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%232/XO%20Transaction%20Family.md)에서 xo게임을 실행까지 성공하고 따라해주세요.
+[이전문서](https://gruuuuu.github.io/sawtooth-starter/sawtooth-starter02/)에서 xo게임을 실행까지 성공하고 따라해주세요.
 
 ### Download Java sdk
 

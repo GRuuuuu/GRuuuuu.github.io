@@ -16,7 +16,7 @@ author_profile: true
 --> [참고링크](https://sawtooth.hyperledger.org/docs/core/nightly/master/app_developers_guide/sawtooth-default-poet.yaml)
 
 이 문서에서는 보다 간편하게 설명하기 위해서 validator 2개만 가지고 설명할것임.  
-우선 [요걸](https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%235/sawtooth-default-poet.yaml) 다운로드 받아주세요
+우선 [요걸](https://github.com/GRuuuuu/sawtooth-starter/blob/master/sawtooth/%2305%20connect%20multi%20validator%20in%20local/sawtooth-default-poet.yaml) 다운로드 받아주세요
 
 ## 3. 일단 실행
 
@@ -69,7 +69,7 @@ xo create example --username a --url http://rest-api-0:8008
 
 ### validator
 
-~~~
+~~~yaml
   validator-0:                                      //제네시스 블럭
     image: hyperledger/sawtooth-validator:1.0       //이미지 이름
     container_name: sawtooth-validator-default-0    //컨테이너 이름
@@ -138,7 +138,7 @@ xo create example --username a --url http://rest-api-0:8008
 ~~~
 
 ### rest-api외 다른 이미지들
-~~~
+~~~yaml
   rest-api-0:                                      //validator에 붙일 이미지의 이름
     image: hyperledger/sawtooth-rest-api:1.0
     container_name: sawtooth-rest-api-default-0

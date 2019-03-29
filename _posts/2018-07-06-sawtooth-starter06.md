@@ -15,7 +15,7 @@ author_profile: true
 
 이전문서에서는 validator 2개를 로컬환경에서 연결하는 작업을 했었음. 이번 문서의 작업을 제대로 이해하기 위해서는 이전문서를 꼭 읽어보고 오시기 바랍니당
 
-먼저 [제네시스블럭을 생성하는 YAML](https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%236/genesis/sawtooth-default-poet.yaml)과 [기타 validator의 YAML](https://github.com/GRuuuuu/Learning_Sawtooth/tree/master/sawtooth/sawtooth%20running%20%236/validator)을 다운로드 받아주세요
+먼저 [제네시스블럭을 생성하는 YAML](https://github.com/GRuuuuu/sawtooth-starter/blob/master/sawtooth/%2306%20connect%20multi%20validator%20in%20remote/genesis/sawtooth-default-poet.yaml)과 [기타 validator의 YAML](https://github.com/GRuuuuu/sawtooth-starter/blob/master/sawtooth/%2306%20connect%20multi%20validator%20in%20remote/validator/sawtooth-default-poet.yaml)을 다운로드 받아주세요
 
 >이 문서는 포트를 다루고 있기 때문에 로컬환경에서 작업하던 이전 문서와 달리 예상치못한 네트워크 관련 문제가 (매우)많이 생길 수 있습니다.  
 실제로 매우매우매우 고생했기 때문에...몇가지 해결방법을 미리 기술합니다.
@@ -24,7 +24,7 @@ author_profile: true
 > 2. yaml파일의 bind와 endpoint, seeds 그리고 connect 부분을 확인합니다.
 > 3. 사용하는 공유기 또는 컴퓨터의 환경에 따라서 컴퓨터 자체의 로컬ip와(자기 자신을 가리키는) 외부에서 자신을 가리키는 ip가 다를 수 있습니다. 이런 경우에는 yaml파일에서는 자기자신을 가리키는 로컬ip를 사용해야하고 외부에서 블럭의 내용을 볼 때는 외부ip를 사용합니다.
 > 4. 공유기를 사용하는 경우-> 일부 공유기는 특정 포트를 막아놓는 경우가 있습니다. 포트포워딩으로 뚫어줍시다.
-> 5. [ssh키교환]()
+> 5. [ssh키교환](https://github.com/GRuuuuu/GRuuuuu.github.io/blob/master/_posts/2019-02-19-openshift-rhel01.md#ssh-key-%EA%B5%90%ED%99%98)
 > 6. 다했는데 안된다 -> 끄고 자면됨 -> 행복
 
 
@@ -76,7 +76,7 @@ com-1의 화면을 잠깐 보면
 
 ### validator
 기본적으로 이전문서의 yaml구성과 비슷합니다. 하지만 정확한 ip를 명시해줘야 한다는 점을 잊으면 안됩니다.
-~~~
+~~~yaml
   validator-0:                                       //com-1의 validator(genesis)
     image: hyperledger/sawtooth-validator:1.0
     container_name: sawtooth-validator-default-0
@@ -119,7 +119,7 @@ com-1의 화면을 잠깐 보면
         /project/sawtooth-core/consensus/poet/core"
     stop_signal: SIGKILL
  ~~~
- ~~~   
+ ~~~yaml 
   validator-1:                                        //com-2의 validator
     image: hyperledger/sawtooth-validator:1.0
     container_name: sawtooth-validator-default-1

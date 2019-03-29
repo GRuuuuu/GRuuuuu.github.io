@@ -14,7 +14,7 @@ author_profile: true
 
 이전문서에서는 validator들을 서로 다른 네트워크에서 이어보는 작업을 진행했습니다. 이번 문서의 작업을 제대로 이해하기 위해서는 이전문서를 꼭 읽어보고 오시기 바랍니당
 
-먼저 [NEWxo.jar](https://github.com/GRuuuuu/Learning_Sawtooth/tree/master/sawtooth/sawtooth%20running%20%237)와 [Dockerfile](https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%237/Dockerfile)그리고 [YAML파일](https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%237/sawtooth-default-poet.yaml)을 다운로드 받아주세요
+먼저 [NEWxo.jar](https://github.com/GRuuuuu/sawtooth-starter/blob/master/sawtooth/%2307%20making%20custom%20processor/new-xoGAME.jar)와 [Dockerfile](https://github.com/GRuuuuu/sawtooth-starter/blob/master/sawtooth/%2307%20making%20custom%20processor/Dockerfile)그리고 [YAML파일](https://github.com/GRuuuuu/sawtooth-starter/blob/master/sawtooth/%2307%20making%20custom%20processor/sawtooth-default-poet.yaml)을 다운로드 받아주세요
 
 
 ## 3. 일단 실행
@@ -34,7 +34,7 @@ xo커맨드를 사용하여 게임을 만들고 각 플레이어끼리 게임을
 
 ## 4. JAVA to Jar
 
-자바프로그램은 sawtooth sdk예제로 나온 [xo transaction](https://github.com/hyperledger/sawtooth-core/tree/master/sdk/examples/xo_java)을 사용하였고, X를 저장하는 부분의 코드를 A로 바꿨습니다.  
+자바프로그램은 sawtooth sdk예제로 나온 [xo transaction](https://github.com/GRuuuuu/sawtooth-starter/tree/master/sawtooth/%2303%20transaction%20processor%20tutorial/sawtooth/examples/xo)을 사용하였고, X를 저장하는 부분의 코드를 A로 바꿨습니다.  
 
 자바프로그램을 Jar파일로 바꾸는 과정은 인터넷을 참고 ㄱㄱ  
 또한 자바프로그램이 제대로 실행되지 않는 파일이라면 당연히 Jar파일을 쓸수없습니당

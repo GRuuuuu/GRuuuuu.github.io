@@ -12,7 +12,7 @@ author_profile: true
 
 ## 2. Prerequisites
 
-[이전문서](https://github.com/GRuuuuu/Learning_Sawtooth/blob/master/sawtooth/sawtooth%20running%20%233/XO%20Transaction%20Family.md)
+[이전문서](https://gruuuuu.github.io/sawtooth-starter/sawtooth-starter03/#)
 
 ## 3. 소스코드 뜯
 
