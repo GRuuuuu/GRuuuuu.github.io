@@ -1,0 +1,37 @@
+model_definition:
+  name: tf-mnist-showtest1
+  author:
+    name: DL Developer
+    email: ""
+  description: Simple MNIST model implemented in TF
+  framework:
+    name: tensorflow
+    version: "1.5"
+    runtimes: 
+      name: python
+      version: "3.5"
+  execution:
+    command: python3 convolutional_network.py --trainImagesFile ${DATA_DIR}/train-images-idx3-ubyte.gz
+      --trainLabelsFile ${DATA_DIR}/train-labels-idx1-ubyte.gz --testImagesFile ${DATA_DIR}/t10k-images-idx3-ubyte.gz
+      --testLabelsFile ${DATA_DIR}/t10k-labels-idx1-ubyte.gz --learningRate 0.001
+      --trainingIters 20000
+    compute_configuration:
+      name: k80
+training_data_reference:
+  name: training_data_reference_name
+  connection:
+    endpoint_url: "https://s3-api.us-geo.objectstorage.service.networklayer.com"
+    access_key_id: "722432c254bc4eaa96e05897bf2779e2"
+    secret_access_key: "286965ac10ecd4de8b44306288c7f5a3e3cf81976a03075c"
+  source:
+    bucket: training-data
+  type: s3
+training_results_reference:
+  name: training_results_reference_name
+  connection:
+    endpoint_url: "https://s3-api.us-geo.objectstorage.service.networklayer.com"
+    access_key_id: "722432c254bc4eaa96e05897bf2779e2"
+    secret_access_key: "286965ac10ecd4de8b44306288c7f5a3e3cf81976a03075c"
+  target:
+    bucket: training-results
+  type: s3
