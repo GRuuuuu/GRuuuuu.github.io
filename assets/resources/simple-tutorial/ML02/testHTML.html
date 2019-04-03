@@ -24,9 +24,9 @@
 		$.ajax
 		({
 			type: "POST",
-			url: "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2018-03-19&classifier_ids=custom_1103983787&url=" + url,
+			url: "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2018-03-19&url=" + url,
 			headers: {
-				"Authorization": "Basic " + btoa("apikey" + ":" + "uqIPFvW05WsSPl_YN-AJRDLb-Pgic-0ET60yoYaDicnN")
+				"Authorization": "Basic " + btoa("apikey" + ":" + "<put_your_key_here>")
 			},
 		success: function (response){
 			console.log(response["images"][0]["classifiers"][0]["classes"][0])
