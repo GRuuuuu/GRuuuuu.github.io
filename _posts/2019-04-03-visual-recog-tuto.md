@@ -28,7 +28,7 @@ Visual Recognition 서비스를 사용하기 위한 플랫폼인 왓슨 스튜�
 ![image](https://user-images.githubusercontent.com/15958325/55454290-5b280a80-561a-11e9-984d-9cd3db915dd5.png)
 
 ### Cloud Object Storage
-다음 링크를 참고하여 cos도 추가  
+다음 링크를 참고하여 cos도 추가 (버킷생성은 안해도됨)  
 [참고링크](https://gruuuuu.github.io/simple-tutorial/mnist-tuto/#cloud-object-storage)
 
 ### IBM Visual Recognition Service
@@ -72,7 +72,7 @@ Test탭으로 가게 되면 다음과 같은 화면을 볼 수 있습니다.
 최적의 `Threshold`값은 정해져 있는것이 아님! 그때그때마다 시도해보고 최적의 값을 찾아내야합니다.  
 
 이미지를 다운받아서 drag&drop으로 대시보드로 옮겨봅시다.  
-test 이미지는 [이곳]()    
+test 이미지는 [이곳](https://github.com/GRuuuuu/GRuuuuu.github.io/tree/master/assets/resources/simple-tutorial/ML02/food_images)    
 ![image](https://user-images.githubusercontent.com/15958325/55458337-a7c61280-5627-11e9-9c95-dd555bc23f9d.png)    
 각 이미지에 대해 모델이 인식한 결과의 확률값을 태그로 붙여주고 있습니다.   
 
@@ -82,7 +82,7 @@ test 이미지는 [이곳]()
 
 모델을 통해서 이미지를 인식하고, 그 결과값을 받아온다. 이러한 과정은 꼭 Watson Studio 내부 툴을 이용해서 할 필요는 없습니다. url을 통해 간단히 request하여 원하는 값을 받아오는 인터페이스, API를 사용하여 간단한 웹 application을 제작해보겠습니다.  
 
-이 문서에서는 핵심 모듈만을 다루려고 합니다. 전체 코드는 [여기]()  
+이 문서에서는 핵심 모듈만을 다루려고 합니다. 전체 코드는 [여기](https://raw.githubusercontent.com/GRuuuuu/GRuuuuu.github.io/master/assets/resources/simple-tutorial/ML02/testHTML.html)  
 
 껍데기는 이렇게 생겼음  
 ![image](https://user-images.githubusercontent.com/15958325/55459762-3daf6c80-562b-11e9-843f-0c6c809e4afe.png)  
@@ -147,7 +147,7 @@ function update_result(response){
 
 #### Result
 
->사용한 url : [https://t1.daumcdn.net/cfile/tistory/2413D1475859D92B05](https://user-images.githubusercontent.com/15958325/55460339-b95de900-562c-11e9-8663-4e8b5822d16c.png)   
+>사용한 이미지url : [https://t1.daumcdn.net/cfile/tistory/2413D1475859D92B05](https://user-images.githubusercontent.com/15958325/55460339-b95de900-562c-11e9-8663-4e8b5822d16c.png)   
 
 결과 화면은 다음과 같습니다. 패스트푸드라고 잘 출력되고, 그에대한 확률값, 그리고 분류체계가 출력되는 것을 확인할 수 있습니다.     
 ![image](https://user-images.githubusercontent.com/15958325/55460279-8f0c2b80-562c-11e9-8cac-88136851ec65.png)   
@@ -204,8 +204,8 @@ function send_request(url){
 ~~~
 url에 `&classifier_ids={Model ID}`를 추가해주시면 됩니다.  
 
->사실 눈치가 빠른 분들은 눈치를 채셨겠지만 위의 web application소스코드는 food모델에 리퀘스트를 날리는것이 아니라 general모델로 리퀘스트를 날리고있습니다. 실제로 send_request함수를 보면 classifier_ids에 관한 정의가 없어 default로 들어가게 됩니다.  
->원문에도 별다른 언급이 없어서 내용 흐름따라 food모델로 리퀘스트를 날리는 줄 알았는데 아니었네요..  
+>사실 눈치가 빠른 분들은 눈치를 채셨겠지만 맨처음의 web application소스코드는 food모델에 리퀘스트를 날리는것이 아니라 general모델로 리퀘스트를 날리고있습니다. 실제로 send_request함수를 보면 classifier_ids에 관한 정의가 없어 default로 들어가게 됩니다.  
+>원문에도 별다른 언급이 없어서 내용 흐름따라 food모델로 리퀘스트를 날리는 줄 알았는데 아니었네요...  
 
 결과는 다음과 같습니다! 트레이닝하지 않았던 이미지를 입력값으로 주니 제대로 김치찌개라고 인식하는 모습을 확인할 수 있습니다!  
 ![image](https://user-images.githubusercontent.com/15958325/55462767-7737a600-5632-11e9-842b-e4333fed0aed.png)   

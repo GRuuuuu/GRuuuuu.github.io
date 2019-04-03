@@ -114,6 +114,7 @@ cos서비스로 이동하여 Manage in IBM Cloud를 클릭합니다.
 > "access_key_id": "2157c9a2ac1a4c0e8d9f07beba1524c6",  
 > "secret_access_key": "89df186e4a4ed60f14d2b32cdd1ec55bf9f5c753ee96fe81"
 
+### Make Bucket
 COS세팅이 되었다면 이제 Bucket을 두개 만들어 줄겁니다. 하나는 트레이닝 시킬 데이터들의 셋, 하나는 트레이닝하고 난 결과 데이터셋을 저장할 버킷입니다.  
 위치는 watson ML의 위치와 똑같이 세팅해 줍니다.  
 ![image](https://user-images.githubusercontent.com/15958325/55235183-43463480-5270-11e9-973d-d82bc7662d73.png)    
