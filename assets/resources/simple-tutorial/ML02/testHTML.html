@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+	function update_result(response){
+		var classification = response["images"][0]["classifiers"][0]["classes"][0]
+		var food_name = classification["class"]
+		var confidence_score = classification["score"]
+		var hierarchy = classification["type_hierarchy"]
+		$('#resultdiv').html("")
+		$('#resultdiv').append("<Span> <strong>RESULT</strong> </span><br><span> <strong> Food: </strong>" + food_name + "</span><br>")
+		$('#resultdiv').append("<span> <strong> Confidence Score: </strong>" + confidence_score + "</span><br>")
+		$('#resultdiv').append("<span> <strong> Hierarchy: </strong>" + hierarchy + "</span><br>")
+		$('#display_img').css('background-size', "contain");
+	};
+	
+	function send_request(url){
+		$.ajax
+		({
+			type: "POST",
+			url: "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2018-03-19&classifier_ids=custom_1103983787&url=" + url,
+			headers: {
+				"Authorization": "Basic " + btoa("apikey" + ":" + "uqIPFvW05WsSPl_YN-AJRDLb-Pgic-0ET60yoYaDicnN")
+			},
+		success: function (response){
+			console.log(response["images"][0]["classifiers"][0]["classes"][0])
+			update_result(response);
+		}
+		});
+	};
+	
+	var imgurl = "";
+	jQuery(document).ready(function($) {
+			
+		$('#imageURLholder').bind('input', function() {
+		    $('#display_img').css('background-image', "url(" + $(this).val() + ")");
+			imgurl = $(this).val();
+		});
+			
+		$("#analyze").click(function(){
+			send_request(imgurl)
+		});
+	});
+</script>
+
+</head>
+
+<body>
+
+<div class="mdl-card mdl-shadow--2dp" style="margin: auto;width:32%;margin-top:23%;height:450px">
+  <div id="display_img" class="mdl-card__title mdl-card--expand  mdl-card--border" style="background-image:url();background-size: contain;">
+    <h2 class="mdl-card__title-text">Image</h2>
+  </div>
+  <div class="mdl-card__supporting-text" style="height:75px">
+    IBM Visual Recognition API demo. Identification of the food item from an image!
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+	<input type="text" placeholder="Enter Image URL" id="imageURLholder" class = "mdl-textfield__input"><br>
+	<button id="analyze" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" style="margin-left:35%">
+		Analyze
+	</button>
+  </div>
+  <div id="resultdiv" class="mdl-card__actions mdl-card--border">
+	<Span> <strong>RESULT</strong> </span><br>
+	<div class="mdl-card__supporting-text" id="Result">
+	</div>
+  </div>
+</div>
+
+</body>
+
+</html>
