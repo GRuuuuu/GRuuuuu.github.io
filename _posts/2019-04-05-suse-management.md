@@ -1,5 +1,5 @@
 ---
-title: "SUSE Management"
+title: "SUSE Management -YaST, iSCSI"
 categories: 
   - SUSE
 tags:
