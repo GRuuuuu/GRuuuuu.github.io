@@ -5,6 +5,6 @@ main:
    - title: "Tech-Posts"
      url: /categories/
    - title: "Something"
-     url: /Something/
+     url: /posts2/
    - title: "Sitemap"
      url: /sitemap/
