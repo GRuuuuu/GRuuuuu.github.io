@@ -218,6 +218,11 @@ paginate: 5 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:path/
 
 # Plugins (previously gems:)
 plugins:
@@ -297,7 +302,7 @@ defaults:
       author_profile: true
   # _docs
   - scope:
-      path: "_docs"
+      path: ""
       type: docs
     values:
       layout: single
