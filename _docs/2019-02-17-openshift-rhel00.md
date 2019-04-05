@@ -1,7 +1,5 @@
 ---
 title: "RedHat Openshift"
-categories: 
-  - RHEL-Starter
 tags:
   - RHEL
   - Openshift
