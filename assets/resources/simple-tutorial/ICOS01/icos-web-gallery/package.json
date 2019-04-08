@@ -1,0 +1,32 @@
+{
+  "name": "icos-web-gallery-sec",
+  "main": "app.js",
+  "description": "An IBM COS Web Gallery app",
+  "version": "0.1.1",
+  "private": false,
+  "engines": {
+    "node": "6.9.4"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "aws-sdk": "^2.437.0",
+    "ibm-cos-sdk": "^1.0.0",
+    "body-parser": "^1.16.1",
+    "cfenv": "1.0.x",
+    "ejs": "^2.5.6",
+    "express": "4.13.x",
+    "multer": "^1.3.0",
+    "multer-s3": "^2.5.0"
+  },
+  "author": "IBM Corp",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}

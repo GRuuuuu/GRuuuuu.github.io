@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('head-inc'); %>
+</head>
+
+<body>
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="/">Home</a></li>
+        <li role="presentation" class="active"><a href="/gallery">Gallery</a></li>
+    </ul>
+    <div class="container">
+        <h2>IBM COS Image Gallery</h2>
+
+        <div class="row">
+            <%console.log(imageUrls.length);%>
+            <% for(var i=0; i < imageUrls.length; i++) { %>
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                            <img src="<%=imageUrls[i]%>" alt="Lights" style="width:100%">
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+
+</html>
