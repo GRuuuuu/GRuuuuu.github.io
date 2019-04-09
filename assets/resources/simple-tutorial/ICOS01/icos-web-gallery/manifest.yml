@@ -1,4 +1,3 @@
----
 applications:
  - name: icos-web-gallery-sec
    random-route: true
