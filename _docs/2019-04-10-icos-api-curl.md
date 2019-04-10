@@ -6,7 +6,6 @@ tags:
   - ICOS
 last_modified_at: 2019-03-22T13:00:00+09:00
 toc : true
-toc_sticky: true
 ---
 
 This document introduces command that how to communicate ICOS with REST-API using curl.   
