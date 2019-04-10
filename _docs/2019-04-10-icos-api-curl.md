@@ -7,6 +7,7 @@ tags:
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true 
 toc : true
+toc_sticky: true
 ---
 
 This document introduces command that how to communicate ICOS with REST-API using curl.   
@@ -83,7 +84,7 @@ cos의 endpoint는 cos인스턴스 > Endpoint > cos만들때설정들을 입력�
 ### 3.1 List Bucket  
 버킷의 리스트를 출력  
 
-#### 입력
+**입력**  
 ~~~bash
 $ curl "https://(endpoint)/" \
  -H "Authorization: bearer (token)" \
@@ -97,7 +98,7 @@ $ curl "https://(endpoint)/" \
 > ~~~   
 ><b>(주의) Authorization부분에서 Bearer를 빼먹지 않도록 합시다.</b>
 
-#### 출력
+**출력**  
 ~~~xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ListAllMyBucketsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
@@ -115,14 +116,14 @@ $ curl "https://(endpoint)/" \
 ### 3.2 Add Bucket
 버킷 생성  
 
-#### 입력  
+**입력**    
 ~~~bash
 $ curl -X "PUT" "https://(endpoint)/(bucket-name)" \
  -H "Authorization: Bearer (token)" \
  -H "ibm-service-instance-id: (resource-instance-id)"
 ~~~  
 
-#### 출력 
+**출력**  
 -없음-
 
 ### 3.3 Add a bucket (storage class)  
@@ -140,7 +141,7 @@ $ curl -X "PUT" "https://(endpoint)/(bucket-name)" \
 각 지역의 provisioning-code는 다음링크를 참조해주세요.  
 [provisioning-code](https://cloud.ibm.com/docs/services/cloud-object-storage?topic=cloud-object-storage-use-storage-classes#locationconstraint)  
 
-#### 입력  
+**입력**   
 ~~~bash
 $ curl -X "PUT" "https://(endpoint)/(bucket-name)" \
  -H "Content-Type: text/plain; charset=utf-8" \
@@ -159,7 +160,7 @@ $ curl -X "PUT" "https://(endpoint)/(bucket-name)" \
 >~~~
 
 
-#### 출력  
+**출력**   
 -없음-  
 
 ![image](https://user-images.githubusercontent.com/15958325/55866638-b7130600-5bbb-11e9-9bd6-748fa8e0e42d.png)  
@@ -179,13 +180,13 @@ READ_ACP | s3:GetBucketAcl
 WRITE_ACP | s3:PutBucketAcl
 FULL_CONTROL | 모든 권한
 
-#### 입력
+**입력**  
 ~~~bash
 $ curl "https://(endpoint)/(bucket-name)/?acl" \
  -H "Authorization: bearer (token)"
 ~~~
 
-#### 출력
+**출력**  
 default로 소유자에게 `FULL_CONTROL`권한이 부여된 것을 확인할 수 있습니다.  
 
 ~~~xml
@@ -213,9 +214,9 @@ bucket의 ACL권한 변경
 
 >aws에서는 굉장히 다양한 canned ACL을 제공하지만 ICOS에서 bucket에 적용되는건 private와 public-read만 가능합니다.  
 >
->![image](https://user-images.githubusercontent.com/15958325/55880567-efc2d780-5bdb-11e9-9acd-5a458622ba03.png)
+>![image](https://user-images.githubusercontent.com/15958325/55880567-efc2d780-5bdb-11e9-9acd-5a458622ba03.png)  
 
-#### 입력
+**입력**  
 ~~~bash
 $ curl -X "PUT" "https://(endpoint)/(bucket-name)/?acl" \
  -H "Authorization: bearer (token)" \
@@ -229,7 +230,7 @@ $ curl -X "PUT" "https://(endpoint)/(bucket-name)/?acl" \
 >  -H "x-amz-acl: public-read"
 >~~~
 
-#### 출력
+**출력**  
 
 -없음-  
 
@@ -262,7 +263,7 @@ bucket의 CORS 설정
 CORS(Cross-Orign Resource Sharing). 한마디로 근원이 다른 자원들을 공유하기. 즉 다른Origin에서 제공하는 자원에 접근할 수 있는 방법입니다. Origin이라 함은 물리적인 서버뿐만이아니라 서브도메인이 다르거나 포트가 다른것도 다른 Origin으로 간주됩니다.  
 브라우저의 [Same-Orign policy](https://en.wikipedia.org/wiki/Same-origin_policy)를 합법적으로 우회해서 다른 Origin에서 제공하는 자원에 접근하고 싶을때 사용합니다.  
 
-#### 입력  
+**입력**   
 ~~~bash
 $ curl -X "PUT" "https://(endpoint)/(bucket-name)/?cors" \
  -H "Content-MD5: (md5-hash)" \
@@ -293,20 +294,20 @@ xml block은 적용하고자하는 CORS을 구성하는 xml정보가 들어가�
 > -d "<CORSConfiguration><CORSRule><AllowedOrigin>https://s3.us-south.cloud-object-storage.appdomain.cloud/test-bucket-api/</AllowedOrigin><AllowedMethod>POST</AllowedMethod><AllowedHeader>*</AllowedHeader></CORSRule></CORSConfiguration>"
 >~~~
 
-#### 출력 
+**출력**  
 -없음-  
 
 
 ### 3.7 Get a bucket CORS  
 bucket의 CORS를 출력합니다.  
 
-#### 입력 
+**입력**  
 ~~~bash
 $ curl "https://(endpoint)/(bucket-name)/?cors" \
  -H "Authorization: bearer (token)"
 ~~~  
 
-#### 출력
+**출력**  
 3.6을 하고 난 다음의 결과. POST규칙이 생긴것을 확인할 수 있습니다.  
 
 ~~~xml
@@ -323,13 +324,13 @@ $ curl "https://(endpoint)/(bucket-name)/?cors" \
 ### 3.8 Delete a bucket CORS
 bucket의 CORS를 삭제합니다.  
 
-#### 입력
+**입력**  
 ~~~bash
 $ curl -X "DELETE" "https://(endpoint)/(bucket-name)/?cors" \
  -H "Authorization: bearer (token)"
 ~~~  
 
-#### 출력
+**출력**  
 -없음-  
 
 > 3.7의 GET bucket CORS를 실행해보면 CORS가 사라진것을 확인할 수 있습니다.  
