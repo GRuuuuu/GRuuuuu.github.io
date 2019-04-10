@@ -1,11 +1,12 @@
 ---
 title: "Curl Command for ICOS REST API"
 categories: 
-  - Simple-Tutorial
+  - Docs
 tags:
   - ICOS
 last_modified_at: 2019-03-22T13:00:00+09:00
-author_profile: true
+author_profile: true 
+toc : true
 ---
 
 This document introduces command that how to communicate ICOS with REST-API using curl.   
@@ -69,7 +70,8 @@ cos의 endpoint는 cos인스턴스 > Endpoint > cos만들때설정들을 입력�
 
 ~~~json
  { ...
-    "resource_instance_id": "crn:v1:bluemix:public:cloud-object-storage:global:a/93c46f889ce0417b869a8b66637a02d6:1c887618-84d1-44cf-b31b-028b7da1f42d::"
+    "resource_instance_id": "crn:v1:bluemix:public:cloud-object-storage:global:a/
+    93c46f889ce0417b869a8b66637a02d6:1c887618-84d1-44cf-b31b-028b7da1f42d::"
  }
 ~~~
 제법 긴 `resource_instance_id`는 (예시에서)콜론뒤의 `1c887618-84d1-44cf-b31b-028b7da1f42d`로 줄여서 사용하시면 됩니다.  
@@ -78,7 +80,7 @@ cos의 endpoint는 cos인스턴스 > Endpoint > cos만들때설정들을 입력�
 
 위의 정보들을 잘 입력해주시면 됩니다.  
 
-### List Bucket  
+### 3.1 List Bucket  
 버킷의 리스트를 출력  
 
 #### 입력
@@ -97,11 +99,22 @@ $ curl "https://(endpoint)/" \
 
 #### 출력
 ~~~xml
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ListAllMyBucketsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Owner><ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID><DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName></Owner><Buckets><Bucket><Name>web-images-bucket</Name><CreationDate>2019-04-07T12:25:16.443Z</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ListAllMyBucketsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Owner>
+    <ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID>
+    <DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName>
+  </Owner>
+  <Buckets><Bucket>
+    <Name>web-images-bucket</Name>
+    <CreationDate>2019-04-07T12:25:16.443Z</CreationDate>
+  </Bucket></Buckets>
+</ListAllMyBucketsResult>
 ~~~  
 
-### Add Bucket
+### 3.2 Add Bucket
 버킷 생성  
+
 #### 입력  
 ~~~bash
 $ curl -X "PUT" "https://(endpoint)/(bucket-name)" \
@@ -112,7 +125,7 @@ $ curl -X "PUT" "https://(endpoint)/(bucket-name)" \
 #### 출력 
 -없음-
 
-### Add a bucket (storage class)  
+### 3.3 Add a bucket (storage class)  
 모든 데이터는 비즈니스 환경에 따라 스토리지에서 자주 꺼내쓸수도있고, 또는 10년동안 묵혀둘수도 있습니다.  
 이렇게 활용빈도가 천차만별인 탓에 서로다른 스토리지 클래스를 적용하여 요금을 조정할수도 있습니다.  
 
@@ -150,4 +163,185 @@ $ curl -X "PUT" "https://(endpoint)/(bucket-name)" \
 -없음-  
 
 ![image](https://user-images.githubusercontent.com/15958325/55866638-b7130600-5bbb-11e9-9bd6-748fa8e0e42d.png)  
+
+### 3.4 Check a bucket ACL
+bucket의 ACL권한 확인  
+
+Amazon S3 ACL(Access Control Lists)은 bucket과 객체에 대한 access를 관리합니다. 각 bucket과 객체마다 액세스를 허용할 계정이나 그룹, 유형등을 정의할 수 있습니다.  
+기본적으로 리소스에 대한 모든 권한을 부여하는 `FULL_CONTROL`권한이 부여됩니다.  
+[참고링크 : AMAZON S3 ACL-Overview](https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/dev/acl-overview.html)  
+
+ACL권한 | bucket권한 
+--------|-----------
+READ | s3:ListBucket, s3:ListBucketVersions, s3:ListBucketMultipartUploads
+WRITE | s3:PutObject, s3:DeleteObject, 피부여자가 소유권자일경우 s3:DeleteObjectVersion가능 
+READ_ACP | s3:GetBucketAcl
+WRITE_ACP | s3:PutBucketAcl
+FULL_CONTROL | 모든 권한
+
+#### 입력
+~~~bash
+$ curl "https://(endpoint)/(bucket-name)/?acl" \
+ -H "Authorization: bearer (token)"
+~~~
+
+#### 출력
+default로 소유자에게 `FULL_CONTROL`권한이 부여된 것을 확인할 수 있습니다.  
+
+~~~xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AccessControlPolicy xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Owner>
+    <ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID>
+    <DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName>
+  </Owner>
+  <AccessControlList>
+    <Grant>
+      <Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser">
+        <ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID>
+        <DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName>
+      </Grantee>
+      <Permission>FULL_CONTROL</Permission>
+    </Grant>
+  </AccessControlList>
+</AccessControlPolicy>
+~~~
+
+### 3.5 Change bucket ACL  
+
+bucket의 ACL권한 변경  
+
+>aws에서는 굉장히 다양한 canned ACL을 제공하지만 ICOS에서 bucket에 적용되는건 private와 public-read만 가능합니다.  
+>
+>![image](https://user-images.githubusercontent.com/15958325/55880567-efc2d780-5bdb-11e9-9acd-5a458622ba03.png)
+
+#### 입력
+~~~bash
+$ curl -X "PUT" "https://(endpoint)/(bucket-name)/?acl" \
+ -H "Authorization: bearer (token)" \
+ -H "x-amz-acl: (ACL policy)"
+~~~  
+
+>예시)
+>~~~bash
+>$ curl -X "PUT" "https://s3.us-south.cloud-object-storage.appdomain.cloud/test-bucket-api/?acl" \
+>  -H "Authorization: bearer eyJraWQiOiIyMDE3MTEyO..." \
+>  -H "x-amz-acl: public-read"
+>~~~
+
+#### 출력
+
+-없음-  
+
+> public-read로 ACL권한을 변경했을 경우,  
+>권한을 변경한 bucket의 ACL권한을 체크해보면 소유자 외 타 모든 유저들의 권한이 READ로 바뀐것을 확인해볼수 있습니다.  
+> 
+>~~~xml
+><?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+><AccessControlPolicy xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+>  <Owner>
+>    <ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID>
+>    <DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName>
+>  </Owner>
+
+>  <AccessControlList>
+>    <Grant>
+>      <Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Group">
+>        <URI>http://acs.amazonaws.com/groups/global/AllUsers</URI>
+>      </Grantee>
+>      <Permission>READ</Permission>
+>    </Grant>
+>  </AccessControlList>
+></AccessControlPolicy>
+>~~~  
+
+### 3.6 Create a bucket CORS  
+
+bucket의 CORS 설정  
+
+CORS(Cross-Orign Resource Sharing). 한마디로 근원이 다른 자원들을 공유하기. 즉 다른Origin에서 제공하는 자원에 접근할 수 있는 방법입니다. Origin이라 함은 물리적인 서버뿐만이아니라 서브도메인이 다르거나 포트가 다른것도 다른 Origin으로 간주됩니다.  
+브라우저의 [Same-Orign policy](https://en.wikipedia.org/wiki/Same-origin_policy)를 합법적으로 우회해서 다른 Origin에서 제공하는 자원에 접근하고 싶을때 사용합니다.  
+
+#### 입력  
+~~~bash
+$ curl -X "PUT" "https://(endpoint)/(bucket-name)/?cors" \
+ -H "Content-MD5: (md5-hash)" \
+ -H "Authorization: bearer (token)" \
+ -H "Content-Type: text/plain; charset=utf-8" \
+ -d "<CORSConfiguration><CORSRule><AllowedOrigin>(url)</AllowedOrigin><AllowedMethod>(request-type)</AllowedMethod><AllowedHeader>(url)</AllowedHeader></CORSRule></CORSConfiguration>"
+~~~  
+
+Content-MD5는 xml block을 base64로 인코딩한 값이 들어가게 됩니다.  
+~~~bash
+$ echo -n (XML block) | openssl dgst -md5 -binary | openssl enc -base64
+~~~  
+xml block은 적용하고자하는 CORS을 구성하는 xml정보가 들어가면 됩니다.  
+> 예시)
+>`AllowedOrigin`에 적용하고자하는 bucket의 url, `request-type`에 POST를 넣고 `AllowedHeader`에 모든 Origin의 요청을 뜻하는 *을 넣고 인코딩을 하게되면 다음과 같은 커맨드가 완성됩니다. `AllowedHeader`에는 bucket과 통신하고싶은 다른 Origin의 헤더를 뜻합니다.    
+>~~~bash
+>$ echo -n "<CORSConfiguration><CORSRule><AllowedOrigin>https://s3.us-south.cloud-object-storage.appdomain.cloud/test-bucket-api/</AllowedOrigin><AllowedMethod>POST</AllowedMethod><AllowedHeader>*</AllowedHeader></CORSRule></CORSConfiguration>" | openssl dgst -md5 -binary | openssl enc -base64
+>
+>결과 : i1BSauZknPpaga10iAThvQ==
+>~~~  
+
+>그래서 완성된 커맨드라인은 다음과 같습니다.  
+>~~~bash
+>$ curl -X "PUT" "https://s3.us-south.cloud-object-storage.appdomain.cloud/test-bucket-api/?cors" \
+> -H "Content-MD5: i1BSauZknPpaga10iAThvQ==" \
+> -H "Authorization: bearer eyJraWQiOiIyMDE3MTEyOSIsImF..." \
+> -H "Content-Type: text/plain; charset=utf-8" \
+> -d "<CORSConfiguration><CORSRule><AllowedOrigin>https://s3.us-south.cloud-object-storage.appdomain.cloud/test-bucket-api/</AllowedOrigin><AllowedMethod>POST</AllowedMethod><AllowedHeader>*</AllowedHeader></CORSRule></CORSConfiguration>"
+>~~~
+
+#### 출력 
+-없음-  
+
+
+### 3.7 Get a bucket CORS  
+bucket의 CORS를 출력합니다.  
+
+#### 입력 
+~~~bash
+$ curl "https://(endpoint)/(bucket-name)/?cors" \
+ -H "Authorization: bearer (token)"
+~~~  
+
+#### 출력
+3.6을 하고 난 다음의 결과. POST규칙이 생긴것을 확인할 수 있습니다.  
+
+~~~xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <CORSRule>
+  <AllowedMethod>POST</AllowedMethod>
+  <AllowedOrigin>https://s3.us-south.cloud-object-storage.appdomain.cloud/test-bucket-api/</AllowedOrigin>
+  <AllowedHeader>*</AllowedHeader>
+  </CORSRule>
+</CORSConfiguration>
+~~~  
+
+### 3.8 Delete a bucket CORS
+bucket의 CORS를 삭제합니다.  
+
+#### 입력
+~~~bash
+$ curl -X "DELETE" "https://(endpoint)/(bucket-name)/?cors" \
+ -H "Authorization: bearer (token)"
+~~~  
+
+#### 출력
+-없음-  
+
+> 3.7의 GET bucket CORS를 실행해보면 CORS가 사라진것을 확인할 수 있습니다.  
+>~~~xml
+><?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+><Error>
+>  <Code>NoSuchCORSConfiguration</Code>
+>  <Message>The CORS configuration does not exist</Message>
+>  <Resource>/test-bucket-api/</Resource>
+>  <RequestId>27592942-b9b3-4fbd-8b77-c74eb7fb4cfc</RequestId>
+>  <httpStatusCode>404</httpStatusCode>
+></Error>
+>~~~  
+
 

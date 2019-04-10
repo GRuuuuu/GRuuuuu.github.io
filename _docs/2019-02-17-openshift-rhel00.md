@@ -1,7 +1,7 @@
 ---
 title: "RedHat Openshift"
 categories: 
-  - RHEL-Starter
+  - Docs
 tags:
   - RHEL
   - Openshift
@@ -9,6 +9,7 @@ tags:
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
 ---
+introduction of Red Hat Openshift  
 
 ![logo](https://user-images.githubusercontent.com/15958325/54922745-25b15c00-4f4c-11e9-9906-f8c8a5648655.png) 
 
