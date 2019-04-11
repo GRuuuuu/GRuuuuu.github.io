@@ -594,37 +594,6 @@ $ curl -X "POST" "https://(endpoint)/(bucket-name)?delete" \
 </DeleteResult>
 ~~~  
 
-### 3.20 Initiate a multipart upload  
-multipart upload를 하기위한 준비.  
-
-크기가 매우 큰 데이터는 한번에 올리기 시간이 오래걸리기 때문에, 데이터를 여러개로 쪼개서 올릴 수 있다. 이것이 multipart upload!  
-
-**입력**   
-~~~bash
-$ curl -X "POST" "https://(endpoint)/(bucket-name)/(object-key)?uploads" \
- -H "Authorization: bearer (token)"
-~~~  
-
-**출력**   
-~~~xml
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<InitiateMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-  <Bucket>test-bucket-api</Bucket>
-  <Key>test.pptx</Key>
-  <UploadId>0100016a-0ad8-4ab5-8c0c-7d812b7d4a7a</UploadId>
-</InitiateMultipartUploadResult>
-~~~  
-
->multipart upload에 관한 파트 21,22,23,24 는 추후에 서술..  
-### 3.21 Upload a part
-
-### 3.22 Complete a multipart upload
-
-### 3.23 Get incomplete multipart uploads  
-
-### 3.24 Abort incomplete multipart uploads  
-
-
 끗
 
 ----
