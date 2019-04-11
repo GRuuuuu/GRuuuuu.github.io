@@ -616,7 +616,7 @@ $ curl -X "POST" "https://(endpoint)/(bucket-name)/(object-key)?uploads" \
 </InitiateMultipartUploadResult>
 ~~~  
 
->multipart upload에 관한 파트 21,22,23,24 는 추후에 서술..
+>multipart upload에 관한 파트 21,22,23,24 는 추후에 서술..  
 ### 3.21 Upload a part
 
 ### 3.22 Complete a multipart upload
