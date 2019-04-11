@@ -621,9 +621,9 @@ $ curl -X "POST" "https://(endpoint)/(bucket-name)/(object-key)?uploads" \
 
 ### 3.22 Complete a multipart upload
 
-### 3.33 Get incomplete multipart uploads  
+### 3.23 Get incomplete multipart uploads  
 
-### 3.34 Abort incomplete multipart uploads  
+### 3.24 Abort incomplete multipart uploads  
 
 
 끗
