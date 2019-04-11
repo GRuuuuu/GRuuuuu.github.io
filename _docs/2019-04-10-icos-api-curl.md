@@ -343,4 +343,287 @@ $ curl -X "DELETE" "https://(endpoint)/(bucket-name)/?cors" \
 ></Error>
 >~~~  
 
+### 3.9 List objects  
+bucket의 object 리스트를 출력  
 
+**입력**  
+~~~bash
+$ curl "https://(endpoint)/(bucket-name)" \
+ -H "Authorization: bearer (token)"
+~~~  
+
+**출력**  
+~~~xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Name>test-bucket-api</Name>
+  <Prefix></Prefix>
+  <Marker></Marker>
+  <MaxKeys>1000</MaxKeys>
+  <Delimiter></Delimiter>
+  <IsTruncated>false</IsTruncated>
+  <Contents>
+  <Key>images.jpg</Key>
+  <LastModified>2019-04-11T00:14:03.848Z</LastModified>
+  <ETag>&quot;db8250affcef03657f7dc900feb83d5f&quot;</ETag>
+  <Size>6683</Size>
+  <Owner>
+    <ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID>
+    <DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName>
+  </Owner>
+  <StorageClass>STANDARD</StorageClass>
+  </Contents>
+</ListBucketResult>
+~~~  
+
+## 3.10 Get bucket headers
+bucket의 헤더정보를 가져옵니다.  
+
+**입력**  
+~~~bash
+$ curl "https://(endpoint)/(bucket-name)" \
+ -H "Authorization: bearer (token)"
+~~~
+**출력**  
+~~~
+TP/1.1 200 OK
+Date: Thu, 11 Apr 2019 00:22:08 GMT
+X-Clv-Request-Id: 0c826d86-0786-44c8-ab3a-d4acc23bd5cd
+Server: 3.14.3.47
+X-Clv-S3-Version: 2.5
+Accept-Ranges: bytes
+x-amz-request-id: 0c826d86-0786-44c8-ab3a-d4acc23bd5cd
+ibm-sse-kp-enabled: false
+Content-Length: 0
+~~~
+
+## 3.11 Delete a bucket  
+bucket을 삭제합니다.  
+
+**입력**  
+~~~bash
+$ curl -X "DELETE" "https://(endpoint)/(bucket-name)/" \
+ -H "Authorization: bearer (token)"
+~~~
+**출력**  
+-없음-  
+
+>삭제하려는 bucket이 비어있지 않다면 에러메세지가 뜹니다.  
+>~~~xml
+><?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+><Error>
+>  <Code>BucketNotEmpty</Code>
+>  <Message>The bucket you tried to delete is not empty.</Message>
+>  <Resource>/web-images-bucket/</Resource>
+>  <RequestId>7aeabc50-d5f1-4b02-bbc9-9c6ef0e5a32c</RequestId>
+>  <httpStatusCode>409</httpStatusCode>
+></Error>
+>~~~  
+
+## 3.12 Upload an object
+bucket에 object를 업로드합니다.  
+
+**입력**  
+~~~bash
+$ curl -X "PUT" "https://(endpoint)/(bucket-name)/(object-key)" \
+ -H "Authorization: bearer (token)" \
+ -H "Content-Type: (content-type)" \
+ -d "(object-contents)"
+~~~  
+`object-key`에는 파일의 name과 확장자  
+`content-type`은 파일의 확장자에 따른 type정보. 다음링크를 참고 -> [content-type](https://www.iana.org/assignments/media-types/media-types.xhtml)  
+`object-contents`에는 업로드하려는 파일의 로컬 경로  
+>예시)   
+>~~~bash
+>curl -X "PUT" "https://s3.us-south.cloud-object-storage.appdomain.cloud/test-bucket-api/cat.png" \
+> -H "Authorization: bearer eyJraWQiOiIyMDE3MTE..." \
+> -H "Content-Type: image/png" \
+> -d "/cat.png"
+>~~~  
+
+**출력**  
+-없음-  
+> bucket에 가보면 파일이 추가된것을 확인할 수 있다.  
+>![image](https://user-images.githubusercontent.com/15958325/55925891-13246b80-5c4a-11e9-975e-ebfe5df1bb3c.png)  
+
+## 3.13 Get an object's headers
+object의 header를 출력합니다.  
+
+**입력**   
+~~~bash
+$ curl --head "https://(endpoint)/(bucket-name)/(object-key)" \
+ -H "Authorization: bearer (token)"
+~~~  
+
+**출력**   
+~~~
+TP/1.1 200 OK
+Date: Thu, 11 Apr 2019 02:14:14 GMT
+X-Clv-Request-Id: dfb63a37-7ca0-4d5d-b0a9-a2b7bfc0a567
+Server: 3.14.3.47
+X-Clv-S3-Version: 2.5
+Accept-Ranges: bytes
+x-amz-request-id: dfb63a37-7ca0-4d5d-b0a9-a2b7bfc0a567
+ETag: "4fe8c0df4f9ae6e8d0e58926bec9d641"
+Content-Type: image/png
+Last-Modified: Thu, 11 Apr 2019 02:05:38 GMT
+Content-Length: 28
+~~~  
+
+## 3.14 Copy an object  
+object를 복사합니다.  
+
+**입력**  
+~~~bash
+$ curl -X "PUT" "https://(endpoint)/(bucket-name)/(object-key(dest))" \
+ -H "Authorization: bearer (token)" \
+ -H "x-amz-copy-source: /(bucket-name)/(object-key(src))"
+~~~  
+`object-key(dest)`는 복사해서 새로 만드려는 파일의 이름  
+`object-key(src)`는 복사하려는 파일의 이름  
+
+**출력**  
+~~~xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CopyObjectResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <LastModified>2019-04-11T02:17:16.743Z</LastModified>
+  <ETag>&quot;4fe8c0df4f9ae6e8d0e58926bec9d641&quot;</ETag>
+</CopyObjectResult>
+~~~  
+
+## 3.15 Download an object  
+object를 다운로드합니다.  
+
+**입력**  
+
+~~~bash
+$ curl "https://(endpoint)/(bucket-name)/(object-key)" \
+ -H "Authorization: bearer (token)"
+~~~  
+
+**출력**  
+~~~
+/Program Files/Git/cat.png
+~~~  
+ 
+## 3.16 Check object's ACL  
+object의 ACL을 확인합니다.  
+
+**입력**  
+~~~bash
+$ curl "https://(endpoint)/(bucket-name)/(object-key)?acl" \
+ -H "Authorization: bearer (token)"
+~~~   
+
+**출력**  
+~~~xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AccessControlPolicy xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Owner>
+    <ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID>
+    <DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName>
+  </Owner>
+  <AccessControlList>
+    <Grant>
+      <Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser">
+      <ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID>
+      <DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName>
+    </Grantee>
+      <Permission>FULL_CONTROL</Permission>
+    </Grant>
+  </AccessControlList>
+</AccessControlPolicy>
+~~~  
+
+## 3.17 Allow anonymous access to an object
+아무나 object에 접근할 수 있게 합니다.  
+
+**입력**  
+~~~bash
+$ curl -X "PUT" "https://(endpoint)/(bucket-name)/(object-key)?acl" \
+ -H "Content-Type: (content-type)" \
+ -H "Authorization: bearer (token)" \
+ -H "x-amz-acl: public-read"
+~~~  
+
+**출력**  
+-없음-  
+
+## 3.18 Delete an object  
+object를 삭제합니다.  
+
+**입력**  
+~~~bash
+$ curl -X "DELETE" "https://(endpoint)/(bucket-name)/(object-key)" \
+ -H "Authorization: bearer (token)"
+~~~  
+
+**출력**  
+-없음-  
+
+## 3.19 Delete multiple objects  
+여러개의 object를 동시에 삭제합니다.  
+
+**입력**  
+~~~bash
+$ curl -X "POST" "https://(endpoint)/(bucket-name)?delete" \
+ -H "Content-MD5: (md5-hash)" \
+ -H "Authorization: bearer (token)" \
+ -H "Content-Type: text/plain; charset=utf-8" \
+ -d "<Delete><Object><Key>(object1)</Key></Object><Object><Key>(object2)</Key></Object></Delete>"
+~~~   
+
+>예시)  
+>`Content-MD5` : gSv/+7KDNhb+Gv2vSVq7WQ==  
+>~~~bash
+>$ echo -n "<Delete><Object><Key>ttt.png</Key></Object><Object><Key>cat.png</Key></Object></Delete>" | openssl dgst -md5 -binary | openssl enc -base64  
+>
+>=> gSv/+7KDNhb+Gv2vSVq7WQ==
+>~~~   
+
+**출력**   
+
+~~~xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DeleteResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Deleted>
+    <Key>ttt.png</Key>
+  </Deleted>
+  <Deleted>
+    <Key>cat.png</Key>
+  </Deleted>
+</DeleteResult>
+~~~  
+
+## 3.20 Initiate a multipart upload  
+multipart upload를 하기위한 준비.  
+ 
+**입력**   
+~~~bash
+$ curl -X "POST" "https://(endpoint)/(bucket-name)/(object-key)?uploads" \
+ -H "Authorization: bearer (token)"
+~~~  
+
+**출력**   
+~~~xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<InitiateMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Bucket>test-bucket-api</Bucket>
+  <Key>ddd.png</Key>
+  <UploadId>0100016a-0ab6-fa81-aa86-16dd166c7f28</UploadId>
+</InitiateMultipartUploadResult>
+~~~  
+
+>multipart upload에 관한 파트 20,21,22,23,24 는 추후에 서술..
+## 3.21 Upload a part
+
+## 3.22 Complete a multipart upload
+
+## 3.33 Get incomplete multipart uploads  
+
+## 3.34 Abort incomplete multipart uploads  
+
+
+끗
+
+----
