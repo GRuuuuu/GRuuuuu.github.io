@@ -528,7 +528,7 @@ $ curl "https://(endpoint)/(bucket-name)/(object-key)?acl" \
       <Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser">
       <ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID>
       <DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName>
-    </Grantee>
+      </Grantee>
       <Permission>FULL_CONTROL</Permission>
     </Grant>
   </AccessControlList>
@@ -578,7 +578,7 @@ $ curl -X "POST" "https://(endpoint)/(bucket-name)?delete" \
 >~~~bash
 >$ echo -n "<Delete><Object><Key>ttt.png</Key></Object><Object><Key>cat.png</Key></Object></Delete>" | openssl dgst -md5 -binary | openssl enc -base64  
 >
->=> gSv/+7KDNhb+Gv2vSVq7WQ==
+>result: gSv/+7KDNhb+Gv2vSVq7WQ==
 >~~~   
 
 **출력**   
@@ -609,7 +609,7 @@ $ curl -X "POST" "https://(endpoint)/(bucket-name)/(object-key)?uploads" \
 **출력**   
 ~~~xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-  <InitiateMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<InitiateMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
   <Bucket>test-bucket-api</Bucket>
   <Key>test.pptx</Key>
   <UploadId>0100016a-0ad8-4ab5-8c0c-7d812b7d4a7a</UploadId>
