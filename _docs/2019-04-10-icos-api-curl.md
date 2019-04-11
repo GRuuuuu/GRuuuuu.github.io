@@ -376,7 +376,7 @@ $ curl "https://(endpoint)/(bucket-name)" \
 </ListBucketResult>
 ~~~  
 
-## 3.10 Get bucket headers
+### 3.10 Get bucket headers
 bucket의 헤더정보를 가져옵니다.  
 
 **입력**  
@@ -397,7 +397,7 @@ ibm-sse-kp-enabled: false
 Content-Length: 0
 ~~~
 
-## 3.11 Delete a bucket  
+### 3.11 Delete a bucket  
 bucket을 삭제합니다.  
 
 **입력**  
@@ -420,7 +420,7 @@ $ curl -X "DELETE" "https://(endpoint)/(bucket-name)/" \
 ></Error>
 >~~~  
 
-## 3.12 Upload an object
+### 3.12 Upload an object
 bucket에 object를 업로드합니다.  
 
 **입력**  
@@ -446,7 +446,7 @@ $ curl -X "PUT" "https://(endpoint)/(bucket-name)/(object-key)" \
 > bucket에 가보면 파일이 추가된것을 확인할 수 있다.  
 >![image](https://user-images.githubusercontent.com/15958325/55925891-13246b80-5c4a-11e9-975e-ebfe5df1bb3c.png)  
 
-## 3.13 Get an object's headers
+### 3.13 Get an object's headers
 object의 header를 출력합니다.  
 
 **입력**   
@@ -470,7 +470,7 @@ Last-Modified: Thu, 11 Apr 2019 02:05:38 GMT
 Content-Length: 28
 ~~~  
 
-## 3.14 Copy an object  
+### 3.14 Copy an object  
 object를 복사합니다.  
 
 **입력**  
@@ -491,7 +491,7 @@ $ curl -X "PUT" "https://(endpoint)/(bucket-name)/(object-key(dest))" \
 </CopyObjectResult>
 ~~~  
 
-## 3.15 Download an object  
+### 3.15 Download an object  
 object를 다운로드합니다.  
 
 **입력**  
@@ -506,7 +506,7 @@ $ curl "https://(endpoint)/(bucket-name)/(object-key)" \
 /Program Files/Git/cat.png
 ~~~  
  
-## 3.16 Check object's ACL  
+### 3.16 Check object's ACL  
 object의 ACL을 확인합니다.  
 
 **입력**  
@@ -535,7 +535,7 @@ $ curl "https://(endpoint)/(bucket-name)/(object-key)?acl" \
 </AccessControlPolicy>
 ~~~  
 
-## 3.17 Allow anonymous access to an object
+### 3.17 Allow anonymous access to an object
 아무나 object에 접근할 수 있게 합니다.  
 
 **입력**  
@@ -549,7 +549,7 @@ $ curl -X "PUT" "https://(endpoint)/(bucket-name)/(object-key)?acl" \
 **출력**  
 -없음-  
 
-## 3.18 Delete an object  
+### 3.18 Delete an object  
 object를 삭제합니다.  
 
 **입력**  
@@ -561,7 +561,7 @@ $ curl -X "DELETE" "https://(endpoint)/(bucket-name)/(object-key)" \
 **출력**  
 -없음-  
 
-## 3.19 Delete multiple objects  
+### 3.19 Delete multiple objects  
 여러개의 object를 동시에 삭제합니다.  
 
 **입력**  
@@ -595,7 +595,7 @@ $ curl -X "POST" "https://(endpoint)/(bucket-name)?delete" \
 </DeleteResult>
 ~~~  
 
-## 3.20 Initiate a multipart upload  
+### 3.20 Initiate a multipart upload  
 multipart upload를 하기위한 준비.  
 
 크기가 매우 큰 데이터는 한번에 올리기 시간이 오래걸리기 때문에, 데이터를 여러개로 쪼개서 올릴 수 있다. 이것이 multipart upload!  
@@ -617,13 +617,13 @@ $ curl -X "POST" "https://(endpoint)/(bucket-name)/(object-key)?uploads" \
 ~~~  
 
 >multipart upload에 관한 파트 21,22,23,24 는 추후에 서술..
-## 3.21 Upload a part
+### 3.21 Upload a part
 
-## 3.22 Complete a multipart upload
+### 3.22 Complete a multipart upload
 
-## 3.33 Get incomplete multipart uploads  
+### 3.33 Get incomplete multipart uploads  
 
-## 3.34 Abort incomplete multipart uploads  
+### 3.34 Abort incomplete multipart uploads  
 
 
 끗
