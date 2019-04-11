@@ -242,7 +242,6 @@ $ curl -X "PUT" "https://(endpoint)/(bucket-name)/?acl" \
 >    <ID>1c887618-84d1-44cf-b31b-028b7da1f42d</ID>
 >    <DisplayName>1c887618-84d1-44cf-b31b-028b7da1f42d</DisplayName>
 >  </Owner>
-
 >  <AccessControlList>
 >    <Grant>
 >      <Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Group">
