@@ -1,5 +1,5 @@
 ---
-title: "Iris TensorFlow Basic Softmax Algorithm"
+title: "Iris TensorFlow Basic Softmax"
 categories: 
   - Simple-Tutorial
 tags:
