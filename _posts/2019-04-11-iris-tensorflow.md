@@ -1,5 +1,5 @@
 ---
-title: "Iris TensorFlow Basic Softmax Regression"
+title: "Iris TensorFlow Basic Softmax Algorithm"
 categories: 
   - Simple-Tutorial
 tags:
@@ -10,7 +10,7 @@ last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
 ---
 
-This tutorial introduces how to classify iris species using TensorFlow, Padas for data analysis. This tutorial is based on the Softmax Regression example from TensorFlow.  
+This tutorial introduces how to classify iris species using TensorFlow, Padas for data analysis. This tutorial is based on the Softmax Algorithm example from TensorFlow.  
 
 ## 1. Overview
 
@@ -71,8 +71,8 @@ input 데이터를 X라고 합시다.
 X라는 데이터가 들어올 때 어떤 품종이 될지 분류를 해주는 Classifier를 거치게됩니다. Classifier에 의해 세워진 회귀식(대략 Y=wX+b)에 대입되게 되고 출력값 Y가 나올것입니다.  
 ![image](https://user-images.githubusercontent.com/15958325/56019233-15b4bd00-5d3f-11e9-9631-1fef6cf038d1.png) 
 
-나온 출력값을 0과 1사이로 바꿔주면서 각 출력값을 모두 더했을때 1이 되게 하는것이 softmax 알고리즘이다.  
-아래 사진을 보면 각 출력값들을 다 더했을때 1이 되는것을 확인할 수 있다.  
+나온 출력값을 0과 1사이로 바꿔주면서 각 출력값을 모두 더했을때 1이 되게 하는것이 softmax 알고리즘입니다.  
+아래 사진을 보면 각 출력값들을 다 더했을때 1이 되는것을 확인할 수 있습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/56019540-dcc91800-5d3f-11e9-868d-5fc91676b8ff.png)  
 
 이렇게 되면 출력값은 1이하의 소숫점이고, 전체 출력값의 합은 총합이 1이 되므로 출력을 "확률"로 해석할 수 있고 문제를 통계적으로 대응할 수 있게 됩니다.  
