@@ -131,7 +131,7 @@ cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(tf.matmu
 
 이제 이 과정들을 소스코드로 봅시다!  
 
-~~~py
+~~~python
 #%%
 import tensorflow as tf 
 import pandas as pd 
