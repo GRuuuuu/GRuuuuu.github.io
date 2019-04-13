@@ -28,6 +28,9 @@ This tutorial introduces how to classify iris species using TensorFlow, Padas fo
 코드만 실행할 수 있다면 상관없지만, `vscode`로 돌리고 싶으면 하단의 링크를 참조해서 환경을 세팅해 주세요.  
 [참고링크](https://code.visualstudio.com/docs/python/jupyter-support)  
 
+문서에 사용하는 코드는 [여기](https://github.com/GRuuuuu/GRuuuuu.github.io/blob/master/assets/resources/simple-tutorial/ML03/iris_test.py)  
+데이터는 [요기](https://github.com/GRuuuuu/GRuuuuu.github.io/tree/master/assets/resources/simple-tutorial/ML03/data)  
+
 ## 3. Iris Dataset
 현대 통계학의 기초를 쌓았다고 알려진 통계학자인 [로널드 피셔](https://ko.wikipedia.org/wiki/%EB%A1%9C%EB%84%90%EB%93%9C_%ED%94%BC%EC%85%94)가 소개한 데이터입니다.   
 붓꽃의 여러 특징들을 정리해둔 데이터셋입니다. 이 데이터셋에는 세가지 품종에 대해 정리가 되어있습니다.  
@@ -111,11 +114,18 @@ A인지 B인지 맞추는 모델을 만들었다고 합시다.
 ![image](https://user-images.githubusercontent.com/15958325/56021966-a8f0f100-5d45-11e9-9284-40da1cfc24ca.png)  
 예측1은 cost가 0이나왔지만 예측2는 무한대에 가깝게 수렴됩니다.  
 
+![image](https://user-images.githubusercontent.com/15958325/56080509-edab8380-5e3c-11e9-91a1-01f12d7a91a8.png)  
+y는 예측값이고 y'는 실제 값입니다.  
+이 식을 소스코드로 표현하면 다음과 같습니다.  
 ~~~
-C(H(x),y) = ylog(H(x)) - (1-y)log(1-H(x))  
+cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
 ~~~
-위처럼 표현될 수 있고 여러번 학습하여 전체cost를 합해 평균을 구합니다.  
-마지막으로 `Gradient descent` 알고리즘을 사용하여 cost를 최소로 만들면 우리가 원하는 모델을 얻을 수 있습니다.  
+`tf.log`는 `y`의 각 원소 로그값을 계산하고 실제값인 `y_`의 각원소를 각각 곱합니다. 하지만 이 식은 수학적으로 불안정한 계산이기 때문에 이문서에서는 보다 안정적인 함수를 사용하는 `tf.nn.softmax_cross_entropy_with_logits`를 사용합니다.  
+~~~
+cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(tf.matmul(x, W) + b, y_))
+~~~
+
+마지막으로 `Gradient descent` 알고리즘을 사용하여 cost를 최소로 만들도록 학습시키면 우리가 원하는 모델을 얻을 수 있습니다.  
 
 ## 5. Develop Code
 
@@ -127,7 +137,7 @@ import tensorflow as tf
 import pandas as pd 
 
 #데이터 불러옴
-iris_data = pd.read_csv("C:\\Users\\SeungYeonLee\\Documents\\GitHub\\GRuuuuu.github.io\\assets\\resources\\simple-tutorial\\ML03\\data\\Iris.csv")
+iris_data = pd.read_csv(".\\data\\Iris.csv")
 iris_data.head()
 
 #품종 column을 one-hot-encode
@@ -155,7 +165,9 @@ y = tf.nn.softmax(tf.matmul(x, W) + b)
 y_ = tf.placeholder(tf.float32, [None, 3])
 
 #cross_entropy를 cost함수로
-cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
+#위에서 계산한 y를 쓰지 않는 이유는 아래 함수 자체가 softmax를 포함하기 때문
+cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(tf.matmul(x, W) + b, y_))
+
 
 #cost를 최소화
 train_step = tf.train.GradientDescentOptimizer(0.05).minimize(cross_entropy)

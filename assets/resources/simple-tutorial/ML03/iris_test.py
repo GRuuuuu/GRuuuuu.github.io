@@ -3,7 +3,7 @@ import tensorflow as tf
 import pandas as pd 
 
 #데이터 불러옴
-iris_data = pd.read_csv("C:\\Users\\SeungYeonLee\\Documents\\GitHub\\GRuuuuu.github.io\\assets\\resources\\simple-tutorial\\ML03\\data\\Iris.csv")
+iris_data = pd.read_csv(".\\data\\Iris.csv")
 iris_data.head()
 
 #품종 column을 one-hot-encode
@@ -31,8 +31,7 @@ y = tf.nn.softmax(tf.matmul(x, W) + b)
 y_ = tf.placeholder(tf.float32, [None, 3])
 
 #cross_entropy를 cost함수로
-cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
-
+cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(tf.matmul(x, W) + b, y_))
 #cost를 최소화
 train_step = tf.train.GradientDescentOptimizer(0.05).minimize(cross_entropy)
 
