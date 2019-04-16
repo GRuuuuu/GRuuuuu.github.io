@@ -116,8 +116,9 @@ y는 예측값이고 y'는 실제 값입니다.
 cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
 ~~~
 `tf.log`는 `y`의 각 원소 로그값을 계산하고 실제값인 `y_`의 각원소를 각각 곱합니다. 하지만 이 식은 수학적으로 불안정한 계산이기 때문에 이문서에서는 보다 안정적인 함수를 사용하는 `tf.nn.softmax_cross_entropy_with_logits`를 사용합니다.  
+파라미터로는 labels는 실제 값, logits는 예상한 값을 넣으면 됩니다.  
 ~~~
-cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(tf.matmul(x, W) + b, y_))
+cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=tf.matmul(x,W)+b))
 ~~~
 
 마지막으로 `Gradient descent` 알고리즘을 사용하여 cost를 최소로 만들도록 학습시키면 우리가 원하는 모델을 얻을 수 있습니다.  
