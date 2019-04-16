@@ -23,11 +23,6 @@ This tutorial introduces how to classify iris species using TensorFlow, Padas fo
 `python: v3.6.5`  
 `vscode: v1.33`  
 
-또한 이 문서에서 코드의 실행은 `jupyter notebook`을 사용할건데, 따로 데스크탑버전이나 로컬로 실행하지 않고 `vscode`에 끼워서 사용할겁니다.  
-
-코드만 실행할 수 있다면 상관없지만, `vscode`로 돌리고 싶으면 하단의 링크를 참조해서 환경을 세팅해 주세요.  
-[참고링크](https://code.visualstudio.com/docs/python/jupyter-support)  
-
 문서에 사용하는 코드는 [여기](https://github.com/GRuuuuu/GRuuuuu.github.io/blob/master/assets/resources/simple-tutorial/ML03/iris_test.py)  
 데이터는 [요기](https://github.com/GRuuuuu/GRuuuuu.github.io/tree/master/assets/resources/simple-tutorial/ML03/data)  
 
@@ -137,7 +132,7 @@ import tensorflow as tf
 import pandas as pd 
 
 #데이터 불러옴
-iris_data = pd.read_csv(".\\data\\Iris.csv")
+iris_data = pd.read_csv("{파일의 경로}")
 iris_data.head()
 
 #품종 column을 one-hot-encode
@@ -152,6 +147,8 @@ iris_test_data = iris_data_one_hot_encoded.drop(iris_train_data.index)
 #output은 세개중 하나로
 iris_train_input_data = iris_train_data.filter(['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm'])
 iris_train_label_data = iris_train_data.filter(['Species_Iris-setosa', 'Species_Iris-versicolor', 'Species_Iris-virginica'])
+iris_test_input_data = iris_test_data.filter(['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm'])
+iris_test_label_data = iris_test_data.filter(['Species_Iris-setosa', 'Species_Iris-versicolor', 'Species_Iris-virginica'])
 
 #x는 input값을 위한 placeholder
 #w는 가중치
@@ -166,7 +163,8 @@ y_ = tf.placeholder(tf.float32, [None, 3])
 
 #cross_entropy를 cost함수로
 #위에서 계산한 y를 쓰지 않는 이유는 아래 함수 자체가 softmax를 포함하기 때문
-cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(tf.matmul(x, W) + b, y_))
+#labels에는 실제 값, logits에는 예측 값이 들어간다.
+cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=tf.matmul(x,W)+b))
 
 
 #cost를 최소화
@@ -192,6 +190,25 @@ print('Accuracy : ', sess.run(accuracy, feed_dict={x: iris_test_input_data, y_: 
 ~~~
 Accuracy :  0.96666664
 ~~~  
+
+## 번외. Watson Studio로 test 
+
+Watson Studio 설정 : [링크](https://gruuuuu.github.io/iot-tutorial/#watson-studio)   
+
+생성한 project에 들어가서 notebook을 생성합니다.  
+![image](https://user-images.githubusercontent.com/15958325/56182270-56b51600-604c-11e9-8009-6a0b28646532.png)  
+
+blank로 생성합니다.  
+![image](https://user-images.githubusercontent.com/15958325/56183327-11dfae00-6051-11e9-8b02-94d423a1969a.png)   
+
+iris data셋을 파일에 추가해주고 pandas로 코드블럭을 삽입합니다.  
+![image](https://user-images.githubusercontent.com/15958325/56185176-b8c74880-6057-11e9-9956-b0d72da14552.png)   
+
+데이터가 제대로 들어왔는지 확인하고,
+![image](https://user-images.githubusercontent.com/15958325/56186435-4e63d780-605a-11e9-9fcf-f48e419e69fe.png)  
+
+tensorflow를 임포트하고 나머지 코드를 추가한뒤 돌려보면 결과를 얻을 수 있습니다.  
+![image](https://user-images.githubusercontent.com/15958325/56186564-bca89a00-605a-11e9-99d5-28aa82dc42d0.png)  
 
 끝!
 

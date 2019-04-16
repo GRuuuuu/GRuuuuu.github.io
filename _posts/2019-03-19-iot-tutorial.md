@@ -140,6 +140,7 @@ return msg;
 하지만 단순히 데이터를 저장만 하는 것은 아무런 의미를 갖지 못합니다. 때문에 데이터를 분석하여 의미있는 값을 도출해 내는 것이 중요합니다.  
 
 ## 5. Analyze Data with Watson Studio
+### watson studio
 >왓슨스튜디오를 처음 사용하는 유저는 먼저 상단의 Upgrade 버튼을 누른 뒤, Watson Studio와 Knowledge Catalog Bundle들을 설치해주세요.  
 >![image](https://user-images.githubusercontent.com/15958325/54487624-7a652f00-48db-11e9-8c13-58ef8649aa53.png)
 
@@ -154,10 +155,13 @@ return msg;
 추가하고나서 Refresh버튼을 눌러줍니다.  
 <img width="731" alt="26" src="https://user-images.githubusercontent.com/15958325/54487666-1b53ea00-48dc-11e9-96d4-9131a84824bb.PNG">   
 
+### add spark
 프로젝트를 생성하고 나서, Spark 서비스를 추가시킵니다.  
 <img width="779" alt="27" src="https://user-images.githubusercontent.com/15958325/54487668-1b53ea00-48dc-11e9-94f3-285e1beebb9f.PNG">  
 <img width="741" alt="28" src="https://user-images.githubusercontent.com/15958325/54487669-1bec8080-48dc-11e9-8a1e-e7b6741e0e4f.PNG">  
 프로젝트의 초기 설정은 끝!  
+
+### notebook 
 
 다음은 실제로 어떻게 데이터를 분석할 것인지 정하는 `Notebook`을 구성해봅시다.  
 프로젝트 상단에 Add to project버튼을 눌러보면 `Notebook`을 생성하는 버튼이 있습니다.   
