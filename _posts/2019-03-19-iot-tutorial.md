@@ -1,4 +1,3 @@
-
 ---
 title: "Simple IoT accelerometer game Tutorial"
 categories: 
@@ -9,7 +8,9 @@ tags:
   - Cloud
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
-
+sitemap :
+  changefreq : daily
+  priority : 1.0
 ---
 Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio
 ## 1. Overview

@@ -9,6 +9,9 @@ tags:
   - Cloud
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
+sitemap :
+  changefreq : daily
+  priority : 1.0
 ---
 
 This tutorial guides you through using the MNIST computer vision data set to train a TensorFlow model to recognize handwritten digits. In this tutorial, you will train, deploy, and test the model using the IBM Watson Machine Learning command line interface (CLI).

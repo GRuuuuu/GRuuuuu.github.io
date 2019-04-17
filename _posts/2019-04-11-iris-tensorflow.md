@@ -8,6 +8,9 @@ tags:
   - Python
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
+sitemap :
+  changefreq : daily
+  priority : 1.0
 ---
 
 This tutorial introduces how to classify iris species using TensorFlow, Padas for data analysis. This tutorial is based on the Softmax Algorithm example from TensorFlow.  

@@ -8,6 +8,9 @@ tags:
   - Docs
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
+sitemap :
+  changefreq : daily
+  priority : 1.0
 ---
 introduction of Red Hat Openshift  
 
@@ -21,19 +24,22 @@ openshift는 기업에 Docker와 Kubernetes를 제공하는 컨테이너 애플�
 ## Openshift의 제공 버전 
 ### Openshift Origin
 - Openshift의 오픈소스 업스트림 프로젝트 
-- CentOS와 RHEL에 설치 가능
+- CentOS와 RHEL에 설치 가능  
+
 ### Openshift Container Platform 
 - RedHat이 제공하고 지원하는 엔터프라이즈 버전
 - Openshift에 필요한 자격을 구매하고 전체 인프라의 설치와 관리를 담당 
-- 고객이 전체 플랫폼을 소유하기 때문에, on-premise환경이나 퍼블릭 클라우드등에 설치 가능
+- 고객이 전체 플랫폼을 소유하기 때문에, on-premise환경이나 퍼블릭 클라우드등에 설치 가능  
+
 ### Openshift Online
 - RedHat의 호스팅형 PaaS
-- 클라우드에서 애플리케이션 개발, 구축, 배포, 호스팅 솔루션을 제공 
+- 클라우드에서 애플리케이션 개발, 구축, 배포, 호스팅 솔루션을 제공  
+
 ### Openshift Dedicated
 - 클라우드에서 관리형 싱글 테넌트 Openshift환경을 제공
 - 클러스터는 RedHat을 통해 관리
 - 필요에 따라 추가 리소스 제공
-- 타 public cloud에서 클러스터 호스팅 가능
+- 타 public cloud에서 클러스터 호스팅 가능  
 
 
 ## Openshift 특징

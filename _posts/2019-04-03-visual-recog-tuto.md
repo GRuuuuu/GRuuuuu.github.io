@@ -9,6 +9,9 @@ tags:
   - Cloud
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
+sitemap :
+  changefreq : daily
+  priority : 1.0
 ---
 
 This tutorial guides you through using the IBM Visual recognition API to build application easily. In this tutorial, you will train, deploy, and test the model using the IBM Visual recognition service. also learn about how to train custom images and bring in functionalities that are more tailored to specific data that wasn't provided by IBM

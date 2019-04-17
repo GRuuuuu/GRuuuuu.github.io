@@ -8,6 +8,9 @@ tags:
   - Sawtooth
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
+sitemap :
+  changefreq : daily
+  priority : 1.0
 ---
 `이 문서는 hyperledger sawtooth 1.0.4을 docker for ubuntu(18.03.01-ce)에서 다루며 os는 ubuntu-18.04 LTS임`
 
@@ -58,7 +61,7 @@ const payloadBytes = cbor.encode(payload)
 ~~~
 
 ### 5.2 Xo
-Xo 트랜잭션 패밀리는 payload를 작성하는 방법이 `Intkey`와는 사뭇 다릅니다. payload를 핸들링하는 [소스코드](https://github.com/hyperledger/sawtooth-core/blob/master/sdk/examples/xo_python/sawtooth_xo/processor/xo_payload.py)를 참고하면서 봐주세요.  
+Xo 트랜잭션 패밀리는 payload를 작성하는 방법이 `Intkey`와는 사뭇 다릅니다.  
 ~~~python
 class XoPayload:
 
