@@ -33,7 +33,8 @@ Icos 생성 및 credential얻기 : [https://gruuuuu.github.io/simple-tutorial/mn
 
 ## 3. API
 
->AWS s3 api doc : [link](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#)
+>AWS s3 api doc : [link](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#)  
+>아래 예시에서 사용하는 소스코드 : [link](https://github.com/GRuuuuu/GRuuuuu.github.io/blob/master/assets/resources/simple-tutorial/ICOS02/icos-s3-api-test/galleryController.js)  
 
 js에서 s3모듈을 사용하기 위해 aws-sdk를 추가합니다.  
 ~~~js
