@@ -65,7 +65,11 @@ var createBucket=function(req,res){
   //bucket 이름은 unique해야함.
   var params = {Bucket: '190418testbucket'};
   s3.createBucket(params, function(err) {
-      console.log("checking for error on createBucket " + params.Bucket, err);
+     if (err) {
+        console.log("Error data: ", err);
+      } else{
+        console.log("checking for data "+ JSON.stringify(data));
+      }
   });
 };
 ~~~
@@ -97,8 +101,6 @@ var putObject=function(req,res){
 };
 ~~~
 
->multer 모듈을 쓰는 방법은 다음 링크를 참고 : [링크](https://gruuuuu.github.io/simple-tutorial/icos-api/#upload)
-
 #### response
 ~~~json
 //success
@@ -110,11 +112,13 @@ var putObject=function(req,res){
 bucket에 담긴 object들의 리스트를 반환합니다.  
 
 ~~~js
-var getGalleryImages = function (req, res) {
+var listObject = function (req, res) {
     var params = {Bucket: {버킷이름};
     s3.listObjectsV2(params, function (err, data) {
-        if(data) {
-            console.log("listing " + myBucket, [err, JSON.stringify(data)]);
+        if (err) {
+          console.log("Error data: ", err);
+        } else{
+          console.log("checking for data "+ JSON.stringify(data));
         }
     });
 };

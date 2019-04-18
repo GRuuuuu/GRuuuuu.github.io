@@ -1,7 +1,6 @@
-var galleryController = function(title) {
+var Controller = function(title) {
     var aws = require('aws-sdk'); //aws api를 사용하기위해 추가
-    var multer = require('multer');
-    var multerS3 = require('multer-s3');
+
     //s3프로토콜을 위한 정보 기입
     var ep = new aws.Endpoint('https://s3.us-south.cloud-object-storage.appdomain.cloud');
     var s3 = new aws.S3({
@@ -12,55 +11,46 @@ var galleryController = function(title) {
     });
 
     //cos bucket name
-    var myBucket = '190418testbucket';
+    var myBucket = 'yourBucketName';
 
-    var upload = multer({
-        storage: multerS3({
-            s3: s3,
-            bucket: myBucket,
-            key: function (req, file, cb) {
-                cb(null, file.originalname);
-                console.log(file);
-                console.log(cb);
-            }
-        })
-    });
-
-
-    var getGalleryImages = function (req, res) {
-        var params = {Bucket: myBucket};
-        //버킷에 있는 개체의 데이터를 반환
-        s3.listObjectsV2(params, function (err, data) {
-            if(data) {
-                console.log("listing " + myBucket, [err, JSON.stringify(data)]);
-            }
-        });
-    };
 
     var createBucket=function(req,res){
-        var params = {Bucket: '190418testbucket2'};
+        //Bucket name should be unique
+        var params = {Bucket: 'somethingNewName'};
         s3.createBucket(params, function(err,data) {
-            console.log("checking for error on createBucket " + params.Bucket, err);
-            console.log("checking for data on createBucket " + params.Bucket, JSON.stringify(data));
+            if (err) {
+             console.log("Error data: ", err);
+            } else{
+             console.log("checking for data "+ JSON.stringify(data));
+            }
         });
     };
 
     var putObject=function(req,res){
-        var data = {Bucket: myBucket, Key: 'test.txt', Body: require('fs').createReadStream('./hellohello.txt')};
-        s3.putObject(data, function(err, data) {
+        var params = {Bucket: myBucket, Key: 'name_toStore.txt', Body: require('fs').createReadStream('./filepath/filename.txt')};
+        s3.putObject(params, function(err, data) {
           if (err) {
-           console.log("Error uploading data: ", err);
+           console.log("Error data: ", err);
           } else {
-           console.log("Successfully uploaded file to " + myBucket);
            console.log("checking for data "+ JSON.stringify(data));
           }
          
         });
     };
-
+    
+    var listObject = function (req, res) {
+        var params = {Bucket: myBucket};
+        s3.listObjectsV2(params, function (err, data) {
+            if (err) {
+             console.log("Error data: ", err);
+            } else{
+             console.log("checking for data "+ JSON.stringify(data));
+            }
+        });
+    };
     var delObject=function(req,res){
         var itemsToDelete = Array();
-            itemsToDelete.push ({ Key : 'hellohello.txt' });
+            itemsToDelete.push ({ Key : 'name_toDelete.txt' });
         var params = {Bucket: myBucket,
             Delete: {
                 Objects: itemsToDelete,
@@ -84,8 +74,8 @@ var galleryController = function(title) {
           });
     }
     return {
-        getGalleryImages: getGalleryImages,
         createBucket: createBucket,
+        listObject: listObject,
         upload: upload,
         putObject:putObject,
         delObject:delObject,
@@ -93,6 +83,6 @@ var galleryController = function(title) {
     };
 };
 
-module.exports = galleryController;
+module.exports = Controller;
 
 
