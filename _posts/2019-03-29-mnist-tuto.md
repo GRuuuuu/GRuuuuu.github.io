@@ -155,7 +155,7 @@ link : [http://yann.lecun.com/exdb/mnist/](http://yann.lecun.com/exdb/mnist/)
 
 ## 5. Train the Model
 이제 본격적으로 모델을 트레이닝해보겠습니다.  
-모델을 빌드할 convolutional_network.py와 MNIST데이터를 다운로드하고 읽을 input_data.py가 담겨있는 [tf-model](https://github.com/GRuuuuu/GRuuuuu.github.io/blob/master/assets/resources/simple-tutorial/tf-model.zip) 파일과, 이 파일들을 실행시키고 설정값들을 부여할 [tf-train.yaml](https://raw.githubusercontent.com/GRuuuuu/GRuuuuu.github.io/master/assets/resources/simple-tutorial/tf-train.yaml)파일을 다운로드합시다.  
+모델을 빌드할 convolutional_network.py와 MNIST데이터를 다운로드하고 읽을 input_data.py가 담겨있는 [tf-model](https://github.com/GRuuuuu/GRuuuuu.github.io/blob/master/assets/resources/simple-tutorial/ML01/tf-model.zip) 파일과, 이 파일들을 실행시키고 설정값들을 부여할 [tf-train.yaml](https://raw.githubusercontent.com/GRuuuuu/GRuuuuu.github.io/master/assets/resources/simple-tutorial/ML01/tf-train.yaml)파일을 다운로드합시다.  
 파일을 다 받고 나면 yaml파일은 몇군데 수정해줘야할 부분이 있습니다.  
 ~~~yaml
 model_definition:
@@ -229,7 +229,7 @@ $ bx ml deploy {Model-ID} "{deploy-model-name}"
 
 마지막으로, deploy한 모델을 가지고 테스트를 해보겠습니다.  
 
-숫자 5와 4의 사진의 raw데이터를 가지고 있는 [json파일](https://raw.githubusercontent.com/GRuuuuu/GRuuuuu.github.io/master/assets/resources/simple-tutorial/tf-mnist-test-payload.json)을 다운로드 받아봅시다.  
+숫자 5와 4의 사진의 raw데이터를 가지고 있는 [json파일](https://raw.githubusercontent.com/GRuuuuu/GRuuuuu.github.io/master/assets/resources/simple-tutorial/ML01/tf-mnist-test-payload.json)을 다운로드 받아봅시다.  
 
 json파일도 몇군데 수정해야합니다.
 ~~~json
