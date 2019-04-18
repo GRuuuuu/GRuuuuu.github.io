@@ -113,7 +113,7 @@ bucket에 담긴 object들의 리스트를 반환합니다.
 
 ~~~js
 var listObject = function (req, res) {
-    var params = {Bucket: {버킷이름};
+    var params = {Bucket: {버킷이름}};
     s3.listObjectsV2(params, function (err, data) {
         if (err) {
           console.log("Error data: ", err);
@@ -157,10 +157,12 @@ var delObject=function(req,res){
     var itemsToDelete = Array();
         itemsToDelete.push ({ Key : '{file이름}' });
         itemsToDelete.push ({ Key : '{file이름}' });
-    var params = {Bucket: myBucket,
-        Delete: {
-            Objects: itemsToDelete,
-            Quiet: false}};
+    var params = {
+          Bucket: myBucket,
+          Delete: {
+              Objects: itemsToDelete,
+              Quiet: false}
+        };
     s3.deleteObjects(params, function(err, data) {
         if (err) {
           console.log("Error data: ", err);

@@ -37,7 +37,7 @@ var Controller = function(title) {
          
         });
     };
-    
+
     var listObject = function (req, res) {
         var params = {Bucket: myBucket};
         s3.listObjectsV2(params, function (err, data) {
@@ -51,10 +51,12 @@ var Controller = function(title) {
     var delObject=function(req,res){
         var itemsToDelete = Array();
             itemsToDelete.push ({ Key : 'name_toDelete.txt' });
-        var params = {Bucket: myBucket,
-            Delete: {
-                Objects: itemsToDelete,
-                Quiet: false}};
+        var params = {
+                Bucket: myBucket,
+                Delete: {
+                    Objects: itemsToDelete,
+                    Quiet: false}
+            };
         s3.deleteObjects(params, function(err, data) {
             if (err) {
              console.log("Error data: ", err);
@@ -76,7 +78,6 @@ var Controller = function(title) {
     return {
         createBucket: createBucket,
         listObject: listObject,
-        upload: upload,
         putObject:putObject,
         delObject:delObject,
         delBucket:delBucket
