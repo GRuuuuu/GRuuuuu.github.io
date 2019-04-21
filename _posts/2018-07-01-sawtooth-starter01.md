@@ -8,6 +8,9 @@ tags:
   - Sawtooth
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
+sitemap :
+  changefreq : daily
+  priority : 1.0
 ---
 
 `이 문서는 hyperledger sawtooth 1.0.4을 docker for windows(18.03.01-ce-win65)에서 다루며 os는 window 10 pro임`

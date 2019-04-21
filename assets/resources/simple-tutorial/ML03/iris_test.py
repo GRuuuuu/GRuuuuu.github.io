@@ -3,7 +3,7 @@ import tensorflow as tf
 import pandas as pd 
 
 #데이터 불러옴
-iris_data = pd.read_csv(".\\data\\Iris.csv")
+iris_data = pd.read_csv("{파일 경로}")
 iris_data.head()
 
 #품종 column을 one-hot-encode
@@ -18,6 +18,8 @@ iris_test_data = iris_data_one_hot_encoded.drop(iris_train_data.index)
 #output은 세개중 하나로
 iris_train_input_data = iris_train_data.filter(['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm'])
 iris_train_label_data = iris_train_data.filter(['Species_Iris-setosa', 'Species_Iris-versicolor', 'Species_Iris-virginica'])
+iris_test_input_data = iris_test_data.filter(['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm'])
+iris_test_label_data = iris_test_data.filter(['Species_Iris-setosa', 'Species_Iris-versicolor', 'Species_Iris-virginica'])
 
 #x는 input값을 위한 placeholder
 #w는 가중치
@@ -31,7 +33,9 @@ y = tf.nn.softmax(tf.matmul(x, W) + b)
 y_ = tf.placeholder(tf.float32, [None, 3])
 
 #cross_entropy를 cost함수로
-cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(tf.matmul(x, W) + b, y_))
+#cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
+cross_entropy  = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=tf.matmul(x,W)+b))
+
 #cost를 최소화
 train_step = tf.train.GradientDescentOptimizer(0.05).minimize(cross_entropy)
 
