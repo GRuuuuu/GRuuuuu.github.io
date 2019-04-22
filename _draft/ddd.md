@@ -79,7 +79,7 @@ curl -XPUT http://${es_url}/_template/sys_user_mapping -s -d
 `field`명을 통해 검색하게하고, 날짜와 숫자를 각 필드에 포함되게 하고,  
 모든 필드에서 string을 발견하면 string으로 처리하고 string분석하지 않음.  
 
-
+>언어분석이라는건 공백단위로 분석한다는거심
 
 ## 2. 사용자 매핑 데이터를 csv파일에서 elasticsearch로 가져오기
 
@@ -94,21 +94,56 @@ Note:
 	 
    - csv를 다시 로드하려면 es에서 `sys_user_mapping` 인덱스를 삭제하고 `user_map.conf`에 의해 정의된 `.opsition`파일도 삭제. 
  
+>맵핑은 색인의 문서를 여러 논리적 그룹으로 나누고 필드의 특성, 이를테면 필드의 검색 가능성 또는 토큰화 여부, 즉 별개의 단어로 분리되는지 여부 등을 지정합니다.
 
-## 3. Configure related loader to combine user mapping info loaded in step 2 into new sampling data.
-   e.g. $explorer_node_dir/conf/dataloader/lsbacct.xml
-   add following section:
-   ---------------------------------
-   <Dependencies>
-			<Dependency Name="sys_user_mapping">
-				<Keys>
-					<Key Name="user_name"/>					
-				</Keys>
-				<Values>
-					<Value Name="department_name"/>
-				</Values>
-			</Dependency>
-		</Dependencies>
-	----------------------------------
+## 3. 로더 구성
+2단계에서 로드된 사용자 매핑 정보를 새로운 샘플링데이터로 합쳐야함.
 
-    Note: this only applies to new data in index of flexlicusage loader	(flexlm_license_usage-%{yyyymm} in es).
+e.g. $explorer_node_dir/conf/dataloader/lsbacct.xml  
+
+add following section:
+~~~xml
+<Dependencies>
+	<Dependency Name="sys_user_mapping">
+        <Keys>
+            <Key Name="user_name"/>
+        </Keys>
+        <Values>
+    	    <Value Name="department_name"/>
+        </Values>
+	</Dependency>
+</Dependencies>
+~~~
+
+Note: this only applies to new data in index of flexlicusage loader	(flexlm_license_usage-%{yyyymm} in es).   
+flexlicusage 로더에 의해 생기는 index의 새로운 데이터에만 적용됨.
+
+
+## 4. Report customization description
+
+report_model.sh에 es_url 수정하고 스크립트 실행시킴.   
+es의 report모델을 업데이트함.
+
+expolorer gui화면으로가면 새로운 차트가 생긴것을 확인할 수 있음.  
+
+-------------------------------------------------
+Update report model to add user mapping fields (department, etc) to dimensions/filters  
+사용자 매핑 필드(department 등)를 report 모델에 업데이트함.  
+
+a) explorer gui에서 관련 차트를 찾고 url에 표시된 doc id를 사용해서 es에서 모델정의를 검색함
+~~~   
+e.g. curl -XGET http://${es_url}/model/doc/flexlm03
+~~~
+
+시각화 모델에는 cube정보(es에서 데이터검색할때 쓰는)와 차트 레이아웃이 포함되어있음.  
+차트 레이아웃 : (chart type, filters, controls (time period, dimensions, measures), etc)  
+dimension/measure/filter을 추가해야하는 경우, 필터를 추가하고, b단계로 이동. (필터추가 어디다가?)
+   
+b) 시각화된 모델에서 cube정보를 찾고, 정의를 수정함  
+
+~~~
+GET /model/doc/flexlm_license_usage_util
+~~~  
+
+수정한 definition을 복사하고 es로 업데이트하여 차트 definition 업데이트  
+   
