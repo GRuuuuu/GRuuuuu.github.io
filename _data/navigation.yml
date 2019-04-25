@@ -10,7 +10,6 @@ main:
      url: /sitemap/
 
 ### SERIES ###   
- # - text: "[![your logo](/assets/images/p.png)](https://gruuuuu.github.io/)"
 # sawtooth-starter
 sawtooth-nav:
   - title: "Tutorial"
@@ -35,3 +34,13 @@ sawtooth-nav:
         url : /sawtooth-starter/sawtooth-starter09
       - title: "10 Grafana & InfluxDB"
         url : /sawtooth-starter/sawtooth-starter10
+
+
+# elk-starter
+elk-nav:
+  - title: "Tutorial-ElasticSearch"
+    children:
+      - title: "01 Install ES"
+        url: /elk-starter/elk-starter01
+      - title: "02 Configuring Cluster"
+        url : elk-starter/elk-starter02

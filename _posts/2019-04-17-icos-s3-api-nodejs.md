@@ -1,7 +1,7 @@
 ---
 title: "ICOS - S3 API with NodeJS"
 categories: 
-  - Docs
+  - ICOS
 tags:
   - ICOS
   - Nodejs
@@ -12,8 +12,6 @@ sitemap :
   changefreq : daily
   priority : 1.0
 ---
-
-In this recipe, we will show how to do basic operations with Cloud Object Storage using the same S3 API.  
 
 ## 1. Overview
 이 문서에서는 Nodejs로 ICOS를 사용하는 법을 알아보도록 하겠습니다.  

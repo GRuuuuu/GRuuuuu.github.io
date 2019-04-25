@@ -1,7 +1,7 @@
 ---
 title: "Curl Command for ICOS REST API"
 categories: 
-  - Docs
+  - ICOS
 tags:
   - ICOS
 last_modified_at: 2019-03-22T13:00:00+09:00
@@ -12,7 +12,6 @@ sitemap :
   priority : 1.0
 ---
 
-This document introduces command that how to communicate ICOS with REST-API using curl.   
 
 ## 1. IBM Cloud Object Storage API
 IBM Cloud Object Storage API는 객체 읽기 및 쓰기를 위한 REST 기반 API 입니다. 인증을 위해 IBM Cloud Identity와 Access Management를 사용하며, S3 API의 서브셋을 지원하여 app이 IBM Cloud로 쉽게 마이그레이션되도록 합니다.   
