@@ -15,4 +15,4 @@ sawtooth-nav:
   - title: "Tutorial"
     children:
       - title: "01 Sawtooth on Docker"
-        url: /sawtooth-starter01
+        url: /sawtooth-starter/sawtooth-starter01
