@@ -12,7 +12,27 @@ main:
 ### SERIES ###
 # sawtooth-starter
 sawtooth-nav:
+  name : "GRU"
+  avatar : "/assets/images/p.png"
   - title: "Tutorial"
     children:
       - title: "01 Sawtooth on Docker"
         url: /sawtooth-starter/sawtooth-starter01
+      - title: "02 XO Transaction Family"
+        url : /sawtooth-starter/sawtooth-starter02
+      - title: "03 Transaction Processor 1"
+        url : /sawtooth-starter/sawtooth-starter03
+      - title: "04 Transaction Processor 2"
+        url : /sawtooth-starter/sawtooth-starter04
+      - title: "05 Multi Network 1"
+        url: /sawtooth-starter/sawtooth-starter05
+      - title: "06 Multi Network 2"
+        url : /sawtooth-starter/sawtooth-starter06
+      - title: "07 Make Custom Processor"
+        url : /sawtooth-starter/sawtooth-starter07
+      - title: "08 Configuring Permission"
+        url : /sawtooth-starter/sawtooth-starter08
+      - title: "09 Submitting Transactions"
+        url : /sawtooth-starter/sawtooth-starter09
+      - title: "10 Grafana & InfluxDB"
+        url : /sawtooth-starter/sawtooth-starter10
