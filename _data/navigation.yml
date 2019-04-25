@@ -12,7 +12,9 @@ main:
 ### SERIES ###
 # sawtooth-starter
 sawtooth-nav:
-  image : "/assets/images/p.png"
+  - title: GRU
+    image : "/assets/images/p.png"
+    image_alt: "image"
   - title: "Tutorial"
     children:
       - title: "01 Sawtooth on Docker"
