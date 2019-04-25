@@ -11,10 +11,6 @@ main:
 
 ### SERIES ###
 # sawtooth-starter
-sawtooth-nav:
-  - title: GRU
-    image : "/assets/images/p.png"
-    image_alt: "image"
   - title: "Tutorial"
     children:
       - title: "01 Sawtooth on Docker"
@@ -37,3 +33,5 @@ sawtooth-nav:
         url : /sawtooth-starter/sawtooth-starter09
       - title: "10 Grafana & InfluxDB"
         url : /sawtooth-starter/sawtooth-starter10
+
+# ELK-starter
