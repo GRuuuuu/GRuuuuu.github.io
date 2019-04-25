@@ -8,3 +8,11 @@ main:
      url: /collection-archive/
    - title: "Sitemap"
      url: /sitemap/
+
+### SERIES ###
+# sawtooth-starter
+sawtooth-nav:
+  - title: "Tutorial"
+    children:
+      - title: "01 Sawtooth on Docker"
+        url: /sawtooth-starter01
