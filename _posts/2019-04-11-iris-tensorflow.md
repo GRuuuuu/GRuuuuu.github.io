@@ -13,10 +13,7 @@ sitemap :
   priority : 1.0
 ---
 
-This tutorial introduces how to classify iris species using TensorFlow, Padas for data analysis. This tutorial is based on the Softmax Algorithm example from TensorFlow.  
-
 ## 1. Overview
-
 이 문서는 iris(붓꽃)의 꽃잎과 꽃받침의 길이를 통해 각 붓꽃의 품종을 구별해 내는 모델을 소개하고 있습니다.  
 `softmax`알고리즘을 사용해서 데이터를 분석할 것입니다.    
 

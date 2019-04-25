@@ -13,8 +13,6 @@ main:
  # - text: "[![your logo](/assets/images/p.png)](https://gruuuuu.github.io/)"
 # sawtooth-starter
 sawtooth-nav:
-  - title: "Sawtooth-Starter"
-    text: "Hyperledger Sawtooth for starter"
   - title: "Tutorial"
     children:
       - title: "01 Sawtooth on Docker"

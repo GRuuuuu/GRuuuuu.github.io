@@ -12,7 +12,7 @@ sitemap :
   changefreq : daily
   priority : 1.0
 ---
-Learn how to capture and send sensor data to the cloud using Watson IoT Platform and then analyze that data using Watson Studio
+
 ## 1. Overview
 디바이스의 센서데이터를 cloud상에 저장시키고, 저장된 데이터를 왓슨스튜디오로 분석하여 센싱데이터의 에너지 총량을 도출할 수 있는 application입니다. 
 

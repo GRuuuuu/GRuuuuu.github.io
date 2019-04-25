@@ -14,7 +14,6 @@ sitemap :
 ---
 
 ## 1. Overview
-
 `SUSE`에서의 `YaST`와 `iSCSI` 설정에 대해 다루도록 하겠습니다.
 
 ## 2. Prerequisites

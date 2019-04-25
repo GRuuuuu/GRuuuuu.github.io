@@ -14,10 +14,7 @@ sitemap :
   priority : 1.0
 ---
 
-This tutorial guides you through using the IBM Visual recognition API to build application easily. In this tutorial, you will train, deploy, and test the model using the IBM Visual recognition service. also learn about how to train custom images and bring in functionalities that are more tailored to specific data that wasn't provided by IBM
-
 ## 1. Overview
-
 이번 튜토리얼에서는 IBM Watson의 Visual Recognition 서비스를 통해 이미지를 인식하고, 서비스의 API를 이용한 간단한 web application제작, 마지막으로 기존 모델이 아닌 커스텀모델을 트레이닝시키는 작업까지 해보도록 하겠습니다.  
 
 본 튜토리얼은 "[How to Build Machine Learning Apps with the IBM Visual Recognition API- Part 1](https://sourcedexter.com/ibm-visual-recognition-api-part-1/)"와 "[Building Custom Image Classifiers with IBM Visual Recognition Technology API – Part 2](https://sourcedexter.com/ibm-visual-recognition-technology-api-part-2/)"을 직접 해보고 작성한 튜토리얼입니다.  
