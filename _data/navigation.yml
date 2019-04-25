@@ -9,8 +9,10 @@ main:
    - title: "Sitemap"
      url: /sitemap/
 
-### SERIES ###
+### SERIES ###   
 # sawtooth-starter
+sawtooth-nav:
+  - text: "[![your logo](/assets/images/p.png)](https://gruuuuu.github.io/)"
   - title: "Sawtooth-Starter"
     text: "Hyperledger Sawtooth for starter"
   - title: "Tutorial"
