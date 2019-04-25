@@ -125,7 +125,9 @@ author:
     - label: "linkedin"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/%EC%8A%B9%EC%97%B0-%EC%9D%B4-583186167/"
-
+    - label: "HOME"
+      icon: "fa fa-home fa-fw"
+      url: "https://gruuuuu.github.io/#"
 # Site Footer
 footer:
   links:
