@@ -38,7 +38,11 @@ sawtooth-nav:
 
 # elk-starter
 elk-nav:
-  - title: "Tutorial-ElasticSearch"
+  - title: "Tutorial"
+    children:
+      - title: "00 Intro"
+        url: /elk-starter/elk-starter00
+  - title: "ElasticSearch"
     children:
       - title: "01 Install ES"
         url: /elk-starter/elk-starter01
