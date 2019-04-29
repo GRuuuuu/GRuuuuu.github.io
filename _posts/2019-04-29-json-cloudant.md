@@ -3,9 +3,9 @@ title: "Simple JSON Query for IBM Cloudant"
 categories: 
   - Simple-Tutorial
 tags:
-  - ML
-  - Softmax
-  - Python
+  - JSON
+  - Cloudant
+  - NoSQL
 last_modified_at: 2019-03-22T13:00:00+09:00
 author_profile: true
 sitemap :
@@ -29,7 +29,7 @@ IBM Cloud 계정 : [link](https://console.bluemix.net)
 
 `IBM Cloudant`는 document중심 DBaaS(Database as a Service)입니다. 타 NoSQL DB와 같이 데이터를 `JSON`형식의 Document로 저장할 수 있습니다.  
 
-한마디로 클라우드위의 NoSQL DB라고 생각하시면 됩니다.  
+한마디로 클라우드 위의 NoSQL DB라고 생각하시면 됩니다.  
 
 ## 4. Basic Query
 
@@ -338,7 +338,7 @@ Query탭으로 이동해서 상기의 json 쿼리문을 Run시킵니다.
 > Cloudant는 Mongo 스타일의 operator를 사용하고 있습니다. 다음 링크를 참조해주세요.  
 > [MongoDB Query and Projection Operators](https://docs.mongodb.com/manual/reference/operator/query/)   
 
--|Comparison Operator
+|Comparison Operator
 ----|----
 $eq|같음
 $gt|큼
