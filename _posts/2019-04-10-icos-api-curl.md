@@ -383,7 +383,7 @@ bucket의 헤더정보를 가져옵니다.
 
 **입력**  
 ~~~bash
-$ curl "https://(endpoint)/(bucket-name)" \
+$ curl --head "https://(endpoint)/(bucket-name)" \
  -H "Authorization: bearer (token)"
 ~~~
 **출력**  
