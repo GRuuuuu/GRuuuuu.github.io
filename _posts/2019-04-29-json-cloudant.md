@@ -1,5 +1,5 @@
 ---
-title: "Query for IBM Cloudant"
+title: "Simple JSON Query for IBM Cloudant"
 categories: 
   - Simple-Tutorial
 tags:
