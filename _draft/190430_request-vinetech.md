@@ -89,7 +89,7 @@ curl -XPUT http://${es_url}/_template/sys_user_mapping -s -d
 ### Type: Cubes
 차트의 틀을 정의한 document.  
 
->아래 json쿼리의 내용은 위 템플릿 json쿼리와 다르게 LE에서 정의한 속성들을 사용하고있기때문에 LE 공식 document에서 직접 언급하지 않는이상 100% 확신할 수 없습니다.  
+>아래 json쿼리의 내용은 위 템플릿 json쿼리와 다르게 LE에서 정의한 속성들을 사용하고있기때문에 LE 공식 document에서 직접 언급하지 않는이상 100% 확신할 수 없음..  
 
 cubes 예시로 flexlm_license_usage_util_demo의 json 쿼리를 설명  
 ~~~json
