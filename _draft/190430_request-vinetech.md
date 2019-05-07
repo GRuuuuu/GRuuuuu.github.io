@@ -162,7 +162,7 @@ curl -XPUT "http://${es_url}/model/cubes/flexlm_license_usage_util_demo" -H 'Con
 `role` : 해당 필드는 어떤 종류인지    
 > role은 총 두가지 종류가 있음.  
 > **dimension** : How you want to show it   
-> **measure** : What you wnat to show  
+> **measure** : What you wnat to show   
 
 `agg` : 
 
