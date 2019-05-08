@@ -157,12 +157,11 @@ curl -XPUT "http://${es_url}/model/cubes/flexlm_license_usage_util_demo" -H 'Con
     ...
 ~~~
 `id` : fields 배열 인자의 id  
-`name` : LE에 display되는 이름  
-`field` : datasource에서 가져올 field  
+`field` : LE에 display되는 이름  
 `role` : 해당 필드는 어떤 종류인지    
 > role은 총 두가지 종류가 있음.  
 > **dimension** : How you want to show it   
-> **measure** : What you wnat to show   
+> **measure** : What you want to show   
 
 `agg` : 
 
