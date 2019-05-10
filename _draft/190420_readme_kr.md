@@ -26,10 +26,10 @@ curl -XPUT http://${es_url}/_template/sys_user_mapping -s -d
                 {
                     "str":{
                         "match": "*",
-                        "match_mapping_type": "string",
+                        "match_mapping_type": "text",
                         "mapping":{
-                            "type": "string",
-                            "index" : "not_analyzed"
+                            "type": "text",
+                            "analyzer": "keyword"
                         }
                     }
                 }
