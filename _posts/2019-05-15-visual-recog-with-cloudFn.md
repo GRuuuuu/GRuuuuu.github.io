@@ -37,10 +37,24 @@ application의 flow는 다음 그림과 같습니다.
 4. `Cloud Function`은 이미지를 가져와 처리를 위해 `Watson Visual Recognition`를 실행시킵니다.  
 5. `Visual Recognition`의 결과값인 Score와 Class등을 `Cloudant`에 저장합니다.  
 6. 유저는 자신이 업로드한 이미지에 대한 분류결과를 확인할 수 있습니다.  
+## 4. Basic Concepts
+### Apache OpenWhisk
+`IBM Cloud Functions`의 기반이 되는 `Apache OpenWhisk`에 대해 알아보겠습니다.  
+이벤트에 대해 함수를 실행시키는 Opensource Cloud Serverless 플랫폼으로, 개발자가 코드를 실행하는데 있어 컨테이너 관리나 운영으로부터 자유롭게 해줄 수 있습니다.  
+![image](https://user-images.githubusercontent.com/15958325/57756306-eb836000-772d-11e9-8bf4-ba0184a0c11a.png)  
+용어에 대한 설명을 간략하게 하겠습니다.  
+* **Trigger** : DB, 장치, 웹 등에서 발생한 이벤트들을 감지합니다.  
+* **Actions** : 지원되는 프로그래밍 언어의 단일 함수로 구현된 코드로, 트리거가 발생하였을 때 실행되어 결과를 반환합니다.  
+* **Rules** : 트리거에서 감지된 이벤트에 대해 어떤 액션이 실행될지 정의합니다.  
+* **Sequences** : 액션을 연결하는 조합을 만들어 실행할 수 있습니다. 
+* **Packages** : 트리거와 액션을 모아 하나의 패키지로 공개할 수 있습니다. 패키지로 정의된 외부 서비스를 사용할 수도 있고, 직접 만든 패키지를 외부에 공개할 수도 있습니다.  
 
-## 4. Step
 ### Serverless? 
+Serverless는 서버 없이 모든 규모의 이벤트에 대해 코드를 실행하여 응답하는 클라우드 컴퓨팅 방식입니다. 서버가 없다는 것은 해당 이벤트에 대해 별도로 할당된 서버가 없어 사용자가 인프라 및 플랫폼 관리를 할 필요가 없다는 의미입니다.  
 
+Serverless 플랫폼에서는 요청이 있을 때만 필요한 코드를 실행하고, 요청이 많을 경우에는 그에 비례하는 자원을 할당하여 동시에 처리하는 방법으로 사용률과 확장성을 극대화할 수 있습니다.
+
+## 5. Step
 ### Clone the git
 웹페이지를 구성할 소스코드를 클론받습니다.  
 ~~~bash
@@ -113,7 +127,7 @@ username과 password는 cloudant에서 참조.
 설치 링크 : [link](https://github.com/apache/incubator-openwhisk-wskdeploy/releases)  
 
 >**wskdeploy?**   
->yaml로 쓰여진 Manifest파일을 사용하여 OpenWhisk Programming 모델을 구성해주는 utility입니다.  
+>yaml로 쓰여진 Manifest파일을 사용하여 [OpenWhisk]() Programming 모델을 구성해주는 utility입니다.  
 
 `local.env`에 저장하였던 환경변수들을 세팅해줍니다.  
 ~~~bash
@@ -140,6 +154,6 @@ $ npm start
 일렉트론 앱이 실행되고, 이미지를 실제로 넣어보면 분류가 되는 것을 확인할 수 있습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/57753713-d1468380-7727-11e9-9ccc-b8d3c0321afc.png)  
 
-## 5. Another Step 
+## 6. Another Step 
 
 위의 과정 중, 
