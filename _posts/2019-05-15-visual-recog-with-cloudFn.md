@@ -37,6 +37,7 @@ application의 flow는 다음 그림과 같습니다.
 4. `Cloud Function`은 이미지를 가져와 처리를 위해 `Watson Visual Recognition`를 실행시킵니다.  
 5. `Visual Recognition`의 결과값인 Score와 Class등을 `Cloudant`에 저장합니다.  
 6. 유저는 자신이 업로드한 이미지에 대한 분류결과를 확인할 수 있습니다.  
+
 ## 4. Basic Concepts
 ### Apache OpenWhisk
 `IBM Cloud Functions`의 기반이 되는 `Apache OpenWhisk`에 대해 알아보겠습니다.  
@@ -127,7 +128,7 @@ username과 password는 cloudant에서 참조.
 설치 링크 : [link](https://github.com/apache/incubator-openwhisk-wskdeploy/releases)  
 
 >**wskdeploy?**   
->yaml로 쓰여진 Manifest파일을 사용하여 [OpenWhisk]() Programming 모델을 구성해주는 utility입니다.  
+>yaml로 쓰여진 Manifest파일을 사용하여 [OpenWhisk](https://gruuuuu.github.io/simple-tutorial/visual-recog-with-cloudFn/#apache-openwhisk) Programming 모델을 구성해주는 utility입니다.  
 
 `local.env`에 저장하였던 환경변수들을 세팅해줍니다.  
 ~~~bash
@@ -154,6 +155,64 @@ $ npm start
 일렉트론 앱이 실행되고, 이미지를 실제로 넣어보면 분류가 되는 것을 확인할 수 있습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/57753713-d1468380-7727-11e9-9ccc-b8d3c0321afc.png)  
 
-## 6. Another Step 
+## 6. Another Step (CLI)
 
-위의 과정 중, 
+위의 과정 중, 몇몇 과정을 커맨드라인으로 입력하는 방법입니다.  
+
+### set up
+IBM Cloud Functions CLI 설정을 위해 플러그인을 설치합니다.  
+~~~bash
+$ ibmcloud plugin install cloud-functions
+~~~
+
+ibmcloud에 로그인합니다.  
+~~~bash
+$ ibmcloud login --sso
+$ ibmcloud target -cf
+~~~  
+![image](https://user-images.githubusercontent.com/15958325/57762188-ff34c380-7739-11e9-8073-5ed0c7a05b3a.png)
+
+환경변수를 설정합니다.  
+~~~bash
+$ source local.env
+~~~
+
+
+아래 명령으로 cloudantDB를 사용하기 위한 package를 설치하고 env셋업을 합니다.
+~~~bash
+$ bx wsk package refresh
+~~~
+
+### Add Trigger -cli
+~~~bash
+$ ibmcloud wsk trigger create update-trigger2 --feed serverless-pattern-cloudant-package/changes --param dbname images
+~~~  
+![image](https://user-images.githubusercontent.com/15958325/57761829-440c2a80-7739-11e9-9b7d-b4a4a0781def.png)  
+
+### Add Action -cli
+~~~bash
+$ ibmcloud wsk action create update-document-with-watson2 actions/updateDocumentWithWatson.js \
+--kind nodejs:8 \
+--param USERNAME $CLOUDANT_USERNAME \
+--param PASSWORD $CLOUDANT_PASSWORD \
+--param DBNAME $CLOUDANT_IMAGE_DATABASE \
+--param DBNAME_PROCESSED $CLOUDANT_TAGS_DATABASE \
+--param WATSON_VR_APIKEY $WATSON_VISUAL_APIKEY
+~~~  
+![image](https://user-images.githubusercontent.com/15958325/57762397-68b4d200-773a-11e9-8d93-090a9ad970ce.png)  
+
+### Make Rule -cli
+~~~bash
+$ ibmcloud wsk rule create update-trigger-rule2 update-trigger2 update-document-with-watson2
+~~~  
+![image](https://user-images.githubusercontent.com/15958325/57762464-841fdd00-773a-11e9-985d-d1e38f58e8a4.png)  
+
+### Delete
+~~~bash
+$ ibmcloud wsk package delete serverless-pattern-cloudant-package
+$ ibmcloud wsk trigger delete update-trigger2
+$ ibmcloud wsk action delete update-document-with-watson2
+$ ibmcloud wsk rule delete update-trigger-rule2
+~~~
+
+----
