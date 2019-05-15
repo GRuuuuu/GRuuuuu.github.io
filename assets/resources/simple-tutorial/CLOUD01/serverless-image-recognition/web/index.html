@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="stylesheets/global.css">
+  <link rel="stylesheet" href="stylesheets/header.css">
+  <link rel="stylesheet" href="stylesheets/images.css">
+  <link rel="stylesheet" href="stylesheets/uploadSection.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="title">
+      Images
+    </div>
+  </div>
+
+  <!-- Upload section -->
+  <div class="uploadSection">
+    <form class="uploadForm" method="post" name="upload" enctype="multipart/form-data" action="">
+      <input class="selectImage" id="selectImage" type="file" name="myImage" accept="image/*" />
+      <input class="uploadImage" id="uploadImage" type="submit" value="Upload" />
+    </form>
+  </div>
+
+  <!-- Content of page -->
+  <div class="uploadedImages" id="uploadedImages">
+  </div>
+</body>
+</html>
+<script>
+  window.nodeRequire = require;
+  delete window.require;
+  delete window.exports;
+  delete window.module;
+</script>
+<script src="scripts/pouchdb-7.0.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="scripts/upload.js"></script>
+<script src="scripts/loadImages.js"></script>
