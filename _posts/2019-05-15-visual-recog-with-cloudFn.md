@@ -40,7 +40,7 @@ application의 flow는 다음 그림과 같습니다.
 
 ## 4. Basic Concepts
 ### Apache OpenWhisk
-`IBM Cloud Functions`의 기반이 되는 `Apache OpenWhisk`에 대해 알아보겠습니다.  
+`IBM Cloud Functions`의 기반이 되는 `Apache OpenWhisk`에 대해 알아보겠습니다.    
 이벤트에 대해 함수를 실행시키는 Opensource Cloud Serverless 플랫폼으로, 개발자가 코드를 실행하는데 있어 컨테이너 관리나 운영으로부터 자유롭게 해줄 수 있습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/57756306-eb836000-772d-11e9-8bf4-ba0184a0c11a.png)  
 용어에 대한 설명을 간략하게 하겠습니다.  
@@ -78,7 +78,7 @@ $ git clone https://github.com/IBM/serverless-image-recognition
 생성한 인증정보에서 password와 username을 찾아서 클론받은 프로젝트 내부 `local.env`에 기재합니다.  
 ![image](https://user-images.githubusercontent.com/15958325/57749503-3e065180-7719-11e9-8355-0bba54528233.png)  
 
-Image를 담을 DB와 Tag를 담을 Tag DB의 이름을 images와 tags으로 기입합니다. 혹시 자신이 다른이름을 사용할 것이라면 수정하셔도 됩니다.
+Image를 담을 DB와 Tag를 담을 Tag DB의 이름을 images와 tags으로 기입합니다. 혹시 자신이 다른이름을 사용할 것이라면 수정하셔도 됩니다.  
 ![image](https://user-images.githubusercontent.com/15958325/57749505-3fd01500-7719-11e9-8f6d-b22ef2302e7b.png)  
 
 이제 Cloudant 웹 콘솔을 실행시켜 DB를 생성해보겠습니다.  
