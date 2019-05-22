@@ -23,9 +23,12 @@ IBM Cloud 계정 : [link](https://console.bluemix.net)
 IBM Watson 계정 : [link](https://dataplatform.cloud.ibm.com/)  
 NodeJs설치 : [link](https://nodejs.org/ko/)  
 
+>**Local Test version**  
+>`Node js` : v10.15.3  
 
 > 환경이 window라면 git bash를 설치해주세요.  
 > Git Bash : [link](https://gitforwindows.org/)  
+
 
 ## 3. Application Flow
 application의 flow는 다음 그림과 같습니다.  
