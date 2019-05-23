@@ -226,11 +226,17 @@ COS에 연결하기 위해 수정해야하는 코드입니다.
   $ python -m pip install opencv-python
   ~~~
 
+- boto3  
+  aws s3 연결을 하기위해 aws에서 제공하는 S3 SDK
+  ~~~bash
+  $ pip install boto3
+  ~~~
 
 >(주의) 아무 이미지를 다운받아서 tmp/campic.jpg로 저장해두고 프로그램을 실행시켜야합니다.  
 
+
 프로그램을 실행시키고 Node-RED의 디버그창을 확인해보면 다음과 같이 각 노드에서의 메세지들을 확인할 수 있습니다.  
-![image](https://user-images.githubusercontent.com/15958325/58231391-d8960e80-7d71-11e9-9cd7-4774b0af1bd3.png)  
+![image](https://user-images.githubusercontent.com/15958325/58233254-83103080-7d76-11e9-9228-df0e9003c3b8.png)
 
 또한 다음 링크로 접속하게되면 UI창을 확인할 수 있습니다.  
 ~~~
