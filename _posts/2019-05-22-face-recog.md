@@ -55,7 +55,7 @@ Cloud Foundry App인 IoT Platform을 생성해줍니다.
 
 이 두 서비스를 이어주고 메세지를 전달해주며 우리가 앞으로 만들 프로그램의 중추역할을 할 코어는 해당 cloud foundry app의 `Node-RED`로 구현되어있습니다.  
 
-`Node-RED`의 플로우차트를 웹상에서 편집할수도 있지만 불편한점들이 있기 때문에 로컬환경에서 편집을 진행할 수 있도록 `Continuous-Delivery`를 추가하도록 하겠습니다.  
+`Node-RED`에 몇가지 파일을 추가하기 위해 로컬환경에서 편집을 진행할 수 있도록 `Continuous-Delivery`를 추가하도록 하겠습니다.  
 
 ### Configure Continuous-Delivery
 
@@ -196,6 +196,7 @@ COS만들때 생성했던 인증정보를 토대로 `Access Key`와 `Secret Key`
 
 ### face_detection_terminal.py 
 웹캠을 실행하고, `iotf-service`에 메세지를 보내고, COS에 이미지를 보내는 프로그램입니다.  
+소스코드는 [이곳](https://github.com/GRuuuuu/GRuuuuu.github.io/blob/master/assets/resources/simple-tutorial/CLOUD02/face_detection_terminal.py)  
 
 당연히 서비스에 연결하려면 인증정보를 입력해야 합니다.  
 
@@ -224,6 +225,9 @@ COS에 연결하기 위해 수정해야하는 코드입니다.
   ~~~bash
   $ python -m pip install opencv-python
   ~~~
+
+
+>(주의) 아무 이미지를 다운받아서 tmp/campic.jpg로 저장해두고 프로그램을 실행시켜야합니다.  
 
 프로그램을 실행시키고 Node-RED의 디버그창을 확인해보면 다음과 같이 각 노드에서의 메세지들을 확인할 수 있습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/58231391-d8960e80-7d71-11e9-9cd7-4774b0af1bd3.png)  
