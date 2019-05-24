@@ -154,12 +154,14 @@ def display_images(images, labels, title = "Default"):
 		plt.xticks([])
 		plt.yticks([])
 		plt.grid(False)
+		print(images[i].shape)
 		plt.imshow(images[i], cmap=plt.cm.binary)
 		plt.xlabel(class_names[labels[i]])
 
 
 display_images(test_images, np.argmax(predictions, axis = 1))
-plt.show() # unless we do a plt.show(), the image grid won't appear.
+plt.show() 
+# unless we do a plt.show(), the image grid won't appear.
 
 #%%
 # Comparing different model size and how they perform against the challenge.
