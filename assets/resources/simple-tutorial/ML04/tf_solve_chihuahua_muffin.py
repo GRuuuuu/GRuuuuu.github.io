@@ -93,12 +93,12 @@ maxsize = 50, 50
 maxsize_w, maxsize_h = maxsize
 
 (train_images, train_labels) = load_image_dataset(
-	path_dir='/Users/GRU/Downloads/image-recognition-tensorflow/chihuahua-muffin',
+	path_dir='/Users/SeungYeonLee/Documents/GRU/GitHub/image-recognition-tensorflow/chihuahua-muffin',
 	maxsize=maxsize,
 	reshape_size=(maxsize_w, maxsize_h, 1),
 	invert_image=False)
 (test_images, test_labels) = load_image_dataset(
-	path_dir='/Users/GRU/Downloads/image-recognition-tensorflow/chihuahua-muffin/test_set',
+	path_dir='/Users/SeungYeonLee/Documents/GRU/GitHub/image-recognition-tensorflow/chihuahua-muffin/test_set',
 	maxsize=maxsize,
 	reshape_size=(maxsize_w, maxsize_h, 1),
 	invert_image=False)
