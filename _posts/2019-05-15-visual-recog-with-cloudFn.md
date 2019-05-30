@@ -88,6 +88,17 @@ Image를 담을 DB와 Tag를 담을 Tag DB의 이름을 images와 tags으로 기
 DB의 이름은 앞서 적었던것과 같은 이름으로 적어주세요.  
 ![image](https://user-images.githubusercontent.com/15958325/57749641-d8669500-7719-11e9-8051-65965198410c.png)  
 
+### CORS
+`Same-Origin Policy`에 의해 javascript로 다른 웹페이지에 접근할때는 같은 출처의 페이지로만 접근할 수 있습니다. 같은 출처라는 것은 **호스트명, 프로토콜, 포트**가 같다는 것을 의미합니다.  
+때문에 로컬에서 실행시킨 web app이 cloud에 올라간 `cloudant`에 접근하기 위해서는 `CORS`(Cross-Origin Resource Sharing)를 활성화 시켜야 합니다.    
+>CORS에대한 설명 : [wiki](https://developer.mozilla.org/ko/docs/Web/HTTP/Access_control_CORS)  
+
+설정은 간단합니다. Account>CORS로 이동합니다.  
+
+다음 모든 도메인이 접근할 수 있게 All domains에 체크해주시면 됩니다.  
+만약 허가된 도메인만 접근하게 하려면 원하는 도메인을 적고 Add Domain을 하시면 됩니다.  
+![image](https://user-images.githubusercontent.com/15958325/58634686-e1b14d80-8326-11e9-82e1-6ab4941fac58.png)  
+
 ### Watson Visual Recognition
 먼저 인스턴스를 생성해줍니다.  
 생성링크 -> [link](https://cloud.ibm.com/catalog/services/visual-recognition)  
@@ -157,6 +168,9 @@ $ npm start
 
 일렉트론 앱이 실행되고, 이미지를 실제로 넣어보면 분류가 되는 것을 확인할 수 있습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/57753713-d1468380-7727-11e9-9ccc-b8d3c0321afc.png)  
+
+일렉트론 앱말고도 `web/index.html`를 더블클릭하여 웹페이지로도 확인할 수 있습니다.  
+![image](https://user-images.githubusercontent.com/15958325/58634892-669c6700-8327-11e9-8a4e-52880f04652b.png)  
 
 ## 6. Another Step (CLI)
 
