@@ -117,11 +117,11 @@ print(test_labels)
 train_images = train_images / 255.0
 test_images = test_images / 255.0
 print(train_images)
-
+print("tt",test_images)
 #%%
 # 레이어 세팅
 sgd = keras.optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.04, nesterov=True)
-
+#dense 1st:hidden layer
 model = keras.Sequential([
     keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
   	keras.layers.Dense(128, activation=tf.nn.sigmoid),
@@ -133,6 +133,8 @@ model = keras.Sequential([
 model.compile(optimizer=sgd, 
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
+
+#epoch : 전체 sample데이터를 이용해 한바퀴 학습하는것
 model.fit(train_images, train_labels, epochs=100)
 
 
@@ -159,7 +161,6 @@ def display_images(images, labels, title = "Default"):
 		plt.xlabel(class_names[labels[i]])
 
 
-
 # train이미지와 라벨 출력 
 display_images(train_images.reshape((len(train_images), maxsize_w, maxsize_h)), 
 	train_labels)
@@ -170,13 +171,61 @@ display_images(test_images.reshape((len(test_images), maxsize_w, maxsize_h)),
 	np.argmax(predictions, axis = 1))
 plt.show() 
 
-
 #%%
-# Comparing different model size and how they perform against the challenge.
+## 수정1 : model size에 따라
+
+#기본모델
 baseline_model = keras.models.Sequential([
     	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
   		keras.layers.Dense(128, activation=tf.nn.sigmoid),
-		keras.layers.Dropout(0.25),
+  		keras.layers.Dense(16, activation=tf.nn.sigmoid),
+    	keras.layers.Dense(2, activation=tf.nn.softmax)
+	])
+baseline_model.compile(optimizer=keras.optimizers.Adam(lr=0.001),
+	loss='sparse_categorical_crossentropy',
+	metrics=['accuracy','sparse_categorical_crossentropy'])
+
+
+smaller_model1 = keras.models.Sequential([
+    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
+ 			keras.layers.Dense(64, activation=tf.nn.relu),
+    	keras.layers.Dense(2, activation=tf.nn.softmax)
+	])
+smaller_model1.compile(optimizer='adam',
+	loss='sparse_categorical_crossentropy',
+	metrics=['accuracy','sparse_categorical_crossentropy'])
+
+
+bigger_model1 = keras.models.Sequential([
+    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
+  		keras.layers.Dense(128, activation=tf.nn.relu),
+			keras.layers.Dense(64, activation=tf.nn.relu),
+			keras.layers.Dense(16, activation=tf.nn.relu),
+    	keras.layers.Dense(2, activation=tf.nn.softmax)
+	])
+bigger_model1.compile(optimizer=keras.optimizers.Adam(lr=0.001),
+	loss='sparse_categorical_crossentropy',
+	metrics=['accuracy','sparse_categorical_crossentropy'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#%%
+baseline_model = keras.models.Sequential([
+    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
+  		keras.layers.Dense(128, activation=tf.nn.sigmoid),
+			keras.layers.Dropout(0.25),
   		keras.layers.Dense(16, activation=tf.nn.sigmoid),
     	keras.layers.Dense(2, activation=tf.nn.softmax)
 	])
