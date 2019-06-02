@@ -147,10 +147,10 @@ plt.show()
 
 # dense 1번째파라미터:hidden layer
 model = keras.Sequential([
-    keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
-  	keras.layers.Dense(128, activation=tf.nn.relu),
-  	keras.layers.Dense(16, activation=tf.nn.relu),
-    keras.layers.Dense(2, activation=tf.nn.softmax)
+	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
+	keras.layers.Dense(128, activation=tf.nn.relu),
+	keras.layers.Dense(16, activation=tf.nn.relu),
+	keras.layers.Dense(2, activation=tf.nn.softmax)
 ])
 ~~~
 레이어를 알아보기 쉽게 도식화 시키면 다음 그림과 같습니다.  
@@ -208,10 +208,10 @@ plt.show()
 지금부터는 몇가지 방법을 통해 Model을 강화시키고 `Overfitting`을 줄여보도록 하겠습니다.  
 
 > **Handle Overfitting**  
->- [Model Size]()  
->- [Regularization]()  
->- [Dropout]()  
->- [Training Data]()  
+>- [Model Size](https://gruuuuu.github.io/simple-tutorial/overfitting-handle/#model-size)  
+>- [Regularization](https://gruuuuu.github.io/simple-tutorial/overfitting-handle/#regularization)  
+>- [Dropout](https://gruuuuu.github.io/simple-tutorial/overfitting-handle/#dropout)  
+>- [Training Data](https://gruuuuu.github.io/simple-tutorial/overfitting-handle/#training-data)  
 
 ### Model Size
 첫번째로 모델의 사이즈에 대해서 보겠습니다. 여기서 말하는 사이즈는 각 dense레이어층의 히든 레이어의 개수를 뜻합니다.  
