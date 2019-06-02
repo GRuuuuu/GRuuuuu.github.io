@@ -31,7 +31,6 @@ from tensorflow import keras
 # Helper libraries
 import numpy as np
 import matplotlib.pyplot as plt
-
 import PIL
 from PIL import Image
 
@@ -93,12 +92,12 @@ maxsize = 50, 50
 maxsize_w, maxsize_h = maxsize
 
 (train_images, train_labels) = load_image_dataset(
-	path_dir='/Users/SeungYeonLee/Documents/GRU/GitHub/image-recognition-tensorflow/chihuahua-muffin',
+	path_dir='C:/Users/GRu/Downloads/image-recognition-tensorflow/chihuahua-muffin',
 	maxsize=maxsize,
 	reshape_size=(maxsize_w, maxsize_h, 1),
 	invert_image=False)
 (test_images, test_labels) = load_image_dataset(
-	path_dir='/Users/SeungYeonLee/Documents/GRU/GitHub/image-recognition-tensorflow/chihuahua-muffin/test_set',
+	path_dir='C:/Users/GRu/Downloads/image-recognition-tensorflow/chihuahua-muffin/test_set',
 	maxsize=maxsize,
 	reshape_size=(maxsize_w, maxsize_h, 1),
 	invert_image=False)
@@ -112,30 +111,31 @@ print(train_labels)
 print(test_images.shape)
 print(test_labels)
 
-#%%
+
 # 이미지 값을 0~1사이로 조정
 train_images = train_images / 255.0
 test_images = test_images / 255.0
-print(train_images)
-print("tt",test_images)
+
+
 #%%
 # 레이어 세팅
-sgd = keras.optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.04, nesterov=True)
+#sgd = keras.optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.04, nesterov=True)
+
 #dense 1st:hidden layer
 model = keras.Sequential([
     keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
-  	keras.layers.Dense(128, activation=tf.nn.sigmoid),
-  	keras.layers.Dense(16, activation=tf.nn.sigmoid),
+  	keras.layers.Dense(128, activation=tf.nn.relu),
+  	keras.layers.Dense(16, activation=tf.nn.relu),
     keras.layers.Dense(2, activation=tf.nn.softmax)
 ])
 
 
-model.compile(optimizer=sgd, 
+model.compile(optimizer=keras.optimizers.Adam(lr=0.001), 
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
 #epoch : 전체 sample데이터를 이용해 한바퀴 학습하는것
-model.fit(train_images, train_labels, epochs=100)
+model.fit(train_images, train_labels, epochs=400)
 
 
 test_loss, test_acc = model.evaluate(test_images, test_labels)
@@ -150,9 +150,9 @@ print(predictions)
 def display_images(images, labels, title = "Default"):
 	plt.title(title)
 	plt.figure(figsize=(10,10))
-	grid_size = min(25, len(images))
+	grid_size = min(49, len(images))
 	for i in range(grid_size):
-		plt.subplot(5, 5, i+1)
+		plt.subplot(7, 7, i+1)
 		plt.xticks([])
 		plt.yticks([])
 		plt.grid(False)
@@ -160,6 +160,23 @@ def display_images(images, labels, title = "Default"):
 		plt.imshow(images[i], cmap=plt.cm.binary)
 		plt.xlabel(class_names[labels[i]])
 
+def plot_history(histories, key='sparse_categorical_crossentropy'):
+  plt.figure(figsize=(16,10))
+  for name, history in histories:
+    val = plt.plot(history.epoch, history.history['val_'+key],
+                   '--', label=name.title()+' Val')
+    plt.plot(history.epoch, history.history[key], color=val[0].get_color(),
+             label=name.title()+' Train')
+  plt.xlabel('Epochs')
+  plt.ylabel(key.replace('_',' ').title())
+  plt.legend()
+  plt.xlim([0, max(history.epoch)])
+  plt.ylim([0, 1])
+
+datagen = keras.preprocessing.image.ImageDataGenerator(
+		featurewise_center=False,
+    horizontal_flip=False,  # randomly flip images
+    vertical_flip=False)  # randomly flip images
 
 # train이미지와 라벨 출력 
 display_images(train_images.reshape((len(train_images), maxsize_w, maxsize_h)), 
@@ -174,59 +191,198 @@ plt.show()
 #%%
 ## 수정1 : model size에 따라
 
-#기본모델
-baseline_model = keras.models.Sequential([
+#기본모델 (hidden-128)
+baseline_model = keras.Sequential([
     	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
-  		keras.layers.Dense(128, activation=tf.nn.sigmoid),
-  		keras.layers.Dense(16, activation=tf.nn.sigmoid),
+  		keras.layers.Dense(128, activation=tf.nn.relu),
+  		keras.layers.Dense(16, activation=tf.nn.relu),
     	keras.layers.Dense(2, activation=tf.nn.softmax)
 	])
-baseline_model.compile(optimizer=keras.optimizers.Adam(lr=0.001),
-	loss='sparse_categorical_crossentropy',
-	metrics=['accuracy','sparse_categorical_crossentropy'])
-
-
-smaller_model1 = keras.models.Sequential([
+#hidden-64
+smaller_model = keras.Sequential([
     	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
  			keras.layers.Dense(64, activation=tf.nn.relu),
     	keras.layers.Dense(2, activation=tf.nn.softmax)
 	])
-smaller_model1.compile(optimizer='adam',
-	loss='sparse_categorical_crossentropy',
-	metrics=['accuracy','sparse_categorical_crossentropy'])
-
-
-bigger_model1 = keras.models.Sequential([
+#hidden-512
+bigger_model = keras.Sequential([
     	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
-  		keras.layers.Dense(128, activation=tf.nn.relu),
-			keras.layers.Dense(64, activation=tf.nn.relu),
-			keras.layers.Dense(16, activation=tf.nn.relu),
+  		keras.layers.Dense(512, activation=tf.nn.relu, kernel_regularizer=keras.regularizers.l2(0.001)),
+			keras.layers.Dense(128, activation=tf.nn.relu, kernel_regularizer=keras.regularizers.l2(0.001)),
+			keras.layers.Dense(16, activation=tf.nn.relu, kernel_regularizer=keras.regularizers.l2(0.001)),
     	keras.layers.Dense(2, activation=tf.nn.softmax)
 	])
-bigger_model1.compile(optimizer=keras.optimizers.Adam(lr=0.001),
+
+#COMPLIE: optimizer=Adam
+baseline_model.compile(optimizer=keras.optimizers.Adam(lr=0.001),
+	loss='sparse_categorical_crossentropy',
+	metrics=['accuracy','sparse_categorical_crossentropy'])
+smaller_model.compile(optimizer=keras.optimizers.Adam(lr=0.001),
+	loss='sparse_categorical_crossentropy',
+	metrics=['accuracy','sparse_categorical_crossentropy'])
+bigger_model.compile(optimizer=keras.optimizers.Adam(lr=0.001),
 	loss='sparse_categorical_crossentropy',
 	metrics=['accuracy','sparse_categorical_crossentropy'])
 
 
+#FIT: epoch=150
+baseline_model_history = baseline_model.fit(train_images, train_labels,
+	epochs=150,
+	validation_data=(test_images, test_labels),
+	verbose=2,
+	workers=4)
+smaller_model_history = smaller_model.fit(train_images, train_labels,
+ 	epochs=150,
+ 	validation_data=(test_images, test_labels),
+ 	verbose=2,
+	workers=4)
+bigger_model_history = bigger_model.fit(train_images, train_labels,
+	epochs=150,
+	validation_data=(test_images, test_labels),
+	verbose=2,
+	workers=4)
 
 
+plot_history([
+	('baseline', baseline_model_history),
+  ('smaller', smaller_model_history),
+  ('bigger', bigger_model_history),
+	])
+
+plt.show()
+
+#%%
+test_loss, test_acc,cross = baseline_model.evaluate(test_images, test_labels)
+print('테스트 정확도1:', test_acc)
+
+test_loss, test_acc,cross = smaller_model.evaluate(test_images, test_labels)
+print('테스트 정확도2:', test_acc)
+
+test_loss, test_acc,cross = bigger_model.evaluate(test_images, test_labels)
+print('테스트 정확도3:', test_acc)
 
 
+#%%
+## 수정1-1 : model size를 더 늘려보자
+
+#hidden-1024
+bigger_model2 = keras.Sequential([
+    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
+  		keras.layers.Dense(1024, activation=tf.nn.relu, kernel_regularizer=keras.regularizers.l2(0.001)),
+  		keras.layers.Dense(512, activation=tf.nn.relu, kernel_regularizer=keras.regularizers.l2(0.001)),
+			keras.layers.Dense(128, activation=tf.nn.relu, kernel_regularizer=keras.regularizers.l2(0.001)),
+			keras.layers.Dense(16, activation=tf.nn.relu, kernel_regularizer=keras.regularizers.l2(0.001)),
+    	keras.layers.Dense(2, activation=tf.nn.softmax)
+	])
+
+bigger_model2.compile(optimizer=keras.optimizers.Adam(lr=0.001),
+	loss='sparse_categorical_crossentropy',
+	metrics=['accuracy','sparse_categorical_crossentropy'])
+
+bigger_model2_history = bigger_model2.fit(train_images, train_labels,
+	epochs=150,
+	validation_data=(test_images, test_labels),
+	verbose=2,
+	workers=4)
+
+plot_history([
+	('baseline', baseline_model_history),
+  ('bigger', bigger_model_history),
+  ('bigger2', bigger_model2_history),
+	])
 
 
-
-
-
-
+plt.show()
+#%%
+test_loss, test_acc,cross = bigger_model2.evaluate(test_images, test_labels)
+print('테스트 정확도4:', test_acc)
 
 
 
 #%%
+# 수정2 : dropout적용
+# overfitting막아줌
+base_bigger_model = keras.Sequential([
+    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
+  		keras.layers.Dense(512, activation=tf.nn.relu),
+			keras.layers.Dense(128, activation=tf.nn.relu),
+			keras.layers.Dense(16, activation=tf.nn.relu),
+    	keras.layers.Dense(2, activation=tf.nn.softmax)
+	])
+d_bigger_model = keras.Sequential([
+    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
+  		keras.layers.Dense(512, activation=tf.nn.relu),
+			keras.layers.Dropout(0.5),
+			keras.layers.Dense(128, activation=tf.nn.relu),
+			keras.layers.Dense(16, activation=tf.nn.relu),
+    	keras.layers.Dense(2, activation=tf.nn.softmax)
+	])
+d_bigger_model2 = keras.Sequential([
+    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
+  		keras.layers.Dense(1024, activation=tf.nn.relu),
+			keras.layers.Dropout(0.5),
+  		keras.layers.Dense(512, activation=tf.nn.relu),
+			keras.layers.Dropout(0.5),
+			keras.layers.Dense(128, activation=tf.nn.relu),
+			keras.layers.Dense(16, activation=tf.nn.relu),
+    	keras.layers.Dense(2, activation=tf.nn.softmax)
+	])
+
+base_bigger_model.compile(optimizer=keras.optimizers.Adam(lr=0.001),
+	loss='sparse_categorical_crossentropy',
+	metrics=['accuracy','sparse_categorical_crossentropy'])
+d_bigger_model.compile(optimizer=keras.optimizers.Adam(lr=0.001),
+	loss='sparse_categorical_crossentropy',
+	metrics=['accuracy','sparse_categorical_crossentropy'])
+d_bigger_model2.compile(optimizer=keras.optimizers.Adam(lr=0.001),
+	loss='sparse_categorical_crossentropy',
+	metrics=['accuracy','sparse_categorical_crossentropy'])
+
+base_bigger_model_history = base_bigger_model.fit(train_images, train_labels,
+	epochs=400,
+	validation_data=(test_images, test_labels),
+	verbose=2,
+	workers=4)
+d_bigger_model_history = d_bigger_model.fit(train_images, train_labels,
+	epochs=400,
+	validation_data=(test_images, test_labels),
+	verbose=2,
+	workers=4)
+d_bigger_model2_history = d_bigger_model2.fit(train_images, train_labels,
+	epochs=400,
+	validation_data=(test_images, test_labels),
+	verbose=2,
+	workers=4)
+
+
+plot_history([
+  ('base', base_bigger_model_history),
+  ('bigger', d_bigger_model_history),
+  ('bigger2', d_bigger_model2_history),
+	])
+
+plt.show()
+
+#%%
+test_loss, test_acc,cross = base_bigger_model.evaluate(test_images, test_labels)
+print('테스트 정확도1:', test_acc)
+
+test_loss, test_acc,cross = d_bigger_model.evaluate(test_images, test_labels)
+print('테스트 정확도2:', test_acc)
+
+test_loss, test_acc,cross = d_bigger_model2.evaluate(test_images, test_labels)
+print('테스트 정확도3:', test_acc)
+
+
+
+#%%
+#최적의 모델 -train image:26    test image:14
 baseline_model = keras.models.Sequential([
     	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
-  		keras.layers.Dense(128, activation=tf.nn.sigmoid),
+			keras.layers.Dense(512, activation=tf.nn.relu),
+  		keras.layers.Dense(128, activation=tf.nn.relu),
 			keras.layers.Dropout(0.25),
-  		keras.layers.Dense(16, activation=tf.nn.sigmoid),
+  		keras.layers.Dense(16, activation=tf.nn.relu),
     	keras.layers.Dense(2, activation=tf.nn.softmax)
 	])
 
@@ -234,187 +390,24 @@ baseline_model.compile(optimizer=keras.optimizers.Adam(lr=0.001),
 	loss='sparse_categorical_crossentropy',
 	metrics=['accuracy','sparse_categorical_crossentropy'])
 
-bigger_model = keras.models.Sequential([
-		#keras.layers.Conv2D(64, 
-		#kernel_size=3, strides=3, padding='same', input_shape=(maxsize_w, maxsize_h, 1)),
-    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
-		keras.layers.Dense(256, activation=tf.nn.relu),
-		keras.layers.Dropout(0.25),
-  		keras.layers.Dense(128, activation=tf.nn.relu),
-		keras.layers.Dropout(0.25),
-		keras.layers.Dense(64, activation=tf.nn.relu),
-		keras.layers.Dropout(0.5),
-		keras.layers.Dense(16, activation=tf.nn.relu),
-    	keras.layers.Dense(2, activation=tf.nn.softmax)
-	])
-
-bigger_model1 = keras.models.Sequential([
-    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
-  		keras.layers.Dense(128, activation=tf.nn.relu),
-		keras.layers.Dropout(0.25),
-		keras.layers.Dense(64, activation=tf.nn.relu),
-		keras.layers.Dropout(0.5),
-		keras.layers.Dense(16, activation=tf.nn.relu),
-    	keras.layers.Dense(2, activation=tf.nn.softmax)
-	])
-
-bigger_model1.compile(optimizer=keras.optimizers.Adam(lr=0.001),
-	loss='sparse_categorical_crossentropy',
-	metrics=['accuracy','sparse_categorical_crossentropy'])
-
-
-smaller_model1 = keras.models.Sequential([
-    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
- 		keras.layers.Dense(64, activation=tf.nn.relu),
-    	keras.layers.Dense(2, activation=tf.nn.softmax)
-	])
-
-smaller_model1.compile(optimizer='adam',
-	loss='sparse_categorical_crossentropy',
-	metrics=['accuracy','sparse_categorical_crossentropy'])
-
-smaller_model = keras.models.Sequential([
-    	keras.layers.Flatten(input_shape = ( maxsize_w, maxsize_h , 1)),
-  		keras.layers.Dense(512, activation=tf.nn.relu),
-		keras.layers.Dropout(0.25),
-		keras.layers.Dense(256, activation=tf.nn.relu),
-		keras.layers.Dropout(0.25),
-  		keras.layers.Dense(128, activation=tf.nn.relu),
-		keras.layers.Dense(16, activation=tf.nn.relu),
-    	keras.layers.Dense(2, activation=tf.nn.softmax)
-	])
-
-vgg_style_model = keras.models.Sequential([
-	keras.layers.Conv2D(128, (3, 3), activation='relu', input_shape = (maxsize_w, maxsize_h, 1)),
-	keras.layers.Conv2D(64, (3, 3), activation='relu'),
-	keras.layers.MaxPooling2D(pool_size=(2, 2)),
-	keras.layers.Dropout(0.25),
-	keras.layers.Conv2D(64, (3, 3), activation='relu'),
-	keras.layers.Conv2D(64, (3, 3), activation='relu'),
-	keras.layers.MaxPooling2D(pool_size=(2, 2)),
-	keras.layers.Dropout(0.25),
-	keras.layers.Flatten(),
-	keras.layers.Dense(128, activation='relu'),
-	keras.layers.Dropout(0.5),
-	keras.layers.Dense(2, activation='softmax')
-	])
-datagen = keras.preprocessing.image.ImageDataGenerator(
-        #zoom_range=0.2, # randomly zoom into images
-		featurewise_center=False,
-        #width_shift_range=0.2,  # randomly shift images horizontally (fraction of total width)
-        #height_shift_range=0.2,  # randomly shift images vertically (fraction of total height)
-        horizontal_flip=False,  # randomly flip images
-        vertical_flip=False)  # randomly flip images
-#datagen.fit(train_images)
-sgd = keras.optimizers.SGD(lr=0.01, decay=1e-5, momentum=0.7, nesterov=True)
-vgg_style_model.compile(loss='sparse_categorical_crossentropy',
- optimizer=keras.optimizers.Adam(lr=0.001),
- metrics=['accuracy','sparse_categorical_crossentropy'])
-
-def plot_history(histories, key='sparse_categorical_crossentropy'):
-  plt.figure(figsize=(16,10))
-    
-  for name, history in histories:
-    val = plt.plot(history.epoch, history.history['val_'+key],
-                   '--', label=name.title()+' Val')
-    plt.plot(history.epoch, history.history[key], color=val[0].get_color(),
-             label=name.title()+' Train')
-
-  plt.xlabel('Epochs')
-  plt.ylabel(key.replace('_',' ').title())
-  plt.legend()
-  plt.xlim([0, max(history.epoch)])
-  plt.ylim([0, 1])
-
-#keras.optimizers.Adam(lr=0.001)
-bigger_model.compile(optimizer='adam',
-	loss='sparse_categorical_crossentropy',
-	metrics=['accuracy','sparse_categorical_crossentropy'])
-
-baseline_model.compile(optimizer='adam',
-	loss='sparse_categorical_crossentropy',
-	metrics=['accuracy','sparse_categorical_crossentropy'])
-
-smaller_model.compile(
-	optimizer='adam',
-	loss='sparse_categorical_crossentropy',
-	metrics=['accuracy','sparse_categorical_crossentropy'])
-
-
-bigger_model1_history = bigger_model1.fit(train_images, train_labels,
-	epochs=400,
-	validation_data=(test_images, test_labels),
-	verbose=2,
-	workers=4)
-
-# smaller_model1_history = smaller_model1.fit(train_images, train_labels,
-# 	epochs=150,
-# 	validation_data=(test_images, test_labels),
-# 	verbose=2,
-# 	workers=4)
-
-bigger_model_history = bigger_model.fit(train_images, train_labels,
-	epochs=400,
-	validation_data=(test_images, test_labels),
-	verbose=2,
-	workers=4)
-
 baseline_model_history = baseline_model.fit(train_images, train_labels,
-	epochs=400,
+	epochs=300,
 	validation_data=(test_images, test_labels),
 	verbose=2,
 	workers=4)
-# bigger_model_history = bigger_model.fit_generator(datagen.flow(train_images, train_labels),
-# 	epochs=100,
-# 	validation_data=(test_images, test_labels),
-# 	verbose=2,
-# 	workers=4)
-# smaller_model_history = smaller_model.fit_generator(datagen.flow(train_images, train_labels),
-# 	epochs=400,
-# 	validation_data=(test_images, test_labels),
-# 	verbose=2,
-# 	workers=4)
-# smaller_model_history = smaller_model.fit(train_images, train_labels,
-# 	epochs=60,
-# 	validation_data=(test_images, test_labels),
-# 	verbose=2,
-# 	workers=4)
-# 
-
-# vgg_style_model_history = vgg_style_model.fit_generator(
-# 	datagen.flow(train_images, train_labels),
-# 	#train_images, train_labels,
-# 	epochs=120,
-# 	validation_data=(test_images, test_labels),
-# 	verbose=2,
-# 	workers=4)
 
 plot_history([
-              #('smaller', smaller_model1_history),
-              ('bigger', bigger_model1_history),
-			  ('baseline', baseline_model_history),
-			  ('bigger2', bigger_model_history)
-			  
-			  #('vgg', vgg_style_model_history)
-			  ])
+		('baseline', baseline_model_history),
+	])
 
-#plot_history([('smaller', smaller_model_history)])
-
-#predictions = smaller_model.predict(test_images)
+test_loss, test_acc,cross = baseline_model.evaluate(test_images, test_labels)
+print('테스트 정확도:', test_acc)
 predictions2 = baseline_model.predict(test_images)
-
-# predictions3 = vgg_style_model.predict(test_images)
-#display_images(test_images.reshape((len(test_images), maxsize_w, maxsize_h)),
-# np.argmax(predictions3, axis = 1), title = "vgg")
-
-# display_images(test_images.reshape((len(test_images), maxsize_w, maxsize_h)),
-#  np.argmax(predictions, axis = 1), title = "small")
 
 display_images(test_images.reshape((len(test_images), maxsize_w, maxsize_h)),
  np.argmax(predictions2, axis = 1), title = "")
 
-#display_images(test_images, np.argmax(predictions, axis = 1), title = "small")
-#print(predictions)
-# print(predictions2)
-
 plt.show()
+
+#%%
+ 
