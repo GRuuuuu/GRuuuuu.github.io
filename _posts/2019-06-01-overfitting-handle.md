@@ -42,7 +42,7 @@ Refine your deep learning model: [link](https://developer.ibm.com/articles/image
 ### Clone Git
 먼저 이미지파일과 소스코드를 다운받습니다.  
 ~~~
-$ git clone https://github.com/ScrapCodes/image-recognition-tensorflow.git
+$ git https://github.com/GRuuuuu/imageRecognition-ML04.git
 $ cd image-recognition-tensorflow
 ~~~  
 
