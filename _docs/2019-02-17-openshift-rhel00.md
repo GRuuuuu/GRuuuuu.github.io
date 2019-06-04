@@ -1,6 +1,6 @@
 ---
 title: "RedHat Openshift"
-categories: 
+docs: 
   - Docs
 tags:
   - RHEL
