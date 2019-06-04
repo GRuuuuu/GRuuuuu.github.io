@@ -304,7 +304,7 @@ defaults:
       author_profile: true
   # _docs
   - scope:
-      path: ""
+      path: "_docs"
       type: posts
     values:
       layout: single
