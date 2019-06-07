@@ -48,3 +48,5 @@ elk-nav:
         url: /elk-starter/elk-starter01
       - title: "02 Configuring Cluster"
         url : elk-starter/elk-starter02
+      - title: "03 Index&Document CRUD"
+        url : elk-starter/elk-starter03
