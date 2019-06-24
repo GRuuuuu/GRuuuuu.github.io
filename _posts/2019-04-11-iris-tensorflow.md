@@ -31,8 +31,9 @@ sitemap :
 붓꽃의 여러 특징들을 정리해둔 데이터셋입니다. 이 데이터셋에는 세가지 품종에 대해 정리가 되어있습니다.  
 
 여담이지만 저는 이 문서를 만들기 전까지 붓꽃 품종이 이렇게 다양한지 몰랐습니다.   
-![image](https://user-images.githubusercontent.com/15958325/56006054-5cd68a00-5d0e-11e9-8970-3cfb36cbdef7.png)  
+![image](https://user-images.githubusercontent.com/15958325/59986804-46846d00-9673-11e9-87f9-fea918b83448.png)  
 요 사진처럼 생긴 꽃만 붓꽃인줄 알았더니 아래 사진처럼 정말 여러 종류의 붓꽃이 있다는것을 알게되었습니다.  
+
 ![image](https://user-images.githubusercontent.com/15958325/56006198-e5552a80-5d0e-11e9-9533-acf14a910fdf.png)
 
 Iris dataset에는 총 세가지 품종의 붓꽃의 데이터가 저장되어 있습니다.  
