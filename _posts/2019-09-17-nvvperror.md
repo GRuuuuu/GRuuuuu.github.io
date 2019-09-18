@@ -17,7 +17,7 @@ sitemap :
 `Arch : ppc64le(Power9)`   
 `OS : GNU/Linux`   
 `CUDA : v10.1`   
-`GPU : Tesla V100-SXM2-16GB` x4
+`GPU : Tesla V100-SXM2-16GB`
 
 ## Purpose
 machine learning python코드를 돌려 GPU와 CPU간의 memcopy를 nvvp로 시각화 해보고자 함
