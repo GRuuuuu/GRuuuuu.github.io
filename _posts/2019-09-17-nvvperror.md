@@ -1,5 +1,5 @@
 ---
-title: "[ERROR] Nvidia Visual Profiler : GC Overhead"
+title: "[Solved] Nvidia Visual Profiler : GC Overhead"
 categories: 
   - ERROR
 tags:
