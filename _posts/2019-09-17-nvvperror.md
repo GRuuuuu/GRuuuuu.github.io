@@ -15,7 +15,7 @@ sitemap :
 
 ## Environment
 `Arch : ppc64le(Power9)`   
-`OS : GNU/Linux`   
+`OS : RHEL 7.6`   
 `CUDA : v10.1`   
 `GPU : Tesla V100-SXM2-16GB`
 
