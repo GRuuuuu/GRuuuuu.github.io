@@ -65,7 +65,7 @@ model.fit(x_train, y_train,
 ## ERROR
 
 에러발생
-~~~cmd
+~~~
 ...
 
 Compile...
