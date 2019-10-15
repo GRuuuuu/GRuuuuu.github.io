@@ -1,5 +1,5 @@
 ---
-title: "[Solved] AttrValue must not have reference type value of float_ref for attr 'tensor_type'"
+title: "AttrValue must not have reference type value of float_ref for attr 'tensor_type'"
 categories: 
   - ERROR
 tags:
