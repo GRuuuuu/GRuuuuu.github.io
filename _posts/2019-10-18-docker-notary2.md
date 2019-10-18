@@ -1,5 +1,5 @@
 ---
-title: "Content Trust in Docker(2) : DCT 실습"
+title: "Content Trust in Docker(2) : DCT with Docker Hub"
 categories: 
   - Container
 tags:
