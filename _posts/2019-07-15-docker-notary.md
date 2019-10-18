@@ -35,7 +35,7 @@ Notary는 해당 서비스를 사용하는 사용자에게 데이터의 신뢰�
 
 >참고 : [TUF에 대한 설명](https://gruuuuu.github.io/security/tuf/)
 
-본격적으로 **Notary Service**의 Archtecture로 넘어가기 전에 **TUF Key**에 대해 짚고 넘어가도록 하겠습니다.  
+본격적으로 **Notary Service**의 Architecture로 넘어가기 전에 **TUF Key**에 대해 짚고 넘어가도록 하겠습니다.  
 
 ## TUF Key?
 TUF의 기본 개념은 4가지 정도가 있습니다.  
