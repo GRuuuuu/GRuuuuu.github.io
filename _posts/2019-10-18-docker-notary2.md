@@ -66,7 +66,7 @@ Docker에서 이미지는 다음과 같이 표현될 수 있습니다.
 DCT옵션을 활성화 시키면 trusted 이미지만 `pull`, `run`, `build`할 수 있습니다. 또한 레포지토리상에서도 trusted이미지만 보이게 되고 서명되지 않은 untrusted이미지들은 보이지 않게 됩니다.   
 쉽게 **필터 역할**을 한다고 보시면 될 것 같습니다.  
 
-<그림>  
+-그림-  
 
 
 ## Docker Content Trust Keys
