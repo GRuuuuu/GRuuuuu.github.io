@@ -66,8 +66,6 @@ Docker에서 이미지는 다음과 같이 표현될 수 있습니다.
 DCT옵션을 활성화 시키면 trusted 이미지만 `pull`, `run`, `build`할 수 있습니다. 또한 레포지토리상에서도 trusted이미지만 보이게 되고 서명되지 않은 untrusted이미지들은 보이지 않게 됩니다.   
 쉽게 **필터 역할**을 한다고 보시면 될 것 같습니다.  
 
--그림-  
-
 
 ## Docker Content Trust Keys
 
@@ -180,11 +178,12 @@ nginx                   latest                 5a9061639d0a        26 hours ago 
 이미지가 추가된 것까지 확인!  
 
 ### Sign & Push Image to Docker Hub
-그럼 이제 **trusted docker image**를 **Docker Hub**에 push해봅시다.  
+그럼 이제 `trusted docker image`를 Docker Hub에 push해봅시다.  
 
 **DCT를 사용할 것이라는 환경변수를 설정**해주고, 이미지를 push합니다.  
 ~~~sh
 root@test-cloud:~# export DOCKER_CONTENT_TRUST=1
+
 root@test-cloud:~# docker push kongru/helloworld-dct:0.0
 The push refers to repository [docker.io/kongru/helloworld-dct]
 3d2dfe0a3dc1: Layer already exists
@@ -211,6 +210,8 @@ Successfully signed docker.io/kongru/helloworld-dct:0.0
 >key file itself secure and backed up. It is highly recommended that you use a
 >password manager to generate the passphrase and keep it safe. There will be no
 >way to recover this key. You can find the key in your config directory.
+>Enter passphrase for new root key with ID c01f036:
+>Repeat passphrase for new root key with ID c01f036:
 >~~~
 >이후로는 생성했던 root key의 비밀번호(passphrase)를 넣어주시면 됩니다.  
 
@@ -292,7 +293,7 @@ Successfully added signer: kongru2 to docker.io/kongru/helloworld-dct
 `repository key` passpharase를 입력하면 delegation key 추가 완료  
 
 ### Signing with delegation key
-이제 `delegation ke`y에도 저장소에 접근할 **권리**가 생겼습니다.  
+이제 `delegation key`에도 저장소에 접근할 **권리**가 생겼습니다.  
 
 delegation key로 sign한 이미지를 저장소에 올려보겠습니다.  
 
@@ -387,6 +388,6 @@ No valid trust data for 0.1
 원본 제작자로부터 모든 컨텐츠를 안전하게 수신받고 확인할 수 있게 됩니다.  
 
 ### For Publisher
-이미지의 제작자로써, 해당 이미지가 변조되지 않았다는 보증을 유저에게 제공할 수 있습니다.  
+이미지의 제작자로써, 해당 이미지가 변조되지 않았다는 신뢰를 유저에게 제공할 수 있습니다.  
 
 ----
