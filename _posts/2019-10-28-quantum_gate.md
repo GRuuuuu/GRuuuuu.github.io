@@ -33,9 +33,13 @@ sitemap :
 > 확률이 $$\alpha$$일때, 0인 상태 : $$ \alpha \vert \mathsf{0}\rangle $$     
 > 확률이 $$\beta$$일때, 1인 상태 : $$ \beta \vert \mathsf{1}\rangle $$
 
-bar($$ \vert $$)와 꺽쇠(\rangle)기호를 사용하여 표기합니다.  
+bar($$ \vert $$)와 꺽쇠($$\rangle$$)기호를 사용하여 표기합니다.  
 
 그래서 하나의 Qbit 상태는 다음과 같이 표현될 수 있습니다.  
 
-$$ \vert\psi_{양자}\rangle=\alpha \vert \mathsf{0}\rangle+\beta \vert \mathsf{1}\rangle $$
+$$ \vert\psi_{양자}\rangle=\alpha \vert \mathsf{0}\rangle+\beta \vert \mathsf{1}\rangle $$  
+
+행렬로 나타내면 다음과 같이 표현될 수 있습니다.  
+
+$$ \left[\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right] $$
 
