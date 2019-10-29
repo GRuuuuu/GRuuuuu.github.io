@@ -39,4 +39,4 @@ bar(|)와 꺽쇠(>)기호를 사용하여 표기합니다.
 
 \[|\Uppsi_{양자}>=\upalpha|0>+\textbeta|1>\]
 
-\[p(\theta) = \mathbf{\prod}_{i,c}p(\mathbf{\theta}^i(c))\]
+$$ p(\theta) = \mathbf{\prod}_{i,c}p(\mathbf{\theta}^i(c)) $$
