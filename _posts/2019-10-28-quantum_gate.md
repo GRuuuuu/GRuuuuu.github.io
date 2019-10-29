@@ -39,8 +39,8 @@ sitemap :
 
 그래서 추상적인 벡터와 선형 범함수를 표현하는 데 사용하는 `ket-vector`를 표준 표기법으로 사용합니다.  
 
-> 확률이 $$\alpha$$일때, 0인 상태 : $$ \alpha \vert \mathsf{0}\rangle $$     
-> 확률이 $$\beta$$일때, 1인 상태 : $$ \beta \vert \mathsf{1}\rangle $$
+> 확률이 $$\alpha^{2}$$일때, 0인 상태 : $$ \alpha \vert \mathsf{0}\rangle $$     
+> 확률이 $$\beta^{2}$$일때, 1인 상태 : $$ \beta \vert \mathsf{1}\rangle $$
 
 bar($$ \vert $$)와 꺽쇠($$\rangle$$)기호를 사용하여 표기합니다.  
 
@@ -50,7 +50,7 @@ $$ \vert\psi_{양자}\rangle=\alpha \vert \mathsf{0}\rangle+\beta \vert \mathsf{
 
 행렬로 나타내면 다음과 같이 표현될 수 있습니다.  
 
-$$ \left[\begin{array}{cc} 1 \\ 0 \end{array}\right] $$  
+$$ \left[\begin{array}{cc} \alpha \\ \beta \end{array}\right] $$  
 
 마찬가지로 두개의 Qubit(A,B)의 상태도 다음과 같이 나타낼 수 있습니다.  
 
@@ -59,6 +59,18 @@ $$ \vert AB \rangle=\upsilon_{00} \vert 00\rangle+\upsilon_{01}\vert01\rangle+\u
 ## Probability
 다시 Qubit 하나를 봅시다.  
 $$ \alpha \vert \mathsf{0}\rangle+\beta \vert \mathsf{1}\rangle $$  
+
+$\alpha$ 는 다음과 같이 나타낼 수 있습니다.  
+
+$$\alpha = x+yi$$  
+이때 i는 복소수입니다. 
+>복소수는 제곱했을때 -1이 되는 수    
+
+앞전 문서에서 음의 확률도 있다고 언급했었는데 정확히는 음의 방향
+
+그래서 0이 나타날 확률 :  
+$$\alpha^{2}=(x+yi)^{2}=(x-yi)^{2}=x^{2}+y^{2}$$  
+이렇게 됩니다.  
 
 
 
