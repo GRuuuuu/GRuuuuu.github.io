@@ -41,12 +41,12 @@ $$ \vert\psi_{양자}\rangle=\alpha \vert \mathsf{0}\rangle+\beta \vert \mathsf{
 
 행렬로 나타내면 다음과 같이 표현될 수 있습니다.  
 
-$$ \left[\begin{array}{cc} 1 & 0 \end{array}\right] $$  
+$$ \left[\begin{array}{cc} 1 \\ 0 \end{array}\right] $$  
 
 마찬가지로 두개의 Qbit(A,B)의 상태도 다음과 같이 나타낼 수 있습니다.  
 
-$$ \vert AB \rangle=\upsilon_{00} \vert 00\rangle+\upsilon_{01}01\vert\rangle+\upsilon_{10}10\vert\rangle+\upsilon_{11}11\vert\rangle $$   
+$$ \vert AB \rangle=\upsilon_{00} \vert 00\rangle+\upsilon_{01}\vert01\rangle+\upsilon_{10}\vert10\rangle+\upsilon_{11}\vert11\rangle $$   
 
-$$ \left[\begin{array}{cc} upsilon_{00} & upsilon_{01} &upsilon_{10}&upsilon_{11} \end{array}\right] $$  
+$$ \left[\begin{array}{cc} \upsilon_{00} \\ \upsilon_{01} \\ \upsilon_{10}\\ \upsilon_{11} \end{array}\right] $$  
 
 
