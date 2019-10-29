@@ -30,13 +30,13 @@ sitemap :
 
 그래서 추상적인 벡터와 선형 범함수를 표현하는 데 사용하는 `ket-vector`를 표준 표기법으로 사용합니다.  
 
->0인 상태, 확률이 a일때 : $$ a \textvertline 0> $$     
->1인 상태, 확률이 b일때 : $$ b \textvertline 1> $$
+>0인 상태, 확률이 a일때 : $$ a \shortmid 0> $$     
+>1인 상태, 확률이 b일때 : $$ b \shortmid 1> $$
 
 bar(|)와 꺽쇠(>)기호를 사용하여 표기합니다.  
 
 그래서 하나의 Qbit 상태는 다음과 같이 표현될 수 있습니다.  
 
-\[|\Uppsi_{양자}>=\upalpha|0>+\textbeta|1>\]
+\[|\Uppsi_{양자}>=\upalpha \shortmid 0>+\textbeta \shortmid 1>\]
 
 $$ p(\theta) = \mathbf{\prod}_{i,c}p(\mathbf{\theta}^i(c)) $$
