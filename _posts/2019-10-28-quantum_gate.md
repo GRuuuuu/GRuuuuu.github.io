@@ -39,8 +39,8 @@ sitemap :
 
 그래서 추상적인 벡터와 선형 범함수를 표현하는 데 사용하는 `ket-vector`를 표준 표기법으로 사용합니다.  
 
-> 확률진폭이 $$\alpha^{2}$$일때, 0인 상태 : $$ \alpha \vert \mathsf{0}\rangle $$     
-> 확률진폭이 $$\beta^{2}$$일때, 1인 상태 : $$ \beta \vert \mathsf{1}\rangle $$
+> 확률진폭이 $$\alpha$$일때, 0인 상태 : $$ \alpha \vert \mathsf{0}\rangle $$     
+> 확률진폭이 $$\beta$$일때, 1인 상태 : $$ \beta \vert \mathsf{1}\rangle $$
 
 bar($$ \vert $$)와 꺽쇠($$\rangle$$)기호를 사용하여 표기합니다.  
 
@@ -65,13 +65,13 @@ $$ \vert AB \rangle=\upsilon_{00} \vert 00\rangle+\upsilon_{01}\vert01\rangle+\u
 그런데 이 확률진폭은 **복소수**(제곱했을때 -1이 되는 수)의 형태로 나타납니다.  
 이말인 즉슨, **확률이 마이너스**가 될 수 있다는 뜻이죠.  
 
-> Why 확률은 확률진폭의 제곱인지, 확률진폭은 복소수의 형태로 나타나는 이유는 양자가 파동성을 갖고 있기 때문이라고 합니다.
+> Why  
+>왜 확률은 확률진폭의 제곱인지, 확률진폭은 복소수의 형태로 나타나는지는 양자가 파동성을 갖고 있기 때문이라고 합니다. >>잘모름<<
 
 다시 Qubit 하나를 봅시다.  
 $$ \alpha \vert \mathsf{0}\rangle+\beta \vert \mathsf{1}\rangle $$  
 
 확률진폭 $\alpha$ 는 다음과 같이 나타낼 수 있습니다.  
-
 $$\alpha = x+yi$$  
 이때 $i$는 복소수입니다. 
 
@@ -80,7 +80,10 @@ $$\alpha^{2}=(x+yi)^{2}=(x-yi)^{2}=x^{2}+y^{2}$$
 
 또한 확률이기 때문에 $\alpha$와 $\beta$의 합은 1입니다.  
 
-예를 들어서 보겠습니다.  
+----
+
+이것만 보면 잘 이해가 안되니 예를 들어서 보겠습니다.  
+
 하나의 Qubit의 상태가 다음과 같다고 할 때 :  
 $$ r_{0}\vert0\rangle+r_{1}\vert1\rangle $$  
 
@@ -104,6 +107,25 @@ $$ \Vert r_{0} \Vert^{2}+\Vert r_{1} \Vert^{2}=1 $$
 >- 확률의 합은 1
 
 # Quantum gate
+지금부터 대표적인 양자게이트 몇가지를 소개해드리도록 하겠습니다.  
+
+## Hadamard (H) gate
+Qubit의 초기상태에서 0과 1의 상태를 동시에 가질 수 있도록, 중첩을 시켜주는 gate입니다.  
+
+**양자게이트 :**  
+![image](https://user-images.githubusercontent.com/15958325/67822542-10b13280-fb04-11e9-89ca-67e32d636a94.png)
+
+**행렬식 :**  
+$$ H = \frac{1}{\sqrt{2}}\left[\begin{array}{cc} 
+1 & 1\\ 
+1 & -1 
+\end{array}\right
+]$$
+
+single Qubit에 적용 :  
+
+
+
 ## Pauli gate
 
 파울리 X,Y,Z게이트는 Qubit를 X축 Y축 Z축으로 회전시키는 게이트 입니다.
@@ -111,9 +133,8 @@ $$ \Vert r_{0} \Vert^{2}+\Vert r_{1} \Vert^{2}=1 $$
 ### Pauli-X gate
 고전 컴퓨터에서의 Not Gate역할을 하는 게이트입니다.  
 
->**양자게이트 :**   
->
->![image](https://user-images.githubusercontent.com/15958325/67742215-c4f87d80-fa5e-11e9-8148-5ac322bd0544.png)
+**양자게이트 :**   
+![image](https://user-images.githubusercontent.com/15958325/67742215-c4f87d80-fa5e-11e9-8148-5ac322bd0544.png)
 
 행렬식 :  
 $$ X = \left[\begin{array}{cc} 
