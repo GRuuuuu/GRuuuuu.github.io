@@ -138,9 +138,12 @@ $$ H\left[\begin{array}{cc}
 \end{array}\right] =
 \cfrac{1}{\sqrt{2}}\vert0\rangle+\cfrac{1}{\sqrt{2}}\vert1\rangle
 $$   
-각 확률이 균등하게 분배된 것을 확인할 수 있습니다.  
+각 확률이 균등하게 분배된 것을 확인할 수 있습니다. (50% 50%)   
 
-이 게이트의 또하나의 특징은 두번 곱했을때 자기자신이 나온다는 것입니다.  
+<img width="452" alt="h" src="https://user-images.githubusercontent.com/15958325/67831629-4f55e580-fb22-11e9-9b01-c850fbe3578c.png">  
+
+
+이 게이트의 또다른 특징은 두번 곱했을때 자기자신이 나온다는 것입니다.  
 위의 식에서부터 이어서 계산해보면 다음과 같습니다.  
 $$ HH\left[\begin{array}{cc} 
 1 \\ 0
@@ -159,8 +162,8 @@ H\left[\begin{array}{cc}
 \end{array}\right] =
 \left[\begin{array}{cc} 
 1 \\ 0
-\end{array}\right] $$
-
+\end{array}\right] $$   
+다시 원상태로 돌아온 것을 확인할 수 있습니다.
 
 ## Pauli gate
 
@@ -172,11 +175,58 @@ H\left[\begin{array}{cc}
 **양자게이트 :**   
 ![image](https://user-images.githubusercontent.com/15958325/67742215-c4f87d80-fa5e-11e9-8148-5ac322bd0544.png)
 
-행렬식 :  
+**행렬식 :**   
 $$ X = \left[\begin{array}{cc} 
 0 & 1\\ 
 1 & 0 
 \end{array}\right
-]$$
+]$$   
 
-$$  $$
+Single Qubit에 적용 (초기상태를 0이라 가정) :   
+$$ X \left[\begin{array}{cc} 
+1 \\ 0
+\end{array}\right] = 
+\left[\begin{array}{cc} 
+0 & 1\\ 
+1 & 0 
+\end{array}\right
+] \left[\begin{array}{cc} 
+1 \\ 0 
+\end{array}\right] =
+\left[\begin{array}{cc} 
+0 \\ 1 
+\end{array}\right]$$   
+
+<img width="461" alt="x" src="https://user-images.githubusercontent.com/15958325/67831631-4fee7c00-fb22-11e9-9453-7817c8348ebe.PNG">  
+
+
+### Pauli-Y gate
+Qubit을 Y방향으로 회전하게 하는 게이트입니다.  
+
+**양자게이트 :**   
+![image](https://user-images.githubusercontent.com/15958325/67831753-a6f45100-fb22-11e9-9b05-0e42d4601f26.png)  
+
+**행렬식 :**   
+$$ Y = \left[\begin{array}{cc} 
+0 & -i\\ 
+i & 0 
+\end{array}\right
+]$$   
+
+Single Qubit에 적용 (초기상태를 0이라 가정) :   
+$$ Y \left[\begin{array}{cc} 
+1 \\ 0
+\end{array}\right] = 
+\left[\begin{array}{cc} 
+0 & -i\\ 
+i & 0 
+\end{array}\right
+] \left[\begin{array}{cc} 
+1 \\ 0 
+\end{array}\right] =
+\left[\begin{array}{cc} 
+0 \\ i 
+\end{array}\right]$$   
+
+<img width="447" alt="py" src="https://user-images.githubusercontent.com/15958325/67831905-300b8800-fb23-11e9-915a-1bbacd105f9a.PNG">  
+
