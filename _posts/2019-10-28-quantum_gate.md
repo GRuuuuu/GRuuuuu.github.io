@@ -140,7 +140,7 @@ $$ H\left[\begin{array}{cc}
 $$   
 각 확률이 균등하게 분배된 것을 확인할 수 있습니다. (50% 50%)   
 
-<img width="452" alt="h" src="https://user-images.githubusercontent.com/15958325/67831629-4f55e580-fb22-11e9-9b01-c850fbe3578c.png">  
+![image](https://user-images.githubusercontent.com/15958325/67832121-f7b87980-fb23-11e9-8db7-dc111aed1307.png)  
 
 
 이 게이트의 또다른 특징은 두번 곱했을때 자기자신이 나온다는 것입니다.  
@@ -197,7 +197,7 @@ $$ X \left[\begin{array}{cc}
 0 \\ 1 
 \end{array}\right]$$   
 
-<img width="461" alt="x" src="https://user-images.githubusercontent.com/15958325/67831631-4fee7c00-fb22-11e9-9453-7817c8348ebe.PNG">  
+![image](https://user-images.githubusercontent.com/15958325/67832156-0e5ed080-fb24-11e9-99b1-6b269377a5e0.png)  
 
 
 ### Pauli-Y gate
@@ -228,5 +228,37 @@ i & 0
 0 \\ i 
 \end{array}\right]$$   
 
-<img width="447" alt="py" src="https://user-images.githubusercontent.com/15958325/67831905-300b8800-fb23-11e9-915a-1bbacd105f9a.PNG">  
+![image](https://user-images.githubusercontent.com/15958325/67832177-19b1fc00-fb24-11e9-8ddf-7dcfa4ee7db2.png)  
+
+### Pauli-Z gate
+Qubit을 Z방향으로 회전하게 하는 게이트입니다.  
+$\vert0\rangle$일때는 Z게이트를 취했을때 변화가 없지만 $\vert1\rangle$일때는 $-\vert1\rangle$로 변환하게 합니다.  
+그래서 **phase shift gate**라고도 합니다.  
+
+**양자게이트 :**   
+![image](https://user-images.githubusercontent.com/15958325/67832190-29314500-fb24-11e9-9f7f-7fa9d0461e5b.png)  
+
+**행렬식 :**   
+$$ Z = \left[\begin{array}{cc} 
+1 & 0\\ 
+0 & -1 
+\end{array}\right
+]$$   
+
+Single Qubit에 적용 (초기상태를 0이라 가정) :   
+$$ Z \left[\begin{array}{cc} 
+1 \\ 0
+\end{array}\right] = 
+\left[\begin{array}{cc} 
+1 & 0\\ 
+0 & -1 
+\end{array}\right
+] \left[\begin{array}{cc} 
+1 \\ 0 
+\end{array}\right] =
+\left[\begin{array}{cc} 
+1 \\ 0 
+\end{array}\right]$$   
+
+![image](https://user-images.githubusercontent.com/15958325/67834651-5503f900-fb2b-11e9-8854-f0249861bfd0.png)  
 
