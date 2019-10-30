@@ -122,46 +122,44 @@ $$ H = \cfrac{1}{\sqrt{2}}\left[\begin{array}{cc}
 \end{array}\right
 ]$$
 
-Single Qubit A에 적용 (초기상태를 0이라 가정) :   
+Single Qubit에 적용 (초기상태를 0이라 가정) :   
 $$ H\left[\begin{array}{cc} 
-1 & 0
+1 \\ 0
 \end{array}\right] = 
 \cfrac{1}{\sqrt{2}}\left[\begin{array}{cc} 
 1 & 1\\ 
 1 & -1 
 \end{array}\right]
 \left[\begin{array}{cc} 
-1 & 0
+1 \\ 0
 \end{array}\right] = 
 \left[\begin{array}{cc} 
-cfrac{1}{\sqrt{2}} & cfrac{1}{\sqrt{2}}
+\cfrac{1}{\sqrt{2}} \\ \cfrac{1}{\sqrt{2}}
 \end{array}\right] =
-cfrac{1}{\sqrt{2}}\vert0\rangle+cfrac{1}{\sqrt{2}}\vert0\rangle
+\cfrac{1}{\sqrt{2}}\vert0\rangle+\cfrac{1}{\sqrt{2}}\vert0\rangle
 $$
 각 확률이 균등하게 분배된 것을 확인할 수 있습니다.  
 
 이 게이트의 또하나의 특징은 두번 곱했을때 자기자신이 나온다는 것입니다.  
 위의 식에서부터 이어서 계산해보면 다음과 같습니다.  
-$$
-HH\left[\begin{array}{cc} 
-1 & 0
+$$ HH\left[\begin{array}{cc} 
+1 \\ 0
 \end{array}\right] =
 H\left[\begin{array}{cc} 
-cfrac{1}{\sqrt{2}} & cfrac{1}{\sqrt{2}}
+\cfrac{1}{\sqrt{2}} \\ \cfrac{1}{\sqrt{2}}
 \end{array}\right] = 
 \cfrac{1}{\sqrt{2}}\left[\begin{array}{cc} 
 1 & 1\\ 
 1 & -1 
 \end{array}\right]\left[\begin{array}{cc} 
-cfrac{1}{\sqrt{2}} & cfrac{1}{\sqrt{2}}
+\cfrac{1}{\sqrt{2}} \\ \cfrac{1}{\sqrt{2}}
 \end{array}\right] =
 \cfrac{1}{\sqrt{2}}\left[\begin{array}{cc} 
-cfrac21}{\sqrt{2}} & 0
+cfrac{2}{\sqrt{2}} \\ 0
 \end{array}\right] =
 \left[\begin{array}{cc} 
-1 & 0
-\end{array}\right]
-$$
+1 \\ 0
+\end{array}\right] $$
 
 
 ## Pauli gate
