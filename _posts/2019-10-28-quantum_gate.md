@@ -313,9 +313,9 @@ $$ SWAP \left[\begin{array}{cc}
 0 \\
 \frac{1}{\sqrt{2}} \\
 0 \\
-\end{array}\right]
-$$  
+\end{array}\right]$$  
 
 ![image](https://user-images.githubusercontent.com/15958325/67837682-f6db1400-fb32-11e9-8a6b-843f1beded5f.png)  
 
 
+## CNOT gate
