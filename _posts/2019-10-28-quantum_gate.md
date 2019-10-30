@@ -122,7 +122,7 @@ $$ H = \cfrac{1}{\sqrt{2}}\left[\begin{array}{cc}
 \end{array}\right
 ]$$
 
-Single Qubit에 적용 (초기상태를 0이라 가정) :   
+**Single Qubit에 적용 (초기상태를 0이라 가정) :**   
 $$ H\left[\begin{array}{cc} 
 1 \\ 0
 \end{array}\right] = 
@@ -182,7 +182,7 @@ $$ X = \left[\begin{array}{cc}
 \end{array}\right
 ]$$   
 
-Single Qubit에 적용 (초기상태를 0이라 가정) :   
+**Single Qubit에 적용 (초기상태를 0이라 가정) :**   
 $$ X \left[\begin{array}{cc} 
 1 \\ 0
 \end{array}\right] = 
@@ -213,7 +213,7 @@ i & 0
 \end{array}\right
 ]$$   
 
-Single Qubit에 적용 (초기상태를 0이라 가정) :   
+**Single Qubit에 적용 (초기상태를 0이라 가정) :**   
 $$ Y \left[\begin{array}{cc} 
 1 \\ 0
 \end{array}\right] = 
@@ -245,7 +245,7 @@ $$ Z = \left[\begin{array}{cc}
 \end{array}\right
 ]$$   
 
-Single Qubit에 적용 (초기상태를 0이라 가정) :   
+**Single Qubit에 적용 (초기상태를 0이라 가정) :**   
 $$ Z \left[\begin{array}{cc} 
 1 \\ 0
 \end{array}\right] = 
@@ -261,4 +261,61 @@ $$ Z \left[\begin{array}{cc}
 \end{array}\right]$$   
 
 ![image](https://user-images.githubusercontent.com/15958325/67834651-5503f900-fb2b-11e9-8854-f0249861bfd0.png)  
+
+## Swap gate
+이 게이트는 두 Qubit의 상태를 swap하는 게이트 입니다.  
+
+**양자게이트 :**   
+![image](https://user-images.githubusercontent.com/15958325/67835120-8af5ad00-fb2c-11e9-9e49-22e3c54ca783.png)  
+
+**행렬식 :**   
+$$ SWAP = \left[\begin{array}{cc} 
+1 & 0 & 0 & 0 \\ 
+0 & 0 & 1 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+\end{array}\right
+]$$   
+
+**2개 Qubit에 적용 (하나의 Qubit은 중첩상태-H) :**   
+이 때의 Qubit들의 상태는 다음과 같이 나타낼 수 있습니다.  
+$$ \left[\begin{array}{cc} \upsilon_{00} \\ \upsilon_{01} \\ \upsilon_{10}\\ \upsilon_{11} \end{array}\right]
+\rightarrow 
+\left[\begin{array}{cc} 
+\frac{1}{\sqrt{2}} \\ 
+\frac{1}{\sqrt{2}} \\
+0 \\
+0 \\
+\end{array}\right
+]$$   
+
+**SWAP게이트를 적용하면 :**   
+$$ SWAP \left[\begin{array}{cc} 
+\frac{1}{\sqrt{2}} \\ 
+\frac{1}{\sqrt{2}} \\
+0 \\
+0 \\
+\end{array}\right] = 
+\left[\begin{array}{cc} 
+1 & 0 & 0 & 0 \\ 
+0 & 0 & 1 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+\end{array}\right]
+\left[\begin{array}{cc} 
+\frac{1}{\sqrt{2}} \\ 
+\frac{1}{\sqrt{2}} \\
+0 \\
+0 \\
+\end{array}\right] =
+\left[\begin{array}{cc} 
+\frac{1}{\sqrt{2}} \\ 
+0 \\
+\frac{1}{\sqrt{2}} \\
+0 \\
+\end{array}\right]
+$$  
+
+![image](https://user-images.githubusercontent.com/15958325/67837682-f6db1400-fb32-11e9-8a6b-843f1beded5f.png)  
+
 
