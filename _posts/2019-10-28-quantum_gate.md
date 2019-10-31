@@ -319,3 +319,81 @@ $$ SWAP \left[\begin{array}{cc}
 
 
 ## CNOT gate
+두 Qubit의 Entanglement(얽힘)현상을 볼 수 있는 게이트입니다.  
+
+**양자게이트 :**   
+![image](https://user-images.githubusercontent.com/15958325/67910544-749c2f80-fbc6-11e9-8725-f0f3d0975363.png)  
+
+**행렬식 :**   
+$$ CNOT = \left[\begin{array}{cc} 
+1 & 0 & 0 & 0 \\ 
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0 \\
+\end{array}\right
+]$$   
+
+**2개 Qubit에 적용 (하나의 Qubit은 중첩상태-H) :**   
+이 때의 Qubit들의 상태는 다음과 같이 나타낼 수 있습니다.  
+$$ \left[\begin{array}{cc} \upsilon_{00} \\ \upsilon_{01} \\ \upsilon_{10}\\ \upsilon_{11} \end{array}\right]
+\rightarrow 
+\left[\begin{array}{cc} 
+\frac{1}{\sqrt{2}} \\ 
+\frac{1}{\sqrt{2}} \\
+0 \\
+0 \\
+\end{array}\right
+]$$   
+
+**CNOT게이트를 적용하면 :**   
+$$ CNOT \left[\begin{array}{cc} 
+\frac{1}{\sqrt{2}} \\ 
+\frac{1}{\sqrt{2}} \\
+0 \\
+0 \\
+\end{array}\right] = 
+\left[\begin{array}{cc} 
+1 & 0 & 0 & 0 \\ 
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0 \\
+\end{array}\right]
+\left[\begin{array}{cc} 
+\frac{1}{\sqrt{2}} \\ 
+\frac{1}{\sqrt{2}} \\
+0 \\
+0 \\
+\end{array}\right] =
+\left[\begin{array}{cc} 
+\frac{1}{\sqrt{2}} \\ 
+0 \\
+0 \\
+\frac{1}{\sqrt{2}} \\
+\end{array}\right]$$   
+
+![image](https://user-images.githubusercontent.com/15958325/67910803-829e8000-fbc7-11e9-8e78-bec5453f8fa0.png)  
+
+0번 Qubit이 0이되면 1번 Qubit은 0으로, 1이면 1이되는 것을 확인할 수 있습니다.  
+즉, 첫번째 Qubit의 상태가 두번째 Qubit의 상태에 영향을 주는 얽힘상태를 관찰할 수 있습니다.  
+
+
+## TOFFOLI(CCNOT) gate
+toffoli 게이트는 3개의 Qubit에서 작동합니다.  
+2개의 큐비트의 상태가 하나의 큐비트의 상태에 영향을 주는 게이트입니다.  
+
+**양자게이트 :**  
+![image](https://user-images.githubusercontent.com/15958325/67911220-2ccad780-fbc9-11e9-9a9a-7ce249c72e4f.png)  
+
+**행렬식 :**   
+![image](https://user-images.githubusercontent.com/15958325/67911288-57b52b80-fbc9-11e9-9a78-2b8f0bdc2a23.png)  
+
+**CNOT게이트를 적용하면 :**   
+![image](https://user-images.githubusercontent.com/15958325/67911460-f6da2300-fbc9-11e9-8a2a-67c9c2112626.png)  
+
+첫번째 두번째 Qubit이 1이되면 110이 나와야되는데 마지막 Qubit에 Not연산이 취해져서 111이 나온 것을 확인할 수 있습니다.  
+
+
+
+>이 외에도 몇가지 양자게이트가 더 있는데 추후에 포스팅을 진행하면서 추가하도록 하겠습니다.  
+
+----
