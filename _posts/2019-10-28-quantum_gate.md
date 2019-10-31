@@ -6,7 +6,7 @@ tags:
   - Quantum
   - Computing
   - Physics
-last_modified_at: 2019-10-29T13:00:00+09:00
+last_modified_at: 2019-10-31T13:00:00+09:00
 author_profile: true
 sitemap :
   changefreq : daily
@@ -143,7 +143,7 @@ $$
 ![image](https://user-images.githubusercontent.com/15958325/67832121-f7b87980-fb23-11e9-8db7-dc111aed1307.png)  
 
 
-이 게이트의 또다른 특징은 두번 곱했을때 자기자신이 나온다는 것입니다.  
+이 게이트의 또다른 특징은 두번 곱했을때 다시 원상태로 돌아온다는 것입니다.  
 위의 식에서부터 이어서 계산해보면 다음과 같습니다.  
 $$ HH\left[\begin{array}{cc} 
 1 \\ 0
