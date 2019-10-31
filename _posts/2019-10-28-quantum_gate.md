@@ -265,6 +265,12 @@ $$ Z \left[\begin{array}{cc}
 ## Swap gate
 이 게이트는 두 Qubit의 상태를 swap하는 게이트 입니다.  
 
+>주의) 여기서부터 행렬 표기가 헷갈릴 수 있습니다.   
+>**그림**으로 나오는 Qubit상태는 (2번째Qubit)(1번째Qubit)이렇게 **역방향**으로 표기되어있고,   
+>**행렬식** 계산의 Qubit상태는 **정방향**으로 표기되어있습니다.  
+>
+>즉,  행렬식에서의 01은 그림에서의 10과 같습니다.  
+
 **양자게이트 :**   
 ![image](https://user-images.githubusercontent.com/15958325/67835120-8af5ad00-fb2c-11e9-9e49-22e3c54ca783.png)  
 
@@ -283,8 +289,8 @@ $$ \left[\begin{array}{cc} \upsilon_{00} \\ \upsilon_{01} \\ \upsilon_{10}\\ \up
 \rightarrow 
 \left[\begin{array}{cc} 
 \frac{1}{\sqrt{2}} \\ 
-\frac{1}{\sqrt{2}} \\
 0 \\
+\frac{1}{\sqrt{2}} \\
 0 \\
 \end{array}\right
 ]$$   
@@ -304,14 +310,14 @@ $$ SWAP \left[\begin{array}{cc}
 \end{array}\right]
 \left[\begin{array}{cc} 
 \frac{1}{\sqrt{2}} \\ 
-\frac{1}{\sqrt{2}} \\
 0 \\
+\frac{1}{\sqrt{2}} \\
 0 \\
 \end{array}\right] =
 \left[\begin{array}{cc} 
 \frac{1}{\sqrt{2}} \\ 
-0 \\
 \frac{1}{\sqrt{2}} \\
+0 \\
 0 \\
 \end{array}\right]$$  
 
@@ -339,8 +345,8 @@ $$ \left[\begin{array}{cc} \upsilon_{00} \\ \upsilon_{01} \\ \upsilon_{10}\\ \up
 \rightarrow 
 \left[\begin{array}{cc} 
 \frac{1}{\sqrt{2}} \\ 
-\frac{1}{\sqrt{2}} \\
 0 \\
+\frac{1}{\sqrt{2}} \\
 0 \\
 \end{array}\right
 ]$$   
@@ -348,8 +354,8 @@ $$ \left[\begin{array}{cc} \upsilon_{00} \\ \upsilon_{01} \\ \upsilon_{10}\\ \up
 **CNOT게이트를 적용하면 :**   
 $$ CNOT \left[\begin{array}{cc} 
 \frac{1}{\sqrt{2}} \\ 
-\frac{1}{\sqrt{2}} \\
 0 \\
+\frac{1}{\sqrt{2}} \\
 0 \\
 \end{array}\right] = 
 \left[\begin{array}{cc} 
@@ -360,8 +366,8 @@ $$ CNOT \left[\begin{array}{cc}
 \end{array}\right]
 \left[\begin{array}{cc} 
 \frac{1}{\sqrt{2}} \\ 
-\frac{1}{\sqrt{2}} \\
 0 \\
+\frac{1}{\sqrt{2}} \\
 0 \\
 \end{array}\right] =
 \left[\begin{array}{cc} 
