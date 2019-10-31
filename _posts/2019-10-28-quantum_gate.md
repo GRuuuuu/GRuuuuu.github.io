@@ -298,8 +298,8 @@ $$ \left[\begin{array}{cc} \upsilon_{00} \\ \upsilon_{01} \\ \upsilon_{10}\\ \up
 **SWAP게이트를 적용하면 :**   
 $$ SWAP \left[\begin{array}{cc} 
 \frac{1}{\sqrt{2}} \\ 
-\frac{1}{\sqrt{2}} \\
 0 \\
+\frac{1}{\sqrt{2}} \\
 0 \\
 \end{array}\right] = 
 \left[\begin{array}{cc} 
