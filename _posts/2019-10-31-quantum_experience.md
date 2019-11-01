@@ -114,7 +114,7 @@ MY_API_TOKEN='e98185~~~abx'
 IBMQ.save_account(MY_API_TOKEN,overwrite=True)
 ~~~
 
->토큰 정보는 이곳에서
+>토큰 정보는 이곳에서  
 >![image](https://user-images.githubusercontent.com/15958325/68003537-26b02600-fcb1-11e9-828c-fc3f873a0c1b.png)  
 >
 >![image](https://user-images.githubusercontent.com/15958325/68003555-392a5f80-fcb1-11e9-986e-55d69f4c8824.png)   
