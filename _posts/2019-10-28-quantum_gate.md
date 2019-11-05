@@ -393,7 +393,7 @@ toffoli 게이트는 3개의 Qubit에서 작동합니다.
 **행렬식 :**   
 ![image](https://user-images.githubusercontent.com/15958325/67911288-57b52b80-fbc9-11e9-9a78-2b8f0bdc2a23.png)  
 
-**CNOT게이트를 적용하면 :**   
+**CCNOT게이트를 적용하면 :**   
 ![image](https://user-images.githubusercontent.com/15958325/67911460-f6da2300-fbc9-11e9-8a2a-67c9c2112626.png)  
 
 첫번째 두번째 Qubit이 1이되면 110이 나와야되는데 마지막 Qubit에 Not연산이 취해져서 111이 나온 것을 확인할 수 있습니다.  
