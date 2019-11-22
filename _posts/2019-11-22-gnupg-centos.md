@@ -14,9 +14,7 @@ sitemap :
 ---
 
 ## 1. Overview
-CentOS7 기본 repository는 gpg 2.0.x   
-
-2.2.x로 업그레이드 하는 방법 입니다.  
+**CentOS7**에서 gpg기본버전을 `gpg 2.2.x`로 업그레이드 하는 방법 입니다.  
 
 
 ## 2. Prerequisites
