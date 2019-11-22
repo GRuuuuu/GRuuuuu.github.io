@@ -1,7 +1,7 @@
 ---
 title: "Install SUSE with HMC"
 categories: 
-  - SUSE
+  - LINUX
 tags:
   - SUSE
   - VIOS

@@ -1,7 +1,7 @@
 ---
 title: "SUSE Management -YaST, iSCSI"
 categories: 
-  - SUSE
+  - LINUX
 tags:
   - SUSE
   - YaST
