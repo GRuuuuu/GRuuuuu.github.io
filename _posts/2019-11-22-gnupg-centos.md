@@ -1,5 +1,5 @@
 ---
-title: "Upgrade GnuPG 2.2.x in CentOS/RHEL"
+title: "Upgrade GnuPG 2.2.x on CentOS/RHEL"
 categories: 
   - LINUX
 tags:
