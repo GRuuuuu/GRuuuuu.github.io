@@ -21,9 +21,9 @@ sitemap :
 `OS : CentOS v7.6`  
 `Arch : x86`  
 
-k8s클러스터는 1마스터 2슬레이브로 구성했습니다.  
+k8s클러스터는 1마스터 2노드로 구성했습니다.  
 `Master` : 4cpu, ram16G  
-`Slave` : 2cpu, ram4G  
+`Node` : 2cpu, ram4G  
 
 # 3. Controller?
 쿠버네티스는 크게 객체(object)와 그것을 관리하는 컨트롤러(controller)로 구성됩니다.  
@@ -39,7 +39,8 @@ k8s클러스터는 1마스터 2슬레이브로 구성했습니다.
 컨트롤러에 대해 알아보기전에 pod이 무엇인지에 대해서 짚고 넘어가겠습니다.  
 
 pod은 쿠버네티스가 배포, 관리할 수 있는 최소단위이며 컨테이너들의 집합입니다.  
-![image](https://user-images.githubusercontent.com/15958325/70413530-f66f5a80-1a9a-11ea-8a02-d6a448b40509.png)  
+![image](https://user-images.githubusercontent.com/15958325/70419213-5a4c5000-1aa8-11ea-93d9-5c8bfb2be63d.png)  
+ 
 
 하나의 pod안에 있는 컨테이너들은 자원을 공유하게 되기 때문에, 동일한 목적을 가진 컨테이너들로 구성하는것이 좋습니다.  
 위 사진을 보시면 하나의 pod안에 File puller, Web server와 같이 역할은 다르지만 동일한 목적을 가진 컨테이너끼리 뭉쳐있으며 이들은 같은 volume을 공유하고 있는 것을 확인할 수 있습니다.  
