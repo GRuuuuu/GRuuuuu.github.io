@@ -17,8 +17,9 @@ sitemap :
 ---
 
 ## Overview
-MSA시장이 커지면서 기존의 L3,L4기반의 프록시들로는 다양한 요건들을 처리하기 어려워졌고, 그에 따라 **L7기능을 갖춘 프록시**의 필요성이 부각되기 시작했습니다.  
+MSA시장이 커지면서 서비스들은 네트워크를 통해 서로 통신해야했고, 이러한 서비스에서 사용하는 핵심 네트워크 프로토콜은 `HTTP`, `HTTP/2`, `gRPC`, `Kafka`, `MongoDB`등의 L7프로토콜입니다.   
 
+L3,L4기반의 프록시들로는 다양한 요건들을 처리하기 어려워졌고, 그에 따라 **L7기능을 갖춘 프록시**의 필요성이 부각되기 시작했습니다.  
 
 이번 포스팅에서는 추후에 기술할 `ServiceMesh Architecture`로 대표되는 `Istio`의 메인 프록시인 `Envoy Proxy`에 대해서 기술하겠습니다.  
 
@@ -54,20 +55,20 @@ MSA시장이 커지면서 기존의 L3,L4기반의 프록시들로는 다양한 
 # 2. Features
 Envoy proxy의 주요 기능들을 알아보겠습니다.  
 
-## Out of process architecture
+### Out of process architecture
 Envoy proxy는 그 자체로 메모리사용량이 적은 고성능의 서버입니다.  
 모든 프로그래밍 언어, 프레임워크와 함께 실행될 수 있습니다.
 
 이는 다양한 언어,프레임워크를 함께 사용하는 Architecture에 유용히 사용될 수 있습니다.  
 
-## L3/L4 Architecture
+### L3/L4 Architecture
 Envoy의 주요 기능은 L7이지만 핵심은 L3/L4 네트워크 프록시 입니다.  
 TCP프록시, HTTP프록시, TLS인증과 같은 다양한 작업을 지원합니다.  
 
-## L7 Architecture
+### L7 Architecture
 버퍼링, 속도제한, 라우팅/전달 등과 같은 다양한 작업을 수행할 수 있게 합니다.
 
-## HTTP/2 , gRPC 지원
+### HTTP/2 , gRPC 지원
 HTTP/1.1은 물론 HTTP/2도 지원합니다.  
 이는 HTTP/1.1과 HTTP/2 클라이언트와 서버간 모든 조합을 연결할 수 있음을 의미합니다.  
 
@@ -77,7 +78,7 @@ HTTP/1.1은 물론 HTTP/2도 지원합니다.
 
 >참고 : [나만 모르고 있던 - HTTP/2](https://www.popit.kr/%EB%82%98%EB%A7%8C-%EB%AA%A8%EB%A5%B4%EA%B3%A0-%EC%9E%88%EB%8D%98-http2/)
 
-## Advanced Load Balancing
+### Advanced Load Balancing
 자동 재시도, circuit break, 외부 속도 제한 서비스를 통한 글로벌 속도제한, 이상치 탐지 등의 기능을 제공합니다.  
 
 > **circuit break?**  
@@ -88,7 +89,7 @@ HTTP/1.1은 물론 HTTP/2도 지원합니다.
 >![image](https://user-images.githubusercontent.com/15958325/71466724-c4ccf200-2803-11ea-8ffb-e63b6fc703c6.png)  
 >
 
-## Etc
+### Etc
 - health check 지원
 - 프론트/엣지 프록시 지원
 - 관리용으로 다양한 통계 정보 제공
