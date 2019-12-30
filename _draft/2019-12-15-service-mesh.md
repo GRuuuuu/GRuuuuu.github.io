@@ -1,5 +1,5 @@
 ---
-title: "Service Mesh Architecture & Istio"
+title: "Service Mesh Architecture & Istio를 알아보자"
 categories: 
   - Container
 tags:
@@ -8,7 +8,7 @@ tags:
   - MSA
   - ServiceMesh
   - Istio
-last_modified_at: 2019-12-15T13:00:00+09:00
+last_modified_at: 2019-12-30T13:00:00+09:00
 author_profile: true
 sitemap :
   changefreq : daily
@@ -16,13 +16,13 @@ sitemap :
 ---
 
 ## 1. Overview
-(사진)
-이전 포스팅에서 `MicroService Architecture`의 장단점에 대해서 알아봤습니다.  
+(사진)  
+[이전 포스팅](https://gruuuuu.github.io/container/architecture-microservice/)에서 `MicroService Architecture`의 장단점에 대해서 알아봤습니다.  
 기존 `Monolitic Architecture`의 단점을 극복하고 Cloud환경에서 시스템 운영을 최적화 시키기 위해 많이 사용되고 있습니다.  
 
-하지만 여전히 몇가지 단점이 존재하는데요. 
+하지만 여전히 몇가지 단점이 존재하는데요.  
 
-이번 포스팅에서는 단점을 극복하기 위한 Architecture인 `Service Mesh Architecture`에 대해서 알아보겠습니다.
+이번 포스팅에서는 단점을 극복하기 위한 Architecture중 `Service Mesh Architecture`에 대해서 알아보겠습니다.
 
 # 2. Service Mesh Architecture?
 ## MicroService Architecture의 단점
@@ -51,7 +51,7 @@ sitemap :
 
 그래서 `Service Mesh`에서의 통신은 사이드카로 배치된 **경량화되고 L7계층기반의 proxy**를 사용하게 됩니다.  
 
-프록시를 사용해서 트래픽을 통제할 수 있다는 것 까지는 좋은데, 서비스가 거대해짐에 따라 프록시 수도 증가하게 됩니다.  
+프록시를 사용해서 트래픽을 통제할 수 있다는 것 까지는 좋은데, **서비스가 거대해짐에 따라 프록시 수도 증가**하게 됩니다.  
 
 이런 문제를 해결하기 위해서 각 프록시에 대한 설정정보를 **중앙집중화된 컨트롤러**가 통제할 수 있게 설계되었습니다.  
 
@@ -65,11 +65,14 @@ Service Mesh의 구현체들은 몇가지가 존재하지만 이 포스팅에서
 
 # 3. Istio
 ## What is Istio?
-`Data Plane`으로 Envoy proxy를 사용하며 이를 컨트롤 해주는 `Control Plane`의 오픈소스 솔루션이 **Istio**입니다.  
+`Data Plane`의 메인 프록시로 Envoy proxy를 사용하며 이를 컨트롤 해주는 `Control Plane`의 오픈소스 솔루션이 **Istio**입니다.  
 
 > **Envoy Proxy?**  
 > C++로 개발된 고성능 프록시 사이드카.  
-> dynamic service discovery, load balancing, TLS termination, circuit breaker..등등의 기능을 포함
+> dynamic service discovery, load balancing, TLS termination, circuit breaker..등등의 기능을 포함  
+>
+>참고1 : [호롤리한하루/Multi-Container Design Patterns 정리-sidecar pattern](https://gruuuuu.github.io/container/design-pattern/#sidecar-pattern)  
+>참고2 : [호롤리한하루/envoy proxy란? (basic)](https://gruuuuu.github.io/container/envoy-proxy/)
 
 `Istio`로 구성된 Service Mesh를 개략적으로 살펴보면 다음 그림과 같습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/70860649-7c8e1400-1f67-11ea-8897-abc3f55ff788.png)  
