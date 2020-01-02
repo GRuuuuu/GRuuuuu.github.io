@@ -16,9 +16,10 @@ sitemap :
 ---
 
 ## 1. Overview
-(사진)  
+![m m](https://user-images.githubusercontent.com/15958325/71668021-b99d3780-2daa-11ea-86e4-a57d4c3a1638.png)  
+
 [이전 포스팅](https://gruuuuu.github.io/container/architecture-microservice/)에서 `MicroService Architecture`의 장단점에 대해서 알아봤습니다.  
-기존 `Monolitic Architecture`의 단점을 극복하고 Cloud환경에서 시스템 운영을 최적화 시키기 위해 많이 사용되고 있습니다.  
+기존 `Monolithic Architecture`의 단점을 극복하고 Cloud환경에서 시스템 운영을 최적화 시키기 위해 많이 사용되고 있습니다.  
 
 하지만 여전히 몇가지 단점이 존재하는데요.  
 
@@ -26,11 +27,11 @@ sitemap :
 
 # 2. Service Mesh Architecture?
 ## MicroService Architecture의 단점
-기존 `Monolitic Architecture`의 단점을 극복하고 작은 서비스들로 하나의 서비스를 이루는 것은 각각의 서비스들을 독립적으로 관리할 수 있다는 점에서 유연하게 운용할 수 있었지만  
+기존 `Monolithic Architecture`의 단점을 극복하고 작은 서비스들로 하나의 서비스를 이루는 것은 각각의 서비스들을 독립적으로 관리할 수 있다는 점에서 유연하게 운용할 수 있었지만  
 
 거대해진 MSA시스템을 보면 수십개의 MicroService가 분리되어있고 운영환경에는 수천개의 서비스 인스턴스가 동작하고 있습니다.  
 
-(사진)
+![bug](https://user-images.githubusercontent.com/15958325/71668024-ba35ce00-2daa-11ea-872c-d939f734efa9.png)
 
 물론 관리자는 수백~수천개의 인스턴스들을 모니터링하고 로깅해야하며 관리해야하는 책임이 주어지게 됩니다.  
 
