@@ -167,7 +167,7 @@ $ cd istio-1.4.2/
 ~~~
 
 ~~~sh
-# Istio CRD 설치
+# Istio CRD 설치 (Custom Resource Definitions)
 $ for i in install/kubernetes/helm/istio-init/files/crd*yaml; do kubectl apply -f $i; done
 ~~~
 
