@@ -1,5 +1,5 @@
 ---
-title: "Knative를 다뤄보자! (Serving, Eventing)"
+title: "Knative를 다뤄보자! (Serving, Eventing) + GitHubSource실습"
 categories: 
   - Container
 tags:
@@ -21,7 +21,7 @@ Knative의 Serving기능과 Eventing기능을 실습을 통해 더 자세히 알
 
 본 포스트는 **Knative v0.11**을 기준으로 제작되었습니다.
 
-> 참고 : []()  
+> 참고 : [호롤리한하루/Knative란? (basic)](https://gruuuuu.github.io/container/knative/#)  
 
 # Prerequisites
 먼저 쿠버네티스 클러스터를 생성해주세요.  
@@ -308,5 +308,298 @@ sources-controller-685db898c-85cdk    1/1     Running   0          3h50m
 
 만약 아니라면 [Installing Knative Eventing](https://knative.dev/docs/eventing/getting-started/#installing-knative-eventing)를 참조  
 
-## Setting up Knative Eventing Resources
+## Creating and configuring an Eventing namespace
 
+첫 번째로 이번 실습에서 사용할 namespace를 만들어줍니다.  
+
+~~~sh
+$ kubectl create namespace event-example
+~~~
+
+그다음 Knative의 eventing resource를 사용할 수 있게 다음과 같이 라벨링해줍니다.  
+~~~sh
+$ kubectl label namespace event-example knative-eventing-injection=enabled
+~~~
+
+확인 :   
+~~~sh
+$ kubectl get ns --show-labels
+~~~
+
+![image](https://user-images.githubusercontent.com/15958325/72216701-07aef980-3568-11ea-8639-fabe3de557e7.png)  
+
+
+## Validating that the Broker is running
+`Broker`는 Event Producer가 만든 모든 이벤트가 적절한 Event Consumer한테 보내질 수 있도록 하는 역할을 합니다.  
+이벤트 처리를 위한 namespace를 생성할 때 만들어집니다.  
+
+`event-example` namespace에 대한 이벤트 Broker가 만들어진 것을 확인해볼 수 있습니다.  
+~~~sh
+$ kubectl --namespace event-example get Broker default
+
+NAME      READY   REASON   URL                                                     AGE
+default   True             http://default-broker.event-example.svc.cluster.local   2m12s
+~~~
+
+`READY`가 `True`이면 브로커가 받은 이벤트들을 정상적으로 관리할 수 있다는 의미입니다.   
+
+## Creating event consumers
+Event Consumer는 Event Producer가 발생시키는 이벤트들을 받는 역할을 합니다.  
+
+이 실습에서는 두개의 Event Consumer를 만들어 줄겁니다. (`hello-display`, `goodbye-display`)  
+
+~~~yaml
+# hello-display.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-display
+spec:
+  replicas: 1
+  selector:
+    matchLabels: &labels
+      app: hello-display
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - name: event-display
+          # Source code: https://github.com/knative/eventing-contrib/blob/release-0.6/cmd/event_display/main.go
+          image: gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/event_display@sha256:37ace92b63fc516ad4c8331b6b3b2d84e4ab2d8ba898e387c0b6f68f0e3081c4
+
+---
+
+# Service pointing at the previous Deployment. This will be the target for event
+# consumption.
+kind: Service
+ apiVersion: v1
+ metadata:
+   name: hello-display
+ spec:
+   selector:
+     app: hello-display
+   ports:
+   - protocol: TCP
+     port: 80
+     targetPort: 8080
+~~~
+
+~~~yaml
+# goodbye-display.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goodbye-display
+spec:
+  replicas: 1
+  selector:
+    matchLabels: &labels
+      app: goodbye-display
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - name: event-display
+          # Source code: https://github.com/knative/eventing-contrib/blob/release-0.6/cmd/event_display/main.go
+          image: gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/event_display@sha256:37ace92b63fc516ad4c8331b6b3b2d84e4ab2d8ba898e387c0b6f68f0e3081c4
+
+---
+
+# Service pointing at the previous Deployment. This will be the target for event
+# consumption.
+kind: Service
+apiVersion: v1
+metadata:
+  name: goodbye-display
+spec:
+  selector:
+    app: goodbye-display
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+~~~
+
+그 다음, 배포해줍니다.  
+~~~sh
+$ kubectl apply -f hello-display.yaml -n event-example
+$ kubectl apply -f goodbye-display.yaml -n event-example
+~~~
+
+제대로 배포되었는지 확인 :   
+~~~sh
+$ kubectl get deploy -n event-example
+~~~
+![image](https://user-images.githubusercontent.com/15958325/72217284-983d0800-356f-11ea-9760-0e4a0be378c3.png)  
+
+## Creating Triggers
+`Trigger`는 Event Consumer에게 원하는 이벤트를 보낼 수 있게 하는 조건입니다. `Broker`는 Trigger를 통해 Event Consumer에게 이벤트를 보내게 됩니다.  
+
+Event Consumer가 2개이니 트리거도 2개를 만들어줍시다.  
+~~~yaml
+# hello-trigger.yaml
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: hello-display
+spec:
+  filter: # 조건
+    attributes:
+      type: greeting   # type이 greeting인 event에만 반응
+  subscriber:  # 조건을 통과한 event는 subscriber로 이동
+    ref:
+     apiVersion: v1
+     kind: Service
+     name: hello-display  # hello-display라는 이름의 서비스로
+~~~
+
+~~~yaml
+# goodbye-trigger.yaml
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: goodbye-display
+spec:
+  filter:
+    attributes:
+      source: sendoff  # source가 sendoff인 event에만 반응
+  subscriber:
+    ref:
+     apiVersion: v1
+     kind: Service
+     name: goodbye-display
+~~~
+
+배포해줍니다.  
+~~~sh
+$ kubectl apply -f hello-trigger.yaml -n event-example
+$ kubectl apply -f goodbye-trigger.yaml -n event-example
+~~~
+
+확인 :  
+~~~sh
+$ kubectl get triggers -n event-example
+~~~
+![image](https://user-images.githubusercontent.com/15958325/72217406-7e4ff500-3570-11ea-9770-18173db16fc8.png)  
+
+## Creating event producers
+event consumer, Broker, Trigger까지 만들었으니 이제는 이벤트를 생성하는 producer를 만들어보겠습니다.  
+
+대부분의 이벤트는 시스템적으로 생성되지만 이번 실습에서는 curl을 통해 manual하게 이벤트를 생성하겠습니다.  
+
+curl request를 Broker에게 보내는 pod을 만들어줍니다.  
+~~~yaml
+# producer.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: curl
+  name: curl
+spec:
+  containers:
+    # This could be any image that we can SSH into and has curl.
+  - image: radial/busyboxplus:curl
+    imagePullPolicy: IfNotPresent
+    name: curl
+    resources: {}
+    stdin: true
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    tty: true
+~~~
+
+~~~sh
+$ kubectl apply -f producer.yaml -n event-example
+~~~
+
+## Sending Events to the Broker
+모든 준비가 완료되었습니다.  
+
+이제 Broker에게 총 세가지 이벤트를 보내보겠습니다.  
+
+일단 producer인 pod안으로 ssh접속 :   
+~~~sh
+$ kubectl attach curl -it -n event-example
+~~~  
+![image](https://user-images.githubusercontent.com/15958325/72217470-83617400-3571-11ea-86cb-53e88874378e.png)  
+
+첫번째 (type : greeting) :     
+~~~sh
+$ curl -v "http://default-broker.event-example.svc.cluster.local" \
+  -X POST \
+  -H "Ce-Id: say-hello" \
+  -H "Ce-Specversion: 0.3" \
+  -H "Ce-Type: greeting" \
+  -H "Ce-Source: not-sendoff" \
+  -H "Content-Type: application/json" \
+  -d '{"msg":"Hello Knative!"}'
+~~~
+
+>제대로 이벤트가 보내졌으면 이런 메세지가 날라옵니다.  
+>~~~sh
+>< HTTP/1.1 202 Accepted
+>< Content-Length: 0
+>< Date: Sat, 11 Jan 2020 14:56:07 GMT
+>~~~
+
+두번째 (source : sendoff) :    
+~~~sh
+curl -v "http://default-broker.event-example.svc.cluster.local" \
+  -X POST \
+  -H "Ce-Id: say-goodbye" \
+  -H "Ce-Specversion: 0.3" \
+  -H "Ce-Type: not-greeting" \
+  -H "Ce-Source: sendoff" \
+  -H "Content-Type: application/json" \
+  -d '{"msg":"Goodbye Knative!"}'
+~~~
+
+세번째 (type : greeting, source : sendoff) :  
+~~~sh
+curl -v "http://default-broker.event-example.svc.cluster.local" \
+  -X POST \
+  -H "Ce-Id: say-hello-goodbye" \
+  -H "Ce-Specversion: 0.3" \
+  -H "Ce-Type: greeting" \
+  -H "Ce-Source: sendoff" \
+  -H "Content-Type: application/json" \
+  -d '{"msg":"Hello Knative! Goodbye Knative!"}'
+~~~
+
+## Verifying events were received
+각 consumer들의 로그를 뜯어서 trigger가 제대로 메세지를 보내줬는지 확인해봅시다.  
+
+먼저 첫번째 **hello-display**입니다.  
+위에서 `hello-trigger`로 `type:greeting` 인 event만 수신할 수 있게 해놨었습니다.  
+
+~~~sh
+$ kubectl logs -l app=hello-display -n event-example --tail=100
+~~~
+
+![image](https://user-images.githubusercontent.com/15958325/72217506-3336e180-3572-11ea-9096-2071b74bc30c.png)  
+이벤트는 총 두개가 와있고, `type:greeting`인 event만 수신한 것을 확인할 수 있습니다.  
+
+----
+
+**goodbye-display**도 확인해봅시다.  
+위에서 goodbye-trigger로 `source:sendoff` 인 event만 수신할 수 있게 해놨었습니다.  
+~~~sh
+$ kubectl logs -l app=goodbye-display -n event-example --tail=100
+~~~
+
+![image](https://user-images.githubusercontent.com/15958325/72217530-8446d580-3572-11ea-8ce6-3d6dd75e16a6.png)  
+
+`hello-display`와 마찬가지로 이벤트는 두개가 와있고, `source:sendoff` 였던 event만 수신한 것을 확인할 수 있습니다.  
+
+특이한 점은 type과 source중 하나만 일치해도 수신한다는 것입니다.  
+
+----
+
+## 한장 정리
+![image](https://user-images.githubusercontent.com/15958325/72217973-a3e0fc80-3578-11ea-9af9-b55f44cfbb6d.png)  
+
+
+----
