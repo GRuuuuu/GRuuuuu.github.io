@@ -1,7 +1,7 @@
 ---
-title: "Knative를 다뤄보자! (Serving, Eventing) + GitHubSource실습"
+title: "Knative를 다뤄보자! (Serving, Eventing 실습)"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Container
   - Cloud
