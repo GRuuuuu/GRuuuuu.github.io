@@ -30,4 +30,5 @@ pod의 서비스를 외부에 노출시키기 위해서는
 >-[호롤리한하루/Knative를 다뤄보자! (Serving, Eventing 실습)](https://gruuuuu.github.io/cloud/knative-hands-on/#)
 
 
-# 왜 필요한가?
+# Background
+
