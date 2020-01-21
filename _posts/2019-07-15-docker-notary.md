@@ -1,7 +1,7 @@
 ---
 title: "Content Trust in Docker(1) : Docker Notary란?"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Docker
   - TUF

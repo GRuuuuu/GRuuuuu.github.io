@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Controllers : Replication, Deployment, DaemonSet"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Kubernetes
   - Controller

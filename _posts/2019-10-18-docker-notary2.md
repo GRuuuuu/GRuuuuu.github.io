@@ -1,7 +1,7 @@
 ---
 title: "Content Trust in Docker(2) : DCT with Docker Hub"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Docker
   - TUF

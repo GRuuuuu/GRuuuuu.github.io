@@ -1,7 +1,7 @@
 ---
 title: "Helm 3 설치 & 기본 사용방법"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Kubernetes
   - Helm

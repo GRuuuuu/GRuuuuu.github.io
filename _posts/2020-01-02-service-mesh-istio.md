@@ -1,7 +1,7 @@
 ---
 title: "Service Mesh Architecture & Istio를 알아보자"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Container
   - Cloud

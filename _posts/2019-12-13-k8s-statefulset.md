@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Controllers : StatefulSet"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Kubernetes
   - Controller

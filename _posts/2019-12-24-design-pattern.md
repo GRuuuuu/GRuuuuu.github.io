@@ -1,7 +1,7 @@
 ---
 title: "Multi-Container Design Patterns 정리"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Container
   - Cloud

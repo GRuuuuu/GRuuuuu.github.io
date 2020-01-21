@@ -1,7 +1,7 @@
 ---
 title: "Install Openshift on RHEL(POWER)"
 categories: 
-  - Container
+  - Cloud
 tags:
   - RHEL
   - ansible

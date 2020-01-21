@@ -1,7 +1,7 @@
 ---
 title: "envoy proxy란? (basic)"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Container
   - MSA

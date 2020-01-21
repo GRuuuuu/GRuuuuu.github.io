@@ -1,7 +1,7 @@
 ---
 title: "MicroService Architecture란?"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Container
   - Cloud
