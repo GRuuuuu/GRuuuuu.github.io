@@ -18,7 +18,7 @@ sitemap :
 ## 1. Overview
 ![m m](https://user-images.githubusercontent.com/15958325/71668021-b99d3780-2daa-11ea-86e4-a57d4c3a1638.png)  
 
-[이전 포스팅](https://gruuuuu.github.io/container/architecture-microservice/)에서 `MicroService Architecture`의 장단점에 대해서 알아봤습니다.  
+[이전 포스팅](https://gruuuuu.github.io/cloud/architecture-microservice/)에서 `MicroService Architecture`의 장단점에 대해서 알아봤습니다.  
 기존 `Monolithic Architecture`의 단점을 극복하고 Cloud환경에서 시스템 운영을 최적화 시키기 위해 많이 사용되고 있습니다.  
 
 하지만 여전히 몇가지 단점이 존재하는데요.  
@@ -72,8 +72,8 @@ Service Mesh의 구현체들은 몇가지가 존재하지만 이 포스팅에서
 > C++로 개발된 고성능 프록시 사이드카.  
 > dynamic service discovery, load balancing, TLS termination, circuit breaker..등등의 기능을 포함  
 >
->참고1 : [호롤리한하루/Multi-Container Design Patterns 정리-sidecar pattern](https://gruuuuu.github.io/container/design-pattern/#sidecar-pattern)  
->참고2 : [호롤리한하루/envoy proxy란? (basic)](https://gruuuuu.github.io/container/envoy-proxy/)
+>참고1 : [호롤리한하루/Multi-Container Design Patterns 정리-sidecar pattern](https://gruuuuu.github.io/cloud/design-pattern/#sidecar-pattern)  
+>참고2 : [호롤리한하루/envoy proxy란? (basic)](https://gruuuuu.github.io/cloud/envoy-proxy/)
 
 `Istio`로 구성된 Service Mesh를 개략적으로 살펴보면 다음 그림과 같습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/70860649-7c8e1400-1f67-11ea-8897-abc3f55ff788.png)  
@@ -150,7 +150,7 @@ Istio를 사용한 구조는 다음과 같습니다. **application을 수정하�
 
 먼저 쿠버네티스 클러스터를 생성해주세요.  
 
-참고링크 : [호롤리한하루/Install Kubernetes on CentOS/RHEL](https://gruuuuu.github.io/container/k8s-install/)  
+참고링크 : [호롤리한하루/Install Kubernetes on CentOS/RHEL](https://gruuuuu.github.io/cloud/k8s-install/)  
 
 > 본 실습에서 사용한 spec :   
 >`OS : CentOS v7.6`  

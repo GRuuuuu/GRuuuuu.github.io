@@ -27,7 +27,7 @@ k8s클러스터는 1마스터 2노드로 구성했습니다.
 
 # 3. StatefulSet
 이전 포스팅에서 k8s의 여러 컨트롤러에 대해 알아봤었습니다. 이 컨트롤러들은 주로 상태가 없는(`stateless`) pod을 관리하는 용도로 사용됩니다.  
-> 참고 : [호롤리한 하루/Kubernetes Controllers : Replication, Deployment, DaemonSet](https://gruuuuu.github.io/container/k8s-controllers/)
+> 참고 : [호롤리한 하루/Kubernetes Controllers : Replication, Deployment, DaemonSet](https://gruuuuu.github.io/cloud/k8s-controllers/)
 
 
 오늘 소개할 **StatefulSet Controller**는 이름에서 느껴지듯이 상태를 가지고 있는 pod들을 관리하는 용도로 사용됩니다.  
@@ -54,7 +54,7 @@ pod에 순서를 지정해서 지정한 순서대로 실행되게 할 수도 있
 >![image](https://user-images.githubusercontent.com/15958325/70845527-1f289300-1e93-11ea-89dd-73b201a27779.png)  
 >
 >**Dynamic Provisioning**의 경우 :  
->[호롤리한 하루/Kubernetes Volumes : Static & Dynamic Provisioning](https://gruuuuu.github.io/container/k8s-volume/#%EC%8B%A4%EC%8A%B5--dynamic-provisioning-with-nfs)을 참고하여 storage class, provisioner까지 만든 후 부터 아래 실습을 진행해주세요.  
+>[호롤리한 하루/Kubernetes Volumes : Static & Dynamic Provisioning](https://gruuuuu.github.io/cloud/k8s-volume/#%EC%8B%A4%EC%8A%B5--dynamic-provisioning-with-nfs)을 참고하여 storage class, provisioner까지 만든 후 부터 아래 실습을 진행해주세요.  
 
 StatefulSet Controller를 생성해줍니다.  
 ~~~sh

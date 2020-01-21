@@ -17,7 +17,7 @@ sitemap :
 
 ## 2. Prerequisites
 - 쿠버네티스 클러스터가 깔려있어야 합니다.  
--> [호롤리한 하루/Install Kubernetes on CentOS/RHEL](https://gruuuuu.github.io/container/k8s-install/) 참고.
+-> [호롤리한 하루/Install Kubernetes on CentOS/RHEL](https://gruuuuu.github.io/cloud/k8s-install/) 참고.
 
 - helm을 설치할 위치에서 kubectl 명령어를 사용할 수 있어야 합니다.  
 

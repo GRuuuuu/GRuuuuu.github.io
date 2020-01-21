@@ -1,7 +1,7 @@
 ---
 title: "k8s + GitLab으로 CI/CD환경 구축해보기"
 categories: 
-  - Container
+  - Cloud
 tags:
   - Container
   - Cloud

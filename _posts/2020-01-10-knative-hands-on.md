@@ -21,14 +21,14 @@ Knative의 Serving기능과 Eventing기능을 실습을 통해 더 자세히 알
 
 본 포스트는 **Knative v0.11**을 기준으로 제작되었습니다.
 
-> 참고 : [호롤리한하루/Knative란? (basic)](https://gruuuuu.github.io/container/knative/#)  
+> 참고 : [호롤리한하루/Knative란? (basic)](https://gruuuuu.github.io/cloud/knative/#)  
 
 # Prerequisites
 먼저 쿠버네티스 클러스터를 생성해주세요.  
 
 > Kubernetes v1.14 이상이어야 합니다.  
 
-참고링크 : [호롤리한하루/Install Kubernetes on CentOS/RHEL](https://gruuuuu.github.io/container/k8s-install/)  
+참고링크 : [호롤리한하루/Install Kubernetes on CentOS/RHEL](https://gruuuuu.github.io/cloud/k8s-install/)  
 
 > 본 실습에서 사용한 spec :   
 >`OS : CentOS v7.6`  
@@ -40,7 +40,7 @@ Knative의 Serving기능과 Eventing기능을 실습을 통해 더 자세히 알
 
 Knative는 Istio위에 올라가기 때문에 Istio의 구성이 필수적입니다.  
 
-> 참고 링크 : [호롤리한하루/Service Mesh Architecture & Istio를 알아보자](https://gruuuuu.github.io/container/service-mesh-istio/#install-istio)
+> 참고 링크 : [호롤리한하루/Service Mesh Architecture & Istio를 알아보자](https://gruuuuu.github.io/cloud/service-mesh-istio/#install-istio)
 
 `Istio` 패키지를 다운받습니다.  
 ~~~sh
@@ -201,7 +201,7 @@ $ kubectl apply -f serving.yaml
 
 그럼 Knative에서 어떤식으로 pod에 접근할 수 있는지 살펴보겠습니다.  
 
-> 참고 : [호롤리한하루/Service Mesh Architecture & Istio를 알아보자](https://gruuuuu.github.io/container/service-mesh-istio/)
+> 참고 : [호롤리한하루/Service Mesh Architecture & Istio를 알아보자](https://gruuuuu.github.io/cloud/service-mesh-istio/)
 
 지금 Knative는 Istio를 기반으로 올라가있으며 그를 통해 배포한 pod은 **자동으로 Istio의 gateway를 통해 서비스**되고 있습니다.  
 
@@ -209,7 +209,7 @@ $ kubectl apply -f serving.yaml
 
 방법은 두가지입니다.     
 - Hostname
-- URI (ex. [uri 라우팅 예제/Istio-Bookinfo](https://gruuuuu.github.io/container/service-mesh-istio/#istio-gateway))  
+- URI (ex. [uri 라우팅 예제/Istio-Bookinfo](https://gruuuuu.github.io/cloud/service-mesh-istio/#istio-gateway))  
 
 해당 예제에서 사용한 방법은 Hostname으로 식별하는 방법입니다.  
 

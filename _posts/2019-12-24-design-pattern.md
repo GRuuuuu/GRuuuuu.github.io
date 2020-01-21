@@ -20,7 +20,7 @@ sitemap :
 지난 몇년간 컨테이너기술은 코드를 패키징하고 배포하는데 대중적인 기술이 되었습니다. 이런 특징 외에도 컨테이너를 통해 **분산 응용 프로그램을 구축**하는 방법에 대해서 주목해볼 필요가 있습니다.  
 이번 글에서는 `MicroService Architecture`에서 컨테이너들을 다루는 디자인패턴 3개를 소개하겠습니다.
 
-> 참고 : [MicroService Architecture란?](https://gruuuuu.github.io/container/architecture-microservice/)   
+> 참고 : [MicroService Architecture란?](https://gruuuuu.github.io/cloud/architecture-microservice/)   
 > 참고문헌 : [Kubernetes/The Distributed System ToolKit: Patterns for Composite Containers](https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/)
 
 # Sidecar Pattern

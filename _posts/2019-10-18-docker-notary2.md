@@ -18,7 +18,7 @@ sitemap :
 네트워크로 연결된 시스템 사이의 데이터 송수신에서 가장 중요하게 여기는 점은 **"신뢰"**입니다.  
 이전에 Docker Notary 서비스에 대한 것을 포스팅한 적이 있습니다.  
 
-> [Content Trust in Docker(1) : Docker Notary란?](https://gruuuuu.github.io/container/docker-notary/)  
+> [Content Trust in Docker(1) : Docker Notary란?](https://gruuuuu.github.io/cloud/docker-notary/)  
 
 이번 포스팅은 `Notary`서비스를 기반으로 **Docker Registry**(`Docker Hub` 또는, `Docker Trusted Registry`)에서 제공하는 **Docker Content Trust**입니다.  
 
@@ -75,7 +75,7 @@ DCT옵션을 활성화 시키면 trusted 이미지만 `pull`, `run`, `build`할 
 이미지에 대한 신뢰는 서명으로써 이뤄질 수 있습니다. 당연히 서명하는 **key에 대한 관리**가 중요할 수 밖에 없습니다.  
 DCT에서는 **Notary 아키텍처**를 기반으로 하고 있기 때문에 아래 링크로 설명을 대신하겠습니다.  
 
->[Content Trust in Docker(1) : Docker Notary란?](https://gruuuuu.github.io/container/docker-notary/)
+>[Content Trust in Docker(1) : Docker Notary란?](https://gruuuuu.github.io/cloud/docker-notary/)
 
 
 
