@@ -1,7 +1,7 @@
 ---
 title: "GlusterFS basic"
 categories: 
-  - Cloud
+  - LINUX
 tags:
   - LINUX
   - Cloud
