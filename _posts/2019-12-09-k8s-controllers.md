@@ -124,7 +124,8 @@ $ kubectl get rc,pods
 
 replication controller를 삭제해봅시다.  
 ~~~sh
-#cascade=true이면 controller에 딸린 pod까지 전부 삭제됩니다.
+# cascade=true이면 controller에 딸린 pod까지 전부 삭제됩니다.
+# default는 cascade=true
 $ kubectl delete rc nginx --cascade=false
 ~~~
 
