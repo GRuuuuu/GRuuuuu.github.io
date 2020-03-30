@@ -70,7 +70,7 @@ $ rpmbuild --bb docker…..rpm
 
 - `containerd-git = 894b81a4b802e4eb2a91d1ce216b8817763c29fb`
 - `docker-libnetwork-git = fc5a7d91d54cc98f64fc28f9e288b46a0bee756c`
-- `docker-runc-git = 425e105d5a03fabd737a126ad93d62a9eeede87f`
+- `docker-runc-git = 425e105d5a03fabd737a126ad93d62a9eeede87f`  
 요 세개를 주의해서 다운받아준다.  
 
 ### go언어는 기본 repo에 없음  

@@ -20,7 +20,7 @@ sitemap :
 
 # Prerequisites
 - docker 18이상
-- 서로다른 architecture 이미지 두개 준비 (`x86` || `amd64` || `ppc64le` || `s390x` || etc..)
+- 서로다른 architecture 이미지 두개 준비 (`x86` or `amd64` or `ppc64le` or `s390x` or etc..)
 
 # STEP
 ## 1. Experimental 기능 활성화
