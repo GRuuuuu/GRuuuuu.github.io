@@ -132,4 +132,9 @@ Kubernetes node의 `kubelet`에는 `cAdvisor`라는 모니터링 에이전트가
 
 다음 포스팅에서 쿠버네티스클러스터를 프로메테우스와 연동해 모니터링할 수 있는 실습을 해보겠습니다.  
 
+
+-> [Kubernetes Monitoring - HPA 실습](https://gruuuuu.github.io/cloud/monitoring-01hpa/)  
+-> [Kubernetes Monitoring - Prometheus 실습](https://gruuuuu.github.io/cloud/monitoring-02/)
+
+
 ----
