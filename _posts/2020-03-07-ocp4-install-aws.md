@@ -110,7 +110,7 @@ $ ls -l /usr/bin/{oc,openshift-install}
 >~~~
 
 ## Get Pull Secret
-이제 실치할때 필요한 **pull secret**을 얻어야 합니다.  
+이제 설치할때 필요한 **pull secret**을 얻어야 합니다.  
 [RedHat Openshift Cluster Manager](https://cloud.openshift.com/clusters/install)로 이동  
 
 <img src="https://user-images.githubusercontent.com/15958325/76142040-369ba480-60ad-11ea-801a-905c1e720f93.png" width="600px">   
