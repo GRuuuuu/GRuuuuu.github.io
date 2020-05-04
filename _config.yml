@@ -42,7 +42,7 @@ comments:
     colorscheme          : "light" # "light" (default), "dark"
   utterances:
     theme                : github-light # "github-light" (default), "github-dark"
-    issue_term           : # "pathname" (default)
+    issue_term           : title # "pathname" (default)
 staticman:
   allowedFields          : # ['name', 'email', 'url', 'message']
   branch                 : # "master"
