@@ -14,7 +14,6 @@ sitemap :
 ---
 
 ## Overview
-> 참고링크 : [docker manifest](https://docs.docker.com/engine/reference/commandline/manifest/)
 
 **Docker Hub**에 여러 architecture로 빌드한 이미지를 push하는 방법을 알아보겠습니다.  
 
@@ -23,6 +22,8 @@ sitemap :
 - 서로다른 architecture 이미지 두개 준비 (`x86` or `amd64` or `ppc64le` or `s390x` or etc..)
 
 # STEP
+> 참고링크 : [docker manifest](https://docs.docker.com/engine/reference/commandline/manifest/)
+
 ## 1. Experimental 기능 활성화
 
 docker의 `config.json`파일에 `experimental`을 `enabled`로 설정해주면 된다.
