@@ -17,6 +17,7 @@ sitemap :
 Docker Hub에 여러 architecture로 빌드한 이미지를 push하는 방법을 알아보겠습니다.
 
 # Prerequisites
+준비물은 다음과 같습니다.
 - docker 18이상
 - 서로다른 architecture 이미지 두개 준비 (`x86` or `amd64` or `ppc64le` or `s390x` or etc..)
 
