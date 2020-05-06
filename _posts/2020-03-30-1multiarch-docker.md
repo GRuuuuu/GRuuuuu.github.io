@@ -14,8 +14,7 @@ sitemap :
 ---
 
 ## Overview
-
-**Docker Hub**에 여러 architecture로 빌드한 이미지를 push하는 방법을 알아보겠습니다.  
+**Docker Hub**에 여러 architecture로 빌드한 이미지를 push하는 방법을 알아보겠습니다.
 
 # Prerequisites
 - docker 18이상
