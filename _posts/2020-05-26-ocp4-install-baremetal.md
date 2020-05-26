@@ -9,7 +9,6 @@ tags:
   - Openshift
 last_modified_at: 2020-05-26T13:00:00+09:00
 author_profile: true
-toc : true
 sitemap :
   changefreq : daily
   priority : 1.0
