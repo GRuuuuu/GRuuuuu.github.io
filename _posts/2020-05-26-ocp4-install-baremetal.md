@@ -1,5 +1,5 @@
 ---
-title: "Openshift4.3 Installation Baremetal (VirtualBox)"
+title: "Openshift4.3 Installation on Baremetal (VirtualBox)"
 categories: 
   - OCP
 tags:
@@ -53,11 +53,11 @@ sitemap :
 
 # 준비단계
 일단 클러스터를 구성하는데 있어 **최소** 구성요건은 다음과 같습니다.  
-|Machine|os|vCPU|RAM|Storage|number|  
-|---|---|---|---|---|---|
-|Bootstrap|RHCOS|4|16GB|120GB|1개|
-|Control plane|RHCOS|4|16GB|120GB|3개|
-|Compute|RHCOS or RHEL7.6|2|8GB|120GB|2개|  
+Machine|os|vCPU|RAM|Storage|number  
+---|---|---|---|---|---
+Bootstrap|RHCOS|4|16GB|120GB|1개
+Control plane|RHCOS|4|16GB|120GB|3개
+Compute|RHCOS or RHEL7.6|2|8GB|120GB|2개  
 
 >그냥 봐도 리소스가 엄청 많이 필요합니다.  
 
@@ -69,15 +69,15 @@ sitemap :
 왜 각 노드들이 바스티온노드에 라우트포워딩을 하는지는 뒤에서 마저 설명드리겠습니다.  
 
 **VirtualBox**에서 생성한 노드들의 정보 :  
-|hostname|ip|os|vCPU|RAM|Storage|net|  
-|---|---|---|---|---|---|---|
-|ocp-dns(bastion)|192.168.56.114|CentOS 7|2|4GB|50GB|호스트전용어댑터&NAT|
-|bootstrap.tests.hololy.local|192.168.56.200|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터|
-|master01.tests.hololy.local|192.168.56.201|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터|
-|master02.tests.hololy.local|192.168.56.202|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터|
-|master03.tests.hololy.local|192.168.56.203|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터|
-|worker01.tests.hololy.local|192.168.56.204|RHCOS4.3.8|2|8GB|120GB|호스트전용어댑터|
-|worker02.tests.hololy.local|192.168.56.205|RHCOS4.3.8|2|8GB|120GB|호스트전용어댑터|  
+hostname|ip|os|vCPU|RAM|Storage|net  
+---|---|---|---|---|---|---
+ocp-dns(bastion)|192.168.56.114|CentOS 7|2|4GB|50GB|호스트전용어댑터&NAT
+bootstrap.tests.hololy.local|192.168.56.200|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터
+master01.tests.hololy.local|192.168.56.201|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터
+master02.tests.hololy.local|192.168.56.202|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터
+master03.tests.hololy.local|192.168.56.203|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터
+worker01.tests.hololy.local|192.168.56.204|RHCOS4.3.8|2|8GB|120GB|호스트전용어댑터
+worker02.tests.hololy.local|192.168.56.205|RHCOS4.3.8|2|8GB|120GB|호스트전용어댑터  
 
 bastion까지 총 7대의 노드가 필요합니다.  
 >VirtualBox Network 정보 : [IT개발정보정리/[VirtualBox] 네트워크 설정](https://jm4488.tistory.com/37)
