@@ -54,7 +54,7 @@ sitemap :
 # 준비단계
 일단 클러스터를 구성하는데 있어 **최소** 구성요건은 다음과 같습니다.  
 Machine|os|vCPU|RAM|Storage|number  
----|---|---|---|---|---
+-------|----------|----------|--------|---------|---------
 Bootstrap|RHCOS|4|16GB|120GB|1개
 Control plane|RHCOS|4|16GB|120GB|3개
 Compute|RHCOS or RHEL7.6|2|8GB|120GB|2개  
@@ -70,7 +70,7 @@ Compute|RHCOS or RHEL7.6|2|8GB|120GB|2개
 
 **VirtualBox**에서 생성한 노드들의 정보 :  
 hostname|ip|os|vCPU|RAM|Storage|net  
----|---|---|---|---|---|---
+--------|---------|---------|---------|-----------|------------|-----------
 ocp-dns(bastion)|192.168.56.114|CentOS 7|2|4GB|50GB|호스트전용어댑터&NAT
 bootstrap.tests.hololy.local|192.168.56.200|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터
 master01.tests.hololy.local|192.168.56.201|RHCOS4.3.8|4|16GB|120GB|호스트전용어댑터
