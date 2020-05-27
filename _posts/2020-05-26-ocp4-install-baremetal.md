@@ -531,6 +531,19 @@ sshKey: 'ssh-ed25519 AAAA...'
 >**worker의 replica가 0개인이유** : UPI에서는 제대로 동작하지 않는 파라미터이며, worker들은 반드시 manually하게 추가시켜줘야합니다.  
 > 참고링크 : [Sample install-config.yaml file for bare metal](https://docs.openshift.com/container-platform/4.3/installing/installing_bare_metal/installing-bare-metal.html#installation-bare-metal-config-yaml_installing-bare-metal)  
 
+>**리빙포인트)**  
+>`install-config.yaml`파일은 뒤에 kubernetes manifest파일과 ignition파일을 생성하면서 **없어집니다**.  
+>정보 보존을 위해 원래 원본의 이름을 바꿔두고 링크를 걸어서 진행하면 편합니다.  
+>
+>~~~
+>$ ln -s install-config.yaml.bak install-config.yaml
+>
+>$ ls -l
+>total 4
+>lrwxrwxrwx 1 root root   23 May 23 19:38 install-config.yaml -> install-config.yaml.bak
+>-rw-r--r-- 1 root root 3540 May 23 19:37 install-config.yaml.bak
+>~~~
+
 ## Creating the Kubernetes manifest and Ignition config files
 이제 manifest파일과 ignition파일들을 생성해줄차례입니다.  
 
@@ -584,7 +597,7 @@ $ chmod 644 /usr/share/nginx/html/files/*.ign
 그 다음 RHCOS의 raw파일과 iso도 다운받아줍니다.  
 [mirror](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/)서버에서 확인할 수 있습니다.  
 
-ISO : `rhcos-<version>-installer.<architecture>.iso`
+ISO : `rhcos-<version>-installer.<architecture>.iso`  
 Compressed metal RAW : `rhcos-<version>-metal.<architecture>.raw.gz`  
 
 두가지만 받으면 됩니다, iso파일은 호스트 컴퓨터에 받아서 VirtualBox에 vm만들때 사용할거고 raw파일은 RHCOS 부팅할 때 HTTP파일서버에서 직접 다운로드해서 사용할겁니다.  
@@ -644,6 +657,17 @@ $ journalctl -b -f -u bootkube
 
 마스터 3대를 작동시키고나서 부트스트랩과 동일하게 인터넷이 연결되어있는지, 호스트네임이 정상인지 확인해주고 바스티온으로 가서 `wait-for bootstrap-complete` 커맨드를 켜놓고 기다려야 합니다.  
 
+마스터들의 etcd가 모두 뜨고나면 중간에 바스티온 노드에서 oc커맨드로 노드상태를 확인할 수 있습니다.  
+~~~
+$ export KUBECONFIG=/root/ocp4/installation_directory/auth/kubeconfig
+~~~
+~~~
+$ oc get node
+NAME                    STATUS   ROLES    AGE   VERSION
+master01.tests.hololy.local   Ready    master   7m   v1.16.2
+master02.tests.hololy.local   Ready    master   7m   v1.16.2
+master03.tests.hololy.local   Ready    master   7m   v1.16.2
+~~~
 
 
 문제없이 마스터 노드가 부트된다면 다음과 같은 결과를 보실 수 있습니다.  
