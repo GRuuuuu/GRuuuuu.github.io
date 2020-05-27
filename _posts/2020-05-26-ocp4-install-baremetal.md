@@ -1,5 +1,5 @@
 ---
-title: "Openshift4.3 Installation on Baremetal (VirtualBox)"
+title: "Openshift4.3 Installation on Baremetal"
 categories: 
   - OCP
 tags:
