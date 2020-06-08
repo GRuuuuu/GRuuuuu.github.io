@@ -111,6 +111,11 @@ DNS(PXE부팅일경우 dnsmasq), LoadBalancer, HTTP 구성입니다.
 - 클러스터 이름 : `tests`
 - domain : `hololy.local`
 
+### bind설치
+~~~
+$ yum -y install bind bind-utils
+~~~
+
 **정방향**과 **역방향** 모두 설정해줍니다.  
 
 ### zone추가 (/etc/named.rfc1912.zones)
@@ -243,6 +248,14 @@ RHCOS가 설치될때 raw파일을 http GET으로 끌어와서 설치를 마무�
 
 여러가지를 사용할 수 있겠지만 저는 LB로도 쓸수있는 Nginx를 쓰도록 하겠습니다.  
 ~~~sh
+# Nginx repo추가
+$ vim /etc/yum.repos.d/nginx.repo
+[nginx] 
+name=nginx repo 
+baseurl=http://nginx.org/packages/centos/7/$basearch/ 
+gpgcheck=0 
+enabled=1
+
 $ sudo yum install -y nginx
 $ systemctl start nginx
 $ systemctl enable nginx
@@ -284,6 +297,13 @@ $ systemctl reload nginx
 Nginx 서버의 ip와 8080포트로 접근해보면 hi라는 파일이 생긴 것을 확인할 수 있습니다.  
 <img src="https://user-images.githubusercontent.com/15958325/82864746-37cbc780-9f60-11ea-8274-ce3ccc9862c1.png" width="800px">  
 
+> 인터넷으로 접근이 안될 경우:  
+> 방화벽 문제일 가능성 있음 ->   
+>~~~sh
+>$ systemctl stop firewalld
+>~~~
+
+
 
 ## LB(LoadBalancer) 설정
 마지막으로 LB를 설정해줘야합니다.  
@@ -306,10 +326,7 @@ stream{
     }
     server {
         listen 6443;
-
-        location / {
-            proxy_pass ocp_k8s_api;
-        }
+        proxy_pass ocp_k8s_api;
     }
 
 
@@ -322,10 +339,7 @@ stream{
     }
     server {
         listen 22623;
-
-        location / {
-            proxy_pass ocp_m_config;
-        }
+        proxy_pass ocp_m_config;
     }
 
     upstream ocp_http {
