@@ -780,7 +780,7 @@ address=/api.tests.hololy.local/192.168.56.114
 address=/api-int.tests.hololy.local/192.168.56.114
 
 # 각vm의 dns설정(정방향&역방향모두)
-dhcp-range=192.168.56.0,static
+dhcp-range=192.168.56.0,192.168.56.255,255.255.255.0,12h
 address=/master01.tests.hololy.local/192.168.56.201
 address=/master02.tests.hololy.local/192.168.56.202
 address=/master03.tests.hololy.local/192.168.56.203
@@ -798,10 +798,10 @@ ptr-record=204.56.168.192.in-addr.arpa.,worker01.tests.hololy.local
 ptr-record=205.56.168.192.in-addr.arpa.,worker02.tests.hololy.local
 
 # 각 vm의 mac주소와 사용할 ip
-dhcp-host=080027DA1D1A,192.168.56.200
-dhcp-host=0800270A0E32,192.168.56.201
-dhcp-host=080027FCB60E,192.168.56.202
-dhcp-host=0800279E2B84,192.168.56.203
+dhcp-host=08:00:27:DA:1D:1A,192.168.56.200
+dhcp-host=08:00:27:0A:0E:32,192.168.56.201
+dhcp-host=08:00:27:FC:B6:0E,192.168.56.202
+dhcp-host=08:00:27:9E:2B:84,192.168.56.203
 dhcp-host=52:54:00:00:00:21,192.168.56.204
 dhcp-host=52:54:00:00:00:22,192.168.56.205
 
