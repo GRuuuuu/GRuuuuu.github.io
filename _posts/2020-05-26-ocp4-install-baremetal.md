@@ -61,6 +61,10 @@ Control plane|RHCOS|4|16GB|120GB|3개
 Compute|RHCOS or RHEL7.6|2|8GB|120GB|2개  
 
 >그냥 봐도 리소스가 엄청 많이 필요합니다.  
+>(6/12수정)  
+>여기서 120GB가 필요한 이유는 openshift의 image-registry가 (pv를 사용할 경우)100GB를 기본으로 잡기 때문입니다.  
+>만약 테스트 환경이고, image-registry를 emptyDir로 사용할 것이라면 30GB씩만 잡아줘도 충분합니다.  
+>클러스터 설치만 하는데는 대략 16GB씩 필요합니다.  
 
 이 클러스터를 구성하기 위해 별도의 서버가 하나 더 필요한데, 이런 서버를 **Bastion**이라고 보통 부릅니다.  
 
@@ -744,6 +748,67 @@ INFO Login to the console with user: kubeadmin, password: t45T1-LS3zi-HIcLS-f3C7
 ![image](https://user-images.githubusercontent.com/15958325/82879034-57bab580-9f77-11ea-8774-18c77d70ab78.png)  
 
 야-호---!  
+
+## Configuring the registry for bare metal(6/12수정)
+끝난 줄 알았는데 베어메탈용 설치는 한가지 스텝을 더 밟아야합니다.  
+ocp에서 사용하는 이미지들을 저장하는 image registry 설정입니다.  
+
+설치를 마무리 하고 나면 bootstrap이 image registry의 상태를 removed로 변경합니다.  
+그래서 설치가 끝난뒤 먼저 해줘야 할 것은 `managementState`의 상태를 `Removed` 에서 `managed`로 바꾸는 것입니다.  
+~~~sh
+$ oc edit configs.imageregistry.operator.openshift.io
+~~~
+~~~yaml
+apiVersion: imageregistry.operator.openshift.io/v1
+kind: Config
+metadata:
+  creationTimestamp: <time>
+  finalizers:
+    - imageregistry.operator.openshift.io/finalizer
+  generation: 3
+  name: cluster
+  resourceVersion:  <version>
+  selfLink: <link>
+spec:
+  readOnly: false
+  disableRedirect: false
+  requests:
+    read:
+      maxInQueue: 0
+      maxRunning: 0
+      maxWaitInQueue: 0s
+    write:
+      maxInQueue: 0
+      maxRunning: 0
+      maxWaitInQueue: 0s
+  defaultRoute: true
+  managementState: Managed
+~~~
+image-registry는 기본 스토리지를 지정해 주지 않으면 동작하지 않습니다. 설치후 스토리지도 지정해줘야 합니다.  
+방법은 두가지로 1.persistent volume을 사용하는 방법, 2.emptyDir를 사용하는 방법입니다.  
+
+production 환경인 경우 반드시 pv를 사용해야 하며 제한조건은 다음과 같습니다.  
+- cluster-admin 권한
+- 베어메탈에 클러스터를 설치한 경우
+- pv는 반드시 ReadWriteMany로 access모드를 지정
+- storage는 반드시 100GB의 용량을 가질 것
+
+아래와 같이 config파일에 pvc부분을 추가해줍니다. claim을 비워둠으로써 자동적으로 default pv를 사용할 수 있게 해주면 됩니다.  
+~~~
+$ oc edit configs.imageregistry.operator.openshift.io
+
+storage:
+  pvc:
+    claim:
+~~~
+
+두번째 방법은 emptyDir를 사용하는 방법이며, 이 방법은 반드시 테스트 환경에서만 사용하여야 합니다.  
+
+위와 같이 config파일에 emptyDir를 추가해주면 됩니다.  
+~~~sh
+$ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
+~~~
+
 
 # Appendix. PXE부팅
 네트워크부팅에대해서 설명드리겠습니다.  
