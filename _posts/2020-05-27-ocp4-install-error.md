@@ -218,6 +218,76 @@ FATAL failed to initialize the cluster: Cluster operator authentication is still
 이 경우는 마스터의 리소스를 더 늘려주던가,   
 `manifests/cluster-scheduler-02-config.yml` 파일의 `mastersSchedulable`를 False로 바꿔서 마스터와 워커의 롤을 구분지어주면 해결.  
 
+## 12. No container image registry has been configured with the server. Automatic builds and deployments may not function.
+
+이번 에러는 설치 도중이 아니라 설치 후에 나타나는 에러입니다.  
+application을 빌드할 때 생기는 에러입니다.  
+
+~~~sh
+# 간단한 app을 S2I하는 명령어
+$ oc new-app php~https://github.com/sclorg/cakephp-ex \
+      --name=cakephp03 -n project-00
+
+...
+--> Creating resources ...
+    imagestream.image.openshift.io "cakephp03" created
+    buildconfig.build.openshift.io "cakephp03" created
+    deploymentconfig.apps.openshift.io "cakephp03" created
+    service "cakephp03" created
+--> Success
+    WARNING: No container image registry has been configured with the server. Automatic builds and deployments may not function.
+    Build scheduled, use 'oc logs -f bc/cakephp03' to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/cakephp03'
+    Run 'oc status' to view your app.
+~~~
+
+빌드할 시, 아래와 같은 경고문구가 뜨며,  
+~~~
+WARNING: No container image registry has been configured with the server. Automatic builds and deployments may not function.
+~~~
+
+빌드로그를 살펴보면:  
+~~~
+$ oc describe build cakephp03-1
+
+...
+Error starting build: an image stream cannot be used as build output because the integrated container image registry is not configured
+~~~
+
+image registry가 구성되지 않았다는 에러가 뜹니다.  
+
+또 다른 에러로는 GUI화면에서 app을 직접 생성할 경우 발생하는 에러가 있습니다.  
+GUI에서 app을 생성하고나서 cli화면으로 pod을 살펴보면 ErrImagePull에러가 뜨며,  
+~~~
+$ oc get pod
+NAME                      READY   STATUS         RESTARTS   AGE
+php-00-686b684fb7-m4ltv   0/1     ErrImagePull   0          11s
+~~~
+
+describe로 살펴보면
+~~~
+Events:
+  Type     Reason     Age                 From                                  Message
+  ----     ------     ----                ----                                  -------
+  Normal   Scheduled  <unknown>           default-scheduler                     Successfully assigned project-00/php-00-686b684fb7-m4ltv to worker01.tests.hololy.local
+  Normal   Pulling    16s (x4 over 106s)  kubelet, worker01.tests.hololy.local  Pulling image "php-00:latest"
+  Warning  Failed     16s (x4 over 105s)  kubelet, worker01.tests.hololy.local  Failed to pull image "php-00:latest": rpc error: code = Unknown desc = Error reading manifest latest in docker.io/library/php-00: errors:
+denied: requested access to the resource is denied
+unauthorized: authentication required
+  Warning  Failed   16s (x4 over 105s)  kubelet, worker01.tests.hololy.local  Error: ErrImagePull
+  Normal   BackOff  3s (x6 over 105s)   kubelet, worker01.tests.hololy.local  Back-off pulling image "php-00:latest"
+  Warning  Failed   3s (x6 over 105s)   kubelet, worker01.tests.hololy.local  Error: ImagePullBackOff
+~~~
+unauthorized 에러가 발생합니다.  
+
+이 모든 에러의 원인은 바로 베어메탈의 image-registry를 설정하지 않았을 경우에 발생합니다.  
+제대로 설정해주면 아주 잘 돌아갑니다.  
+설치 문서에 적혀있긴한데, 저같이 제대로 안읽고 넘어간 사람들을 위해 기록해둡니다.... 
+
+-> [Openshift4.3 Installation on Baremetal](https://gruuuuu.github.io/ocp/ocp4-install-baremetal/#)문서의 Configuring the registry for bare metal(6/12수정)를 참조해주세요.  
+
+
 # 마치며
 제가 겪었던 일부 에러들과 그 해결책들을 적어봤습니다.  
 
