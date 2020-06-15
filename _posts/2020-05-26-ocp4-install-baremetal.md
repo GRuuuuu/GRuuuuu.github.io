@@ -751,9 +751,10 @@ INFO Login to the console with user: kubeadmin, password: t45T1-LS3zi-HIcLS-f3C7
 
 ## Configuring the registry for bare metal(6/12수정)
 끝난 줄 알았는데 베어메탈용 설치는 한가지 스텝을 더 밟아야합니다.  
-ocp에서 사용하는 이미지들을 저장하는 image registry 설정입니다.  
+ocp에서 사용하는 이미지 리소스들을 관리하는 image registry 설정입니다.  
 
-설치를 마무리 하고 나면 bootstrap이 image registry의 상태를 removed로 변경합니다.  
+공유 오브젝트 스토리지를 제공하지 않는 플랫폼(ex 베어메탈, vSphere)은 부트스트랩노드가 설치를 완료할 때 ImageRegistry 를 Removed상태로 만들어버립니다.  
+  
 그래서 설치가 끝난뒤 먼저 해줘야 할 것은 `managementState`의 상태를 `Removed` 에서 `managed`로 바꾸는 것입니다.  
 ~~~sh
 $ oc edit configs.imageregistry.operator.openshift.io
