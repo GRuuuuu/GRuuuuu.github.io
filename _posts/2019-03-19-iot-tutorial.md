@@ -13,6 +13,8 @@ sitemap :
   priority : 1.0
 ---
 
+**2020/07/09 수정 : Node-Red설정**  
+
 ## 1. Overview
 디바이스의 센서데이터를 cloud상에 저장시키고, 저장된 데이터를 왓슨스튜디오로 분석하여 센싱데이터의 에너지 총량을 도출할 수 있는 application입니다. 
 
@@ -66,30 +68,95 @@ Deliver Pipeline을 클릭해보면 github에서 가져온 코드가 클라우�
 User의 Id와 Pw를 입력하고나면 연결되었다는 표시와 함께 Movement, Acceleration에 관한 센서값들을 확인할 수 있습니다.  
 <img width="606" alt="9" src="https://user-images.githubusercontent.com/15958325/54486044-ea68ba80-48c5-11e9-9210-74a69866780a.PNG">  
 
-지금까지 과정은 단순히 클라우드에 앱을 배포하는 것입니다. 의미있는 데이터를 뽑아내기위해, 센서데이터들을 저장할 수 있는 DB가 필요합니다. 다음 챕터에서는 데이터들을 저장시킬 수 있는 DB설정에 대해 다뤄보겠습니다.  
+## 4. Node-Red 설정
+센서데이터를 클라우드로 가져오기 위해서, `Node-Red`라는 오픈소스 GUI flow 에디터를 사용하겠습니다. `Node-Red`를 통해 디바이스에서 송신되는 `MQTT`기반 데이터들을 DB에 저장할 것입니다.   
 
-## 4. Replace IoT Service & Set NoSQLDB
-센서데이터를 클라우드로 가져오기 위해서, `Node-Red`라는 오픈소스 GUI flow 에디터를 사용하겠습니다. `Node-Red`를 통해 디바이스에서 송신되는 `MQTT`기반 데이터들을 DB에 저장할 것입니다.  
+app을 배포하게되면 클라우드 리소스리스트는 아래와 비슷하게 보일 것입니다.  
+![image](https://user-images.githubusercontent.com/15958325/87007413-34815800-c1fd-11ea-918d-41c39491faac.png)  
 
-첫번째로, [Internet of Things Platform Starter](https://console.bluemix.net/catalog/starters/internet-of-things-platform-starter)로 들어가서 앱을 작성해 줍니다.  
->경로 : 카탈로그>스타터 킷>Internet of Things Platform 스타터  
 
-<img width="712" alt="10" src="https://user-images.githubusercontent.com/15958325/54486139-23edf580-48c7-11e9-8521-419c5f4dc60b.PNG">  
-생성하기를 누른 뒤, Running상태가 되면 왼쪽 메뉴에서 `연결` 항목으로 들어갑니다.  
+### Node-Red 배포
+리소스 검색에서 `Node-Red`를 검색한 뒤, 생성해줍시다.  
 
-기본적으로 생성된 IoT Platform서비스를 해제 시킵니다. 그 뒤, 서비스 인스턴트도 삭제시켜줍니다.  
-<img width="748" alt="11" src="https://user-images.githubusercontent.com/15958325/54486140-26504f80-48c7-11e9-8d66-c622b8b98c8c.PNG">  
-re-stage할것이냐는 메세지가 뜰텐데 cancel을 누르고 다음 단계로 진행합니다.  
+![image](https://user-images.githubusercontent.com/15958325/87007635-89bd6980-c1fd-11ea-8b61-7779321e2b08.png)  
 
-연결작성(Connect existing)버튼을 누르고 `discover-iot-try-service`를 연결시킵니다. 그 뒤 리스테이징을 눌러 앱을 재시작시킵니다.  
-<img width="729" alt="12" src="https://user-images.githubusercontent.com/15958325/54486141-26504f80-48c7-11e9-8e2a-ffee1b0a9791.PNG">  
+지역은 배포한 app이 있는 지역으로 맞춰주시기 바랍니다.  
+![image](https://user-images.githubusercontent.com/15958325/87007639-8b872d00-c1fd-11ea-9e2f-bbb3a7fa8ecd.png)  
 
-앱이 Running 상태가 되면, `discover-iot-try-service`를 클릭해 Watson IoT Platform을 시작시킵니다.  
+이런 식으로 화면이 뜨게 됩니다. 이제 Node-Red를 클라우드에 배치하기 위해 Continuous Delivery를 구성해주겠습니다.   
+우측의 앱배치를 눌러주세요.  
+![image](https://user-images.githubusercontent.com/15958325/87007790-c38e7000-c1fd-11ea-83f9-fedac1d5ae12.png)  
+
+API키는 신규 생성으로 만들어줍니다. 메모리는 기본으로 256MB가 할당되긴합니다. 최소요구량은 128MB이니 참고하시기 바랍니다.    
+![image](https://user-images.githubusercontent.com/15958325/87007937-f46ea500-c1fd-11ea-9cdf-f2ca07b9d836.png)  
+
+DevOps 도구 체인 이름을 설정해주고 작성하기를 클릭 :   
+![image](https://user-images.githubusercontent.com/15958325/87009644-6a740b80-c200-11ea-90e4-d35323e2c577.png)  
+
+좀 기다리면 앱배치가 성공적으로 마무리 되고, 앱URL이 뜹니다.  
+![image](https://user-images.githubusercontent.com/15958325/87009806-a9a25c80-c200-11ea-9463-305dd37993bf.png)  
+>배치하는 도중에 에러가 발생한다면 재배치를 눌러보세요.  
+
+### Node-Red 초기 설정
+
+배치가 성공하고나서 앱 URL을 누르게되면 Node-Red 앱으로 이동하게 됩니다.  
+초기설정을 해주겠습니다. id와 password를 설정해주고 Next:   
+![image](https://user-images.githubusercontent.com/15958325/87009949-d787a100-c200-11ea-94fa-b19f86e9a5c8.png)  
+
+초기설정을 마치면 Node-Red초기 페이지가 뜨게 됩니다.  
+![image](https://user-images.githubusercontent.com/15958325/87010053-f9812380-c200-11ea-8634-60efb83cac1e.png)  
+
+### IoT 모듈 추가
+뒤에서 진행할 Node-Red플로우를 그리기 위해 필요한 IoT모듈을 Node-Red 노드에 추가해보겠습니다.  
+
+Deployment Pipeline에서 GIT을 선택해 Node-Red의 깃랩프로젝트로 이동합니다.  
+![image](https://user-images.githubusercontent.com/15958325/87010902-326dc800-c202-11ea-93c6-ad333447bf30.png)  
+
+프로젝트 파일 중 `package.json`을 선택 :  
+![image](https://user-images.githubusercontent.com/15958325/87010911-34378b80-c202-11ea-970a-d1f4ad730efd.png)  
+
+dependencies에 다음 라인을 추가해줍니다.  
+~~~
+ "node-red-contrib-scx-ibmiotapp": "0.x",
+~~~
+
+![image](https://user-images.githubusercontent.com/15958325/87010929-37327c00-c202-11ea-9838-0737f854bc80.png)  
+
+그리고나서 커밋해주면 자동으로 재빌드, 재배포 됩니다.  
+![image](https://user-images.githubusercontent.com/15958325/87011263-a1e3b780-c202-11ea-86a8-d18d76773228.png)  
+
+### 기본 서비스 연결
+이제 이 Node-Red서비스와 IoT서비스를 서로 연동시켜줄 것입니다.  
+
+Node-Red 오버뷰의 서비스부분에서 **기존서비스추가**를 눌러서 위의 iot앱을 생성할 때 같이 생성되었던 IoT서비스를 추가해줍니다.  
+![image](https://user-images.githubusercontent.com/15958325/87011418-d8213700-c202-11ea-85e5-cb9a42174272.png)   
+
+정상적으로 추가하고 나면 다음과 같은 화면이 됩니다.  
+![image](https://user-images.githubusercontent.com/15958325/87011422-d9526400-c202-11ea-9010-62495c679549.png)  
+
+그 다음, IoT서비스로 이동해서 연결 > 연결작성을 클릭합니다.  
+![image](https://user-images.githubusercontent.com/15958325/87011649-2c2c1b80-c203-11ea-9e37-073bd1f16a58.png)  
+
+위에서 작성했던 Node-Red 앱 선택  
+![image](https://user-images.githubusercontent.com/15958325/87011657-2df5df00-c203-11ea-98e4-23fa7a5bd112.png)  
+
+리스테이징 선택:  
+![image](https://user-images.githubusercontent.com/15958325/87011662-2f270c00-c203-11ea-9f29-50b6692069d3.png)  
+
+이렇게 하면 IoT서비스와 Node-Red앱이 연동되게 됩니다.  
+
+
+## 5. Making Node-Red Graph
+
+지금까지 과정은 단순히 클라우드에 앱을 배포하는 것입니다. 의미있는 데이터를 뽑아내기위해, 센서데이터들을 저장할 수 있는 DB가 필요합니다. 이번 챕터에서는 데이터들을 저장시킬 수 있는 DB설정에 대해 다뤄보겠습니다.  
+
+우선 Watson IoT Platform을 시작시킵니다.  
 <img width="592" alt="13" src="https://user-images.githubusercontent.com/15958325/54486142-26e8e600-48c7-11e9-9783-ae2093863ebb.PNG">  
 
 실행시키면 왼쪽 메뉴가 가려져서 잘 안보이는데 마우스를 올리면 잘 보이게 됩니다. 자물쇠처럼 생긴 Security메뉴를 클릭합니다. 뜨는 리스트 중, 연결보안(Connection Security) 수정버튼을 클릭합니다.  
 <img width="758" alt="14" src="https://user-images.githubusercontent.com/15958325/54486143-26e8e600-48c7-11e9-9b10-cc96edcc9482.PNG">  
-Security Level을 TLS Optional(TLS 선택적)으로 변경시켜준 뒤, Refresh 시켜줍니다.  
+
+Security Level을 **TLS Optional(TLS 선택적)**으로 변경시켜준 뒤, Refresh 시켜줍니다.  
 ><b>TLS Optional</b>  
 >TLS Optional에서는 장치가 TLS 1.1 이상과 연결하지 않을 때 네트워크 통신의 암호화를 강제 실행하지 않습니다. 비TLS 연결을 사용하면 네트워크에 있는 다른 사용자가 디바이스 신임 정보와 민감한 데이터를 볼 수 있습니다. TLS Optional을 통해 전송되는 데이터를 보호할 책임은 전적으로 사용자에게 있습니다.  
 
@@ -125,7 +192,7 @@ return msg;
 날아오는 데이터를 Debug탭에서 확인해보면 바뀐것을 확인할 수 있습니다.  
 <img width="189" alt="20" src="https://user-images.githubusercontent.com/15958325/54487314-3a507d00-48d8-11e9-9825-f9dce28eb7a5.PNG">  
 
-이제 클라우드상에 데이터를 저장할 NoSQL DB로서 `Cloudant`를 추가시킵니다.    
+이제 클라우드상에 데이터를 저장할 NoSQL DB로서 `Cloudant`를 추가시킵니다. db이름은 아무거나 설정해주시면 됩니다.     
 >`IBM Cloudant`는 `ApacheCouchDB`에 기반하고 있습니다.  
 
 <img width="592" alt="cloudant" src="https://user-images.githubusercontent.com/15958325/54487484-d8911280-48d9-11e9-836a-886bf56c73ef.PNG">    
@@ -140,7 +207,7 @@ return msg;
 이제 센서데이터를 송신받아 `Cloudant`에 저장하는 것까지 완성되었습니다!  
 하지만 단순히 데이터를 저장만 하는 것은 아무런 의미를 갖지 못합니다. 때문에 데이터를 분석하여 의미있는 값을 도출해 내는 것이 중요합니다.  
 
-## 5. Analyze Data with Watson Studio
+## 6. Analyze Data with Watson Studio
 ### watson studio
 >왓슨스튜디오를 처음 사용하는 유저는 먼저 상단의 Upgrade 버튼을 누른 뒤, Watson Studio와 Knowledge Catalog Bundle들을 설치해주세요.  
 >![image](https://user-images.githubusercontent.com/15958325/54487624-7a652f00-48db-11e9-8c13-58ef8649aa53.png)
