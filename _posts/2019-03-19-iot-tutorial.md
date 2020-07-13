@@ -229,6 +229,7 @@ return msg;
 <img width="741" alt="28" src="https://user-images.githubusercontent.com/15958325/54487669-1bec8080-48dc-11e9-8a1e-e7b6741e0e4f.PNG">  
 프로젝트의 초기 설정은 끝!  
 
+
 ### notebook 
 
 다음은 실제로 어떻게 데이터를 분석할 것인지 정하는 `Notebook`을 구성해봅시다.  
@@ -300,7 +301,49 @@ df.createOrReplaceTempView('data')
 >energy값으로 내림차순
 >
 
--튜토리얼 끗-
+### noteboot(without spark)
+>2020-07-13 수정
+
+이번에는 스파크를 이용하지 않고 파이썬만 사용한 코드로 돌려보겠습니다.  
+
+ipynb파일은 아래 링크껄로 사용하겠습니다.  
+~~~sh
+https://raw.githubusercontent.com/GRuuuuu/ghfhfflwjwkdth/master/Program/resources/boomboomm.ipynb
+~~~
+위와 비슷하게 진행해주시면 되고, 런타임으로 spark를 사용하는 대신 python3.x를 쓰시면 됩니다.  
+
+db connection 추가까지는 위 챕터를 참고해주세요.  
+
+>해당 코드에서는 [python-cloudant](https://python-cloudant.readthedocs.io/en/stable/getting_started.html)모듈을 사용하였습니다.  
+
+주 로직을 살펴보겠습니다.    
+~~~py
+from numpy.lib.scimath import sqrt
+from pprint import pprint as pp
+
+# dictionary타입의 변수를 생성
+# 여기에 결과값들을 저장할 것
+energy=dict()
+
+# 아래 sql을 코드로 풀어낸 부분
+# select sqrt(sum(X*X)+sum(Y*Y)+sum(Z*Z)) as energy, SENSORID from data group by SENSORID order by energy desc
+for doc in df:
+    e=(doc['X']*doc['X'])+(doc['Y']*doc['Y'])+(doc['Z']*doc['Z'])
+    if(doc['SENSORID'] not in energy):
+        energy.update({doc['SENSORID']:e})
+    else:
+        energy.update({doc['SENSORID']:e+energy[doc['SENSORID']]})
+
+# value(energy)값들에 제곱근을 취해줌
+for key, val in energy.items():
+    energy.update({key:sqrt(val)})
+
+# 내림차순으로 정렬
+res=sorted(energy.items(),key=(lambda x:x[1]),reverse=True)
+
+# value(energy)가 높은 순으로 출력
+pp(res)
+~~~
+
 
 ----
-<img width="100" height="100" src="https://user-images.githubusercontent.com/15958325/54489815-c58b3c00-48f3-11e9-81a1-b2e2afcd0ae7.png"/>
