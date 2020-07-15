@@ -13,7 +13,8 @@ sitemap :
   priority : 1.0
 ---
 
-**2020/07/09 수정 : Node-Red설정**  
+**2020/07/09 update : Node-Red설정**  
+**2020/07/15 update : 코드수정**
 
 ## 1. Overview
 디바이스의 센서데이터를 cloud상에 저장시키고, 저장된 데이터를 왓슨스튜디오로 분석하여 센싱데이터의 에너지 총량을 도출할 수 있는 application입니다. 
@@ -344,6 +345,21 @@ res=sorted(energy.items(),key=(lambda x:x[1]),reverse=True)
 # value(energy)가 높은 순으로 출력
 pp(res)
 ~~~
+
+결과를 표로 이쁘게 출력하기위해 `pandas`를 사용하겠습니다.  
+
+~~~py
+from pandas import Series, DataFrame
+import pandas as pd
+
+data=pd.DataFrame(res)
+data.columns=['userId','energy']
+print(data)
+~~~
+
+표가 아래와 같이 출력됩니다.  
+![image](https://user-images.githubusercontent.com/15958325/87515506-e5349f00-c6b6-11ea-9b4c-bef767dcd3bd.png)  
+
 
 
 ----
