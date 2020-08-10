@@ -126,4 +126,13 @@ $ kubectl taint node kube-n01 key1=value1:NoSchedule-
 node/kube-n01 untainted
 ~~~
 
+## 추가) Master node Scehdulable하게 바꾸기
+기본적으로 Master노드에는 pod이 스케줄되지않게 taint가 걸려있습니다.  
+
+해제방법:  
+~~~sh
+$ kubectl taint nodes {해제할 노드 이름} node-role.kubernetes.io/master-
+~~~
+
+
 ----
