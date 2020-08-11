@@ -134,5 +134,9 @@ node/kube-n01 untainted
 $ kubectl taint nodes {해제할 노드 이름} node-role.kubernetes.io/master-
 ~~~
 
+다시 복구 :  
+~~~sh
+$ kubectl taint nodes {설정할 노드 이름} node-role.kubernetes.io=master:NoSchedule
+~~~
 
 ----
