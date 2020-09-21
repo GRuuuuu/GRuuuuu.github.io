@@ -16,6 +16,7 @@ sitemap :
 
 ## Overview
 (2020.09.21)  
+그림수정예정  
 
 <img src="https://user-images.githubusercontent.com/15958325/82854832-8b301c80-9f44-11ea-90cc-308d064bf9dc.png" width="800px">  
 
@@ -57,8 +58,8 @@ Bastion vm을 만들 때 생성한 두 개의 네트워크 어댑터를 추가�
 
 ### bastion 네트워크 설정
 
-* CentOS기준  
-    /etc/sysconfig/network-script
+* CentOS기준 위치  
+    `/etc/sysconfig/network-script`
 
 자동으로 생성된 네트워크 인터페이스인 (ex)ens192와 ens224를 수정  
 

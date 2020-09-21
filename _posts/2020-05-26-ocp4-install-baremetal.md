@@ -104,6 +104,9 @@ $ iptables -t nat -A POSTROUTING -s 192.168.56.0/24 -j MASQUERADE
 
 >아마 이것보다 깔끔한 방법이 있을 것 입니다. 각 노드가 네트워크통신이 되고, 노드끼리 통신이 가능하기만 하면 되니 이부분은 참고만 해주세요.  
 
+>(2020.09.21추가)  
+> 참고 : [vmware에서 위 그림과 같은 네트워크 세팅하는 방법](https://gruuuuu.github.io/ocp/vmware-network/#)
+
 
 # Bastion Configuration
 바스티온 서버에서 해야할 일은 크게 3가지정도입니다.  
