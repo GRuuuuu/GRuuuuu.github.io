@@ -16,9 +16,9 @@ sitemap :
 
 ## Overview
 (2020.09.21)  
-그림수정예정  
 
-<img src="https://user-images.githubusercontent.com/15958325/82854832-8b301c80-9f44-11ea-90cc-308d064bf9dc.png" width="800px">  
+<img src="https://user-images.githubusercontent.com/15958325/93962990-ff65ba00-fd96-11ea-8c4c-179e2d8577e3.PNG" width="800px">  
+
 
 위 사진과 같은 Openshift 클러스터 구성을 위한 네트워크 설정에 대해서 서술하겠습니다.  
 
