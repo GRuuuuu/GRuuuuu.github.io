@@ -212,7 +212,7 @@ spec:
 $ oc create -f catalogsource.yaml
 ~~~
 
-### 5. 확인
+#### 5. 확인
 허브가 제대로 올라갈때까지 시간이 꽤 많이 걸립니다.  
 저같은경우 30분정도 걸렸고 그때까지 계속 `CrashLoopBackOff`에러가 뜨면서 pod이 죽었다 살아났다 했습니다.  
 describe로 pod을 살펴보면 OOM이던데... 이 pod에게 충분히 메모리를 주는 방법은 아직 모르겠습니다.  
