@@ -354,7 +354,7 @@ UPI선택 후, Download Installer선택
 `openshift-client-linux`와 `openshift-install-linux`를 다운받아 줍니다.  
 4.3.8태그가 붙은거나 안붙은거나 같은것이므로 둘 중 하나만 받으면 됩니다.  
 
-### 2. 압축해제
+#### 2. 압축해제
 installer 압축해제 :   
 ~~~sh
 $ tar -xvf openshift-install-linux-4.3.8.tar.gz
