@@ -692,7 +692,7 @@ $ systemctl reload nginx
 ## Installation
 이제부터 설치를 본격적으로 진행하겠습니다.  
 설치는 Infra1(bastion)서버에서 진행합니다.  
-
+### Steps
 #### 1. 설치 폴더 생성
 먼저 설치폴더를 만들어줍니다. 
 ~~~sh
