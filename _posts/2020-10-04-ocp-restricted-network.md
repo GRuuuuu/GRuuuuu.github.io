@@ -1,5 +1,5 @@
 ---
-title: "Openshift4.x Baremetal 설치 - Restricted Network"
+title: "Openshift4.3 Baremetal 설치 - Restricted Network"
 categories: 
   - OCP
 tags:
