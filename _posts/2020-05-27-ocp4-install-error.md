@@ -9,6 +9,7 @@ tags:
   - Openshift
 last_modified_at: 2020-05-27T13:00:00+09:00
 author_profile: true
+toc : true
 sitemap :
   changefreq : daily
   priority : 1.0
@@ -287,8 +288,41 @@ unauthorized 에러가 발생합니다.
 
 -> [Openshift4.3 Installation on Baremetal](https://gruuuuu.github.io/ocp/ocp4-install-baremetal/#)문서의 Configuring the registry for bare metal(6/12수정)를 참조해주세요.  
 
+## 13. x509: certificate has expired or not yet valid
+~~~sh
+ignition[764]: GET error: get https://api-int.cluster.fqdn:22623/config/master: x509: certificate has expired or not yet valid
+~~~
+bootstrap띄우고 master띄웠을때 필요한 config파일들을 bootstrap에서 가져오지 못하고 x509에러가 발생하는 경우  
 
-# 마치며
+**해결:**  
+노드간 **Timezone**이 맞지 않을 경우에 발생할 수 있음  
+1. Bastion과 Bootstrap Master Worker의 time이 UTC인지 확인(꼭 utc가아니어도되지만 그냥 맞추기위함)  
+    ~~~sh
+    $ date
+    ~~~
+    했을때 UTC가 아니면  
+    ~~~sh
+    $ sudo ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+    ~~~
+2. VMware를 사용하였을 경우 VMware의 time확인  
+  ![image](https://user-images.githubusercontent.com/15958325/95150712-d1836b00-07c3-11eb-80e4-ba9a30f51bc2.png)  
+
+## 14. read: connection reset by peer
+![image](https://user-images.githubusercontent.com/15958325/95150853-2b843080-07c4-11eb-93e3-aa930b091561.png)  
+
+~~~sh
+GET error : Get https://api-int.tests.hololy.local:22623/config/master: read tcp 10.95.216.13:44984->10.95.216.11:22623: read connection reset by peer
+~~~
+
+master부팅중 connection이 계속 reset되는 에러.  
+
+**해결 :**  
+1. 설정했던 로드밸런서의 포워딩이 초기화 되었을 가능성
+2. bootstrap이 정상적으로 뜨지 않아서 발생하는 에러이니 bootstrap노드의 network나 bootkube로그를 다시한번 확인  
+
+
+
+## 마치며
 제가 겪었던 일부 에러들과 그 해결책들을 적어봤습니다.  
 
 제가 ocp4를 UPI로 설치하면서 느낀점은 진짜 에러로그를 봐서는 이게 뭐가문젠지 한번에 감이 안잡힌다는겁니다.  
