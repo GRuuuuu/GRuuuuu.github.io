@@ -7,7 +7,7 @@ tags:
   - RHCOS
   - Virtualbox
   - Openshift
-last_modified_at: 2020-05-27T13:00:00+09:00
+last_modified_at: 2020-10-06T13:00:00+09:00
 author_profile: true
 toc : true
 sitemap :
