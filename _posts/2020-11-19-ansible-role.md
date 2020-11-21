@@ -102,7 +102,7 @@ EX)
 **nginx의 default.conf파일을 수정해서 타겟서버에 nginx를 설치구성하고싶은 경우**  
 
 1. `template/default.conf.j2` 파일을 생성한 뒤, 원하는 대로 커스텀  
-2. ip나 이름과 같이 가변적인 변수들은 `{{VAR}}`와 같이 표시 (나중에 렌더링할때 vars폴더에서 변수를 참조할 것)
+2. ip나 이름과 같이 가변적인 변수들은 {{VAR}}와 같이 표시 (나중에 렌더링할때 vars폴더에서 변수를 참조할 것)
 3. task에서 다음과 같이 렌더링
 ~~~
   - name: Add Default config
@@ -122,7 +122,7 @@ var2: /etc/hosts
 var3: hihihihi
 ~~~
 
-template나 task에서 `{{var1}}`이런식으로 변수를 호출해서 사용할 수 있습니다.  
+template나 task에서 {{var1}}이런식으로 변수를 호출해서 사용할 수 있습니다.  
 
 
 ## Role 사용
