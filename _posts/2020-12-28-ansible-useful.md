@@ -68,7 +68,7 @@ tasks:
 ~~~
 위와 같이 작성하면 `ls /`의 결과가 `contents`변수에 json형식으로 담기게 됩니다.  
 
-![image](https://user-images.githubusercontent.com/15958325/103193895-23e6aa80-4921-11eb-8a7f-760eac8b1fe6.png)
+![image](https://user-images.githubusercontent.com/15958325/103193895-23e6aa80-4921-11eb-8a7f-760eac8b1fe6.png)  
 출력결과는 `stdout`과 `stdout_lines`에 있고 각 항목을 배열형식으로 다루려면 `stdout_lines`를 사용합니다.  
 
 `/`폴더가 비어있을때 "Directory is empty"라는 메세지를 출력하게 하려면   
