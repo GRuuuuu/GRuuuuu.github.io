@@ -1,7 +1,7 @@
 ---
 title: "RedHat Openshift"
 docs: 
-  - Docs
+  - OCP
 tags:
   - RHEL
   - Openshift
