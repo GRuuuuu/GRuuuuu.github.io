@@ -1,5 +1,5 @@
 ---
-title: "Graphite와 Collectd를 사용해 데이터 수집하기!"
+title: "Graphite와 Collectd를 사용해 모니터링하기!"
 categories: 
   - LINUX
 tags:
