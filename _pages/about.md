@@ -24,4 +24,6 @@ last_modified_at: 2019-01-23T20:23:03-05:00
 1996 05 09 출생  
 2012 03 01 ~ 2015 02 08 백석고등학교  
 2015 03 01 ~ 2019 02 18 동국대학교 컴퓨터공학 학사  
-2019 03 01 IBM Korea (Systems Lab SVC)  
+2018 12 01 IBM Korea 입사 
+  - 2019 03 01 Systems Opensource Consultant / Systems Lab SVC   
+  - 2021 04 01 Cloud Engineer / Technology Garage 
