@@ -31,10 +31,10 @@ Ingress규칙을 작성하다보면 path에 따라 서비스를 나누게 되는
 ~~~
     http:
       paths:
-      - backend:
+      - path: /something
+        backend:
           serviceName: http-svc
           servicePort: 80
-        path: /something
 ~~~
 `xxx.com/something` 으로 접속했을시 `http-svc` 서비스로 리다이렉트 되게 됩니다.  
 
