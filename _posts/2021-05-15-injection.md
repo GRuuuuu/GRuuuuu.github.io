@@ -8,7 +8,6 @@ tags:
   - Vulnerability
 last_modified_at: 2021-05-15T13:00:00+09:00
 author_profile: true
-toc : true
 sitemap :
   changefreq : daily
   priority : 1.0
