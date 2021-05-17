@@ -39,12 +39,12 @@ body {
   @include breakpoint($large) {
     float: right;
     width: calc(100% - #{$right-sidebar-width-narrow});
-    padding-right: 0px; //$right-sidebar-width-narrow;
+    padding-right: 0%; //$right-sidebar-width-narrow;
   }
 
   @include breakpoint($x-large) {
     width: calc(100% - #{$right-sidebar-width});
-    padding-right: 0px; //$right-sidebar-width;
+    padding-right: 0%; //$right-sidebar-width;
   }
 
   .page__inner-wrap {
