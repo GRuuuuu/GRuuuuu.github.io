@@ -25,19 +25,19 @@ sitemap :
 예를 들어 :   
 1. Error message로부터 Internal server의 **IP 또는 name** 노출
 2. HTTP헤더나 file확장자로부터 server/service/technology에 사용된 패키지 **버전 정보** 노출
-3. HTTP Request나 Query에서 secret정보를 그대로 사용하는 경우
+3. HTTP Request나 Query에서 secret정보를 그대로 사용하는 경우  
     ex) `GET /userinfo/hololy?access_token=fjdksalfvnk223j3kncdk33`  
 4. Javascript코드의 제작자가 지워지지 않고 노출됨  
 ex)  
-    ~~~
-    /**
-    * @author hololy@mail.com
-    * @memberOf hololys
-    * @function getUsers
-    * @description get User Info
-    * @return {JSON}
-    */
-    ~~~
+~~~
+/**
+* @author hololy@mail.com
+* @memberOf hololys
+* @function getUsers
+* @description get User Info
+* @return {JSON}
+*/
+~~~
 
 # 예방 방법
 ## 1. 너무 자세한 Error message, API call은 지양하라
