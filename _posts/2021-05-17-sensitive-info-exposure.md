@@ -28,7 +28,7 @@ sitemap :
 3. HTTP Request나 Query에서 secret정보를 그대로 사용하는 경우
     ex) `GET /userinfo/hololy?access_token=fjdksalfvnk223j3kncdk33`  
 4. Javascript코드의 제작자가 지워지지 않고 노출됨  
-ex)
+ex)  
     ~~~
     /**
     * @author hololy@mail.com
