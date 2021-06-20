@@ -276,8 +276,86 @@ $ tkn pipelinerun logs --last -f
 
 두 개의 task가 정상적으로 실행되는 것을 확인할 수 있습니다.  
 
+## 5. [참고] Pipeline에서 parameter 다루기
+PipelineRun에서는 Pipeline를 실행시키는 역할을 할 뿐만 아니라 특정 파라미터를 넘길 수 있습니다.  
 
-## 5. Tekton Dashboard
+### 5.1 PipelineRun에서 Pipeline으로 넘길 파라미터 정의
+위에서 만들었던 task와 pipeline들을 약간만 수정해보도록 하겠습니다.  
+원래는 지정된 문장을 출력하는 task였지만, **PipelineRun에서 넘겨주는 문장을 출력**하도록 바꿔보도록 하겠습니다.  
+
+~~~
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  creationTimestamp: null
+  generateName: hello-goodbye-run-
+  namespace: default
+spec:
+  pipelineRef:
+    name: hello-goodbye
+  params:
+    - name: whatyousay
+      value: helllllloooooo
+~~~
+spec의 params에서 변수이름과 값을 정의  
+
+### 5.2 Pipeline에서 task로 넘길 파라미터 정의
+~~~
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: hello-goodbye
+spec:
+  params:
+    - name: whatyousay
+      type: string
+      description: ddd
+      default: byebye
+  tasks:
+  - name: hello
+    taskRef:
+      name: hello
+    params:
+      - name: whatyousay
+        value: "$(params.whatyousay)"
+~~~
+`spec.params`에서 PipelineRun에서 넘어올 변수의 이름과 `type`, `description`, 넘어올 값이 없을 경우의 `default`값을 정의  
+
+task로 넘길 변수는 `tasks`의 `task`아래 `params`에 정의  
+
+### 5.3 받아온 파라미터를 어떻게 사용할 지 task에 정의
+~~~
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hello
+spec:
+  params:
+    - name: whatyousay
+      type: string
+  steps:
+    - name: hello
+      image: ubuntu
+      command:
+        - echo
+      args:
+        - "$(params.whatyousay)"
+~~~
+`Pipeline`과 마찬가지로 어떤 변수를 사용할건지 `spec.params`에 선언  
+
+`steps`에 받아온 파라미터를 어떻게 사용할 건지 정의   
+
+### 5.4 로그 확인
+
+~~~
+$ tkn pr logs hello-goodbye-run-fk6gf
+
+[hello : hello] helllllloooooo
+~~~
+파이프라인을 실행 후, 로그를 확인해보니 정상적으로 PipelineRun에서 받아온 변수를 출력하는 것을 확인할 수 있습니다.  
+
+
+## 6. Tekton Dashboard
 ![image](https://user-images.githubusercontent.com/15958325/121780431-3e64c580-cbdb-11eb-88bf-4b3ceedf6bb7.png)  
 
 > 참고 : [Tekton.dev -Dashboard](https://tekton.dev/docs/dashboard/)  
