@@ -98,7 +98,7 @@ tekton-triggers-webhook-7b59947444-tvdfs       1/1     Running   0          11s
 Github webhook payload를 살펴보니 관련된 파라미터는 `repository.url`과 마스터 브랜치 이름을 나타내는 `repository.master_branch`가 있습니다.  
 
 파라미터를 참고하여 Trigger Binding을 작성하면 다음과 같이 나타낼 수 있습니다.  
-~~~
+~~~yaml
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
@@ -115,7 +115,7 @@ spec:
 `Trigger binding`에서 어떤 파라미터를 받아서 넘겨받을지를 정의했으니 이제 `Trigger Template`에서 `PipelineRun`으로 무슨 파라미터를 넘길지, 어떤 Pipeline을 실행시킬지 정의할 차례입니다.  
 
 `Trigger Template`을 먼저 선언하고, 그 안에 이벤트를 받으면 실행시킬 `PipelineRun`을 정의하면 됩니다.  
-~~~
+~~~yaml
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
@@ -155,7 +155,7 @@ Trigger Binding에서 파라미터를 받아올때에는 `$(tt.params.{name})`�
 ## 4. Pipeline 수정하기
 현재 Pipeline의 `git-clone` task는 변수를 받지 않고 하드코딩된 변수를 사용하고 있습니다.  
 이 부분을 변수를 받아오도록 수정해주도록 하겠습니다.  
-~~~
+~~~yaml
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
@@ -199,7 +199,7 @@ spec:
 
 그럼 이제 Event를 제일 처음으로 받아주고 Trigger Binding과 Trigger Template을 이어주는 `EventListener`를 정의하도록 하겠습니다.  
 
-~~~
+~~~yaml
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
@@ -223,7 +223,7 @@ EventListener는 실제 Pod으로 동작하며 Event를 받아주는 역할을 �
 
 ### 5.1 Webhook Service Account생성
 
-~~~
+~~~yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -231,7 +231,7 @@ metadata:
 ~~~
 
 ### 5.3 Role&RoleBinding 
-~~~
+~~~yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -318,7 +318,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
 ~~~
 
 ### 7.2 Ingress 배포 
-~~~
+~~~yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
