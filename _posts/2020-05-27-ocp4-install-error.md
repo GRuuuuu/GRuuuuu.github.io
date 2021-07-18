@@ -1,5 +1,5 @@
 ---
-title: "Openshift4.3 Installation on Baremetal -Errors"
+title: "Openshift4.X Installation on Baremetal -Troubleshooting"
 categories: 
   - OCP
 tags:
@@ -7,7 +7,7 @@ tags:
   - RHCOS
   - Virtualbox
   - Openshift
-last_modified_at: 2020-10-06T13:00:00+09:00
+last_modified_at: 2021-07-18T13:00:00+09:00
 author_profile: true
 toc : true
 sitemap :
@@ -16,11 +16,11 @@ sitemap :
 ---
 
 ## Overview
-지난포스팅에서는 `ocp4.3`버전을 virtualbox에 **baremetal install**방식으로 설치를 진행해봤습니다.  
+(21.07.18 수정)  
+Openshift 4.x를 설치하며 만난 에러들에 대한 트러블슈팅입니다.    
 -> [Openshift4.3 Installation on Baremetal](https://gruuuuu.github.io/ocp/ocp4-install-baremetal/)  
-설치 과정이 꽤나 복잡한 만큼 여러 에러도 만났었는데, 기억나는 것들만 기록해두겠습니다.  
-
-# Errors
+-> [Openshift4.7 Baremetal 설치 - Restricted Network](https://gruuuuu.github.io/ocp/ocp4.7-restricted/)  
+# Troubleshooting
 ## 1. GET_https://api-int.aio.ddd.com:22623/config/master : attempt #nn
 ![image](https://user-images.githubusercontent.com/15958325/82968352-17574800-a008-11ea-96b6-2f9da4fd910d.png)  
 부트스트랩은 정상적으로 올라온상태에서 마스터노드를 부트시켰을때 생기는 에러.  
@@ -320,7 +320,39 @@ master부팅중 connection이 계속 reset되는 에러.
 1. 설정했던 로드밸런서의 포워딩이 초기화 되었을 가능성
 2. bootstrap이 정상적으로 뜨지 않아서 발생하는 에러이니 bootstrap노드의 network나 bootkube로그를 다시한번 확인  
 
+## 15. Firewall reload 후 Podman이 응답하지 않는 경우
+폐쇄망 설치 시, Podman을 통해 mirror registry 구축
+mirror registry를 구축 하고 나서 방화벽 reload를 하면 podman이 응답하지 않는 이슈가 있음  
 
+~~~
+$ podman network reload
+~~~
+
+network reload 명령어가 없는 경우(podman 낮은 버전에서는 사용 불가함)  
+~~~
+$ podman stop {container}
+$ podman restart {container}
+~~~
+로 컨테이너를 재시작해주면 문제 해결  
+
+
+## 16. Mirrors also failed: [... in registry.xxx.xx.xx:5000/xxx: manifest unknown]
+폐쇄망에서 설치할 때에는 로컬 mirror registry에서 설치파일들을 끌고옴.   
+
+설치 중 bootstrap의 bootkube로그를 보는데 `manifest unknown` 에러가 발생했다면 mirror registry에 등록된 이미지의 버전과, 설치에 필요한 이미지의 버전이 다른 경우일 확률이 높다  
+
+mirror registry를 구축할 때의 이미지 버전과, Bastion의 `openshift-install` 커맨드의 버전이 동일해야 함.  
+
+~~~
+$ ./openshift-install version
+./openshift-install 4.7.20
+built from commit 23a2fe80a021a19ab4364904f6928a1f8c715dc0
+release image quay.io/openshift-release-dev/ocp-release@sha256:079594290bb2292f9fe9b49a56ba43490eacc07431c65f25c97268b4bd5c4213
+~~~
+
+~~~
+$ curl -u admin:passw0rd -k https://registry.gru.hololy.net:5000/v2/_catalog                                                                                   {"repositories":["ocp4.7.20-x86_64"]}
+~~~
 
 ## 마치며
 제가 겪었던 일부 에러들과 그 해결책들을 적어봤습니다.  
