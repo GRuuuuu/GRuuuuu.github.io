@@ -119,7 +119,7 @@ Index 이미지에는 카탈로그의 컨테이너화된 스냅샷(containerized
 Openshift 4.6 부터 Image Registry 카탈로그를 인덱스 이미지로 제공하고 있어 전체 카탈로그의 subset을 mirror하려면 `opm`커맨들을 사용하여 수정하여야 합니다.  
 
 미러할 index이미지를 컨테이너로 띄웁니다.  
-~~~
+~~~sh
 $ podman run -p50051:50051 -it registry.redhat.io/redhat/redhat-operator-index:v4.7
 
 WARN[0000] unable to set termination log path            error="open /dev/termination-log: permission denied"
@@ -128,7 +128,7 @@ INFO[0000] serving registry                              database=/database/inde
 ~~~
 
 다른 터미널 하나를 띄워서 `grpcurl` 커맨드로 컨테이너에 포함된 패키지 리스트를 가져옵니다.  
-~~~
+~~~sh
 $ grpcurl -plaintext localhost:50051 api.Registry/ListPackages > packages.out
 ~~~
 
@@ -166,7 +166,7 @@ packages.out에는 다음과 같이 패키지 리스트가 json형식으로 포�
 ~~~
 
 여기서 필요한 이미지만 골라서 `opm index prune`의 `-p` 파라미터의 인자로 넣어주면 됩니다.  
-~~~
+~~~sh
 $ opm index prune \
     -f registry.redhat.io/redhat/redhat-operator-index:v4.7 \
     -p serverless-operator,openshift-pipelines-operator-rh,codeready-workspaces \
@@ -179,14 +179,14 @@ $ opm index prune \
 - `-t` : 필요한이미지만 뽑은 이미지 태그(로컬 registry 정보를 적어줄 것)
 
 실행 후 아래와 같이 이미지가 생긴 것을 확인 가능:  
-~~~
+~~~sh
 $ podman images
 REPOSITORY                                           TAG     IMAGE ID      CREATED             SIZE
 registry.test.hololy.net:5000/test/redhat-operator-index  v4.7    7c5c915cbdd0  About a minute ago  112 MB
 ~~~
 
 local registry에 push
-~~~
+~~~sh
 $ podman push registry.test.hololy.net:5000/test/redhat-operator-index:v4.7
 Getting image source signatures
 Copying blob 88d2b1b8a4ca done
@@ -205,7 +205,7 @@ Storing signatures
 위의 `opm index prune`은 image index의 번들로만 관리할 수 있지 더 세부적인 사항(버전 등)은 관리할 수 없습니다.  
 더 세부적으로 관리하고 싶다면 `oc adm catalog mirror`의 `--manifests-only` 옵션을 통해 index파일의 manifest파일을 받아 관리할 수 있습니다.  
 
-~~~
+~~~sh
 $ oc adm catalog mirror \
     <index_image> \
     <registry_host_name>:<port> \
@@ -215,7 +215,7 @@ $ oc adm catalog mirror \
     --manifests-only 
 ~~~
 `--manifests-only`옵션을 붙이고 실행하게 되면 mirror하지 않고 manifest파일만 생성한 뒤 마치게 됩니다.  
-~~~
+~~~sh
 registry.redhat.io/container-native-virtualization/virt-cdi-uploadproxy@sha256:f16adea054c67f128d462a0e971cd3b420dc824bbe9af17718bd1825fc4dd0be=registry.test.hololy.net:5000/container-native-virtualization/virt-cdi-uploadproxy:8b077e25
 registry.redhat.io/codeready-workspaces/plugin-java11-rhel8@sha256:641e223f5efbc32bab3461aa000e3a50a5dcca063331322158d1c959129ffd99=registry.test.hololy.net:5000/codeready-workspaces/plugin-java11-rhel8:2d365aad
 registry.redhat.io/quay/quay-builder-rhel8@sha256:f85122b9e13c4f1b30fc5957d832c48adf0ee9f508ac8c9651e1533a201f5372=registry.test.hololy.net:5000/quay/quay-builder-rhel8:e58c0a76
