@@ -30,7 +30,7 @@ Online환경에서 Openshift클러스터를 구성하게 되면 자동으로 Ope
 
 
 ## Prerequisites
-[이전 포스팅](https://gruuuuu.github.io/ocp/ocp-restricted-network/)을 기반으로 설명할 것이니, 이쪽 게시글을 참고하면서 봐주시면 될 것 같습니다.  
+이전 포스팅([v4.3](https://gruuuuu.github.io/ocp/ocp-restricted-network/), [v4.7](https://gruuuuu.github.io/ocp/ocp4.7-restricted/))을 기반으로 설명할 것이니, 이쪽 게시글을 참고하면서 봐주시면 될 것 같습니다.  
 
 간단히 현재 클러스터 구조를 나타내면 다음과 같습니다.   
 ![2](https://user-images.githubusercontent.com/15958325/95017685-c8947b80-0695-11eb-86d3-a5daa04c577b.PNG)   
