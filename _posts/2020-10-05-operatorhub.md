@@ -6,7 +6,7 @@ tags:
   - Kubernetes
   - RHCOS
   - Openshift
-last_modified_at: 2020-10-05T13:00:00+09:00
+last_modified_at: 2021-07-18T13:00:00+09:00
 toc : true
 author_profile: true
 sitemap :
@@ -24,7 +24,10 @@ Online환경에서 Openshift클러스터를 구성하게 되면 자동으로 Ope
 
 이번 포스팅에서는 폐쇄망에서 Openshift클러스터를 구성했을 시, OperatorHub를 구축하는 방법을 기술하겠습니다.  
 
-**참고 : openshift document - [Using Operator Lifecycle Manager on restricted networks](https://docs.openshift.com/container-platform/4.3/operators/olm-restricted-networks.html)**  
+**참고** : 
+- openshift4.3 document - [Using Operator Lifecycle Manager on restricted networks](https://docs.openshift.com/container-platform/4.3/operators/olm-restricted-networks.html)  
+- openshift4.7 document - [Using Operator Lifecycle Manager on restricted networks](https://docs.openshift.com/container-platform/4.7/operators/admin/olm-restricted-networks.html)
+
 
 ## Prerequisites
 [이전 포스팅](https://gruuuuu.github.io/ocp/ocp-restricted-network/)을 기반으로 설명할 것이니, 이쪽 게시글을 참고하면서 봐주시면 될 것 같습니다.  
@@ -38,11 +41,13 @@ Online환경에서 Openshift클러스터를 구성하게 되면 자동으로 Ope
 -> [podman registry구축하기](https://gruuuuu.github.io/ocp/ocp-restricted-network/#mirrorregistry)  
 
 
-## 1. Building an Operator catalog image
+## Building an Operator catalog image
 카탈로그 이미지들을 quay등에서 받아 로컬 레지스트리에 추가해주겠습니다.  
 
-### Steps
-#### 1. podman credential
+> **권장사항)**  
+>ocp 4.7라면 `podman` v1.9.3+, [`grpcurl`](https://github.com/fullstorydev/grpcurl), `opm` v1.12.3+ 
+
+### 1. podman credential
 podman registry의 credential정보가 있는 파일 경로를 환경설정으로 추가해줍니다.  
 ~~~sh
 $ REG_CREDS=${XDG_RUNTIME_DIR}/containers/auth.json
@@ -59,14 +64,14 @@ $ echo $XDG_RUNTIME_DIR
 $ cat $REG_CREDS
 {
         "auths": {
-                "registry.gru.hololy-dev.com:5000": {
+                "registry.test.hololy.net:5000": {
                         "auth": "YWRtaW46cGFzc3cwcmQ="
                 }
         }
 }
 ~~~
 
-#### 2. auth token생성(Optional)
+### 2. auth token생성(Optional)
 만약에 private quay registry를 사용하여 미러링을 할거라면 Quay authentication 토큰을 생성해두어야 합니다.  
 
 
@@ -86,11 +91,11 @@ $ AUTH_TOKEN=$(curl -sH "Content-Type: application/json" \
     }' | jq -r '.token')
 ~~~
 
-#### 3. podman login
-로컬 레지스트리와 `registry.redhat.io` 모두 podman으로 로그인을 해둬야 합니다.  
+### 3. podman login
+**로컬 레지스트리**와 `registry.redhat.io` 모두 podman으로 로그인을 해둬야 합니다.  
 
 ~~~sh
-$ podman login -u admin -p passw0rd registry.gru.hololy-dev.com:5000
+$ podman login -u admin -p passw0rd registry.test.hololy.net:5000
 Login Succeeded!
 ~~~
 
@@ -99,9 +104,136 @@ Login Succeeded!
 $  podman login -u '{redhat_id}' -p '{redhat_pwd}' registry.redhat.io
 Login Succeeded!
 ~~~
+>[registry.redhat.io](https://registry.redhat.io/)로 접속해보면 사용할 수 있는 카탈로그들을 볼 수 있습니다.  
+>![image](https://user-images.githubusercontent.com/15958325/125875778-2ee90da7-c285-45e2-8256-f47f498d0fa5.png)  
 
-#### 4. catalog build
-이제 카탈로그들을 빌드해줍니다.  
+
+### 4. [Optional] Pruning Catalog Images
+RH에서 제공하는 카탈로그 이미지가 꽤 많기 때문에 필요한 이미지만 미러링하고 싶을 수 있습니다.  
+크게 두가지 방법이 있습니다.  
+
+#### 4.1 opm index prune
+`opm`은 소프트웨어 저장소와 유사한 index라고 하는 번들 목록에서 카탈로그를 만들고 유지 및 관리할 수 있는 커맨드입니다.  
+Index 이미지에는 카탈로그의 컨테이너화된 스냅샷(containerized snapshot of a catalog)이 들어있으며 Operator의 manifest를 포함하고 있습니다.  
+
+Openshift 4.6 부터 Image Registry 카탈로그를 인덱스 이미지로 제공하고 있어 전체 카탈로그의 subset을 mirror하려면 `opm`커맨들을 사용하여 수정하여야 합니다.  
+
+미러할 index이미지를 컨테이너로 띄웁니다.  
+~~~
+$ podman run -p50051:50051 -it registry.redhat.io/redhat/redhat-operator-index:v4.7
+
+WARN[0000] unable to set termination log path            error="open /dev/termination-log: permission denied"
+INFO[0000] Keeping server open for infinite seconds      database=/database/index.db port=50051
+INFO[0000] serving registry                              database=/database/index.db port=50051
+~~~
+
+다른 터미널 하나를 띄워서 `grpcurl` 커맨드로 컨테이너에 포함된 패키지 리스트를 가져옵니다.  
+~~~
+$ grpcurl -plaintext localhost:50051 api.Registry/ListPackages > packages.out
+~~~
+
+packages.out에는 다음과 같이 패키지 리스트가 json형식으로 포함되어 있습니다.  
+~~~json
+{
+  "name": "3scale-operator"
+}
+{
+  "name": "advanced-cluster-management"
+}
+{
+  "name": "amq-broker"
+}
+{
+  "name": "amq-broker-lts"
+}
+{
+  "name": "amq-broker-rhel8"
+}
+{
+  "name": "amq-online"
+}
+{
+  "name": "amq-streams"
+}
+{
+  "name": "amq7-interconnect-operator"
+}
+{
+  "name": "ansible-automation-platform-operator"
+}
+{
+...
+~~~
+
+여기서 필요한 이미지만 골라서 `opm index prune`의 `-p` 파라미터의 인자로 넣어주면 됩니다.  
+~~~
+$ opm index prune \
+    -f registry.redhat.io/redhat/redhat-operator-index:v4.7 \
+    -p serverless-operator,openshift-pipelines-operator-rh,codeready-workspaces \
+    [-i registry.redhat.io/openshift4/ose-operator-registry:v4.7] \
+    -t <target_registry>:<port>/<namespace>/redhat-operator-index:v4.7
+~~~
+- `-f` : 원본 이미지
+- `-p` : 필요한 이미지
+- `-i` : Operator Registry base image (only for IBM Power & Z)
+- `-t` : 필요한이미지만 뽑은 이미지 태그(로컬 registry 정보를 적어줄 것)
+
+실행 후 아래와 같이 이미지가 생긴 것을 확인 가능:  
+~~~
+$ podman images
+REPOSITORY                                           TAG     IMAGE ID      CREATED             SIZE
+registry.test.hololy.net:5000/test/redhat-operator-index  v4.7    7c5c915cbdd0  About a minute ago  112 MB
+~~~
+
+local registry에 push
+~~~
+$ podman push registry.test.hololy.net:5000/test/redhat-operator-index:v4.7
+Getting image source signatures
+Copying blob 88d2b1b8a4ca done
+Copying blob 094d78802b07 done
+Copying blob 1899390adebc done
+Copying blob 55dfd992c4eb done
+Copying blob 72e830a4dff5 done
+Copying blob 06888ef1f8b7 done
+Copying config 7c5c915cbd done
+Writing manifest to image destination
+Storing signatures
+~~~
+
+
+#### 4.2 oc adm catalog mirror (Advanced)
+위의 `opm index prune`은 image index의 번들로만 관리할 수 있지 더 세부적인 사항(버전 등)은 관리할 수 없습니다.  
+더 세부적으로 관리하고 싶다면 `oc adm catalog mirror`의 `--manifests-only` 옵션을 통해 index파일의 manifest파일을 받아 관리할 수 있습니다.  
+
+~~~
+$ oc adm catalog mirror \
+    <index_image> \
+    <registry_host_name>:<port> \
+    [-a ${REG_CREDS}] \
+    [--insecure] \
+    [--filter-by-os="<os>/<arch>"] \
+    --manifests-only 
+~~~
+`--manifests-only`옵션을 붙이고 실행하게 되면 mirror하지 않고 manifest파일만 생성한 뒤 마치게 됩니다.  
+~~~
+registry.redhat.io/container-native-virtualization/virt-cdi-uploadproxy@sha256:f16adea054c67f128d462a0e971cd3b420dc824bbe9af17718bd1825fc4dd0be=registry.test.hololy.net:5000/container-native-virtualization/virt-cdi-uploadproxy:8b077e25
+registry.redhat.io/codeready-workspaces/plugin-java11-rhel8@sha256:641e223f5efbc32bab3461aa000e3a50a5dcca063331322158d1c959129ffd99=registry.test.hololy.net:5000/codeready-workspaces/plugin-java11-rhel8:2d365aad
+registry.redhat.io/quay/quay-builder-rhel8@sha256:f85122b9e13c4f1b30fc5957d832c48adf0ee9f508ac8c9651e1533a201f5372=registry.test.hololy.net:5000/quay/quay-builder-rhel8:e58c0a76
+registry.redhat.io/ocs4/ocs-must-gather-rhel8@sha256:1949179411885858ec719ab052868c734b98b49787498a8297f1a4ace0283eae=registry.test.hololy.net:5000/ocs4/ocs-must-gather-rhel8:7186dd14
+registry.redhat.io/openshift-service-mesh/kiali-rhel7:1.0.8=registry.test.hololy.net:5000/openshift-service-mesh/kiali-rhel7:1.0.8
+...
+~~~
+이렇게 미러할 소스이미지안에 어떠한 패키지가 버전별로 포함되어있는지 알 수 있고, 이를 수정하여 원하는 이미지 만을 미러할 수 있습니다.  
+
+근데 저도 테스트는 안해봤기에 참고할 수 있는 링크를 첨부하도록 하겠습니다.  
+->[Configuring OperatorHub for restricted networks](https://docs.openshift.com/container-platform/4.3/operators/olm-restricted-networks.html#olm-restricted-networks-operatorhub_olm-restricted-networks)  
+
+
+## 2. Configuring OperatorHub for restricted networks
+
+### [OCP 4.5이하만!] oc adm catalog build
+OCP 4.5 이하에서는 image catalog를 먼저 빌드해주어야 합니다.  
+
 ~~~sh
 $ oc adm catalog build \
     --appregistry-org redhat-operators \
@@ -122,75 +254,64 @@ $ oc adm catalog build \
 빌드는 빨리 끝납니다.  
 다 되고나서 curl로 확인해보면 아래와 같이 레포지토리가 새로 생긴 것을 확인할 수 있습니다.    
 ~~~sh
-$ curl -u admin:passw0rd -k https://registry.gru.hololy-dev.com:5000/v2/_catalog
+$ curl -u admin:passw0rd -k https://registry.test.hololy.net:5000/v2/_catalog
 {"repositories":["ocp4.3.8-x86","olm/redhat-operators"]}
 ~~~
 
-## 2. Configuring OperatorHub for restricted networks
+>**끌어올 catalog 정보** -> [registry.redhat.io/openshift4/ose-operator-registry](https://catalog.redhat.com/software/containers/search?q=openshift4%2Fose-operator-registry&p=1&architecture=amd64)
+>![image](https://user-images.githubusercontent.com/15958325/125880078-8ec47958-2da0-40f1-9e91-bcbace1ab076.png)  
 
-### Steps
-#### 1. disable default operator source
+### 2.1 disable default operator source
 설치할때 생긴 default source를 disable 시켜줍니다.  
 ~~~sh
 $ oc patch OperatorHub cluster --type json \
     -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
 ~~~
 
-#### 2. catalog mirror
+### 2.2 catalog mirror
 이제 로컬레지스트리로 이미지들을 미러링을 해야합니다.  
 
 >**주의!**  
->이 과정은 여유 용량이 대략 80G는 있어야 합니다. 생각보다 많은 용량을 잡아먹기 때문에 사전에 루트폴더가 충분한 용량을 가지고 있는지 살펴보아야 합니다.  
->만약 80G보다 적은 유휴용량을 지니고 있다면 아래 링크를 통해서 root폴더 용량을 늘려주세요.  
+>이 과정은 여유 용량이 대략 460G는 있어야 합니다. 생각보다 많은 용량을 잡아먹기 때문에 사전에 루트폴더가 충분한 용량을 가지고 있는지 살펴보아야 합니다.  
+>만약 460G보다 적은 유휴용량을 지니고 있다면 아래 링크를 통해서 root폴더 용량을 늘려주세요.  
 >참고링크 : [[CentOS] LVM /home 용량을 줄이고 / 용량을 늘리기](https://knoow.tistory.com/179)
-
-미러를 뜰때는 두가지 방법을 사용해서 미러를 할 수 있습니다.  
-1. 모든 이미지들을 미러
-2. 미러링에 필요한 manifest파일을 출력, 이후 원하는 이미지만 manifest파일에서 골라서 미러링을 할 수 있다
 
 ~~~sh
 $ oc adm catalog mirror \
-    <registry_host_name>:<port>/olm/redhat-operators:v1 \
+    <index_image> \
     <registry_host_name>:<port> \
     [-a ${REG_CREDS}] \
     [--insecure] \
     [--filter-by-os="<os>/<arch>"] \
-    [--manifests-only] 
+    [--manifests-only]
 ~~~
 
-각 파라미터는 위에서 설명한 것과 동일하고, `manifests-only`같은 경우, 명시하게 되면 위의 두가지 미러링 방법중 2번방법으로 진행하게 하는 옵션입니다.  
-
->(2020.10.05)시간이 없어서 manifests-only는 제대로 테스트하지 못했습니다. 추후에 수정예정
-
-저는 manifests-only옵션을 사용하지 않고 바로 전체 이미지를 미러링하였는데 시간이 거의 7시간가까이 걸렸습니다.
+각 파라미터는 위에서 설명한 것과 동일하고, `manifests-only`같은 경우, 명시하게 되면 미러할 이미지들의 manifest 파일을 얻게 됩니다.(원하는 이미지만 잘라낼 때 사용)
 
 ~~~sh
 ...
-info: Planning completed in 1.23s
-uploading: registry.gru.hololy-dev.com:5000/container-native-virtualization/virt-cdi-cloner sha256:41ae95b593e0eabd584b11216673daee2d1d5e28e3dd8598beb763b76e24c35f 51.89MiB
-uploading: registry.gru.hololy-dev.com:5000/container-native-virtualization/virt-cdi-cloner sha256:ba8d0d463156b9bea87fb7e67c11594870044d1b3c88162aca5d9826e2b2e79b 82.53MiB
-sha256:e1c7f258d39c85bde00c72e0f18b1663103e51237c8cc2627b2bc300b1823934 registry.gru.hololy-dev.com:5000/container-native-virtualization/virt-cdi-cloner
-sha256:33ea406a226d34a4a7920957a45c296b1d68df0faf74b8f698ec78a39caff395 registry.gru.hololy-dev.com:5000/container-native-virtualization/virt-cdi-cloner
-info: Mirroring completed in 3.89s (36.14MB/s)
-W0929 03:53:33.605621    1441 mirror.go:258] errors during mirroring. the full contents of the catalog may not have been mirrored: couldn't parse image for mirroring (), skipping mirror: invalid reference fort
-I0929 03:53:33.835391    1441 mirror.go:329] wrote mirroring manifests to redhat-operators-manifests
+sha256:26eeac0dbd0370e022035ad1d7c561915067d7f5948208eecf5cfcd24e3dc0bf registry.test.hololy.net:5000/codeready-workspaces/stacks-cpp-rhel8:dec0995c
+sha256:56543cfeeeac030821557ac4937db40f6845e874193c79c30267a680f9b2cbe7 registry.test.hololy.net:5000/codeready-workspaces/stacks-cpp-rhel8:5a87a277
+sha256:bbd5dc16e3065a6b8cb7f8776176a84cd8f47049945f06fb62ad043ba73a87ca registry.test.hololy.net:5000/codeready-workspaces/stacks-cpp-rhel8:3e0842ed
+sha256:bee42929090b7361c009aa6376d1272096b0a718ef13be72b2f52163403ba3ac registry.test.hololy.net:5000/codeready-workspaces/stacks-cpp-rhel8:7b9c099c
+info: Mirroring completed in 3h33m59.1s (37.37MB/s)
 ~~~
->출력된 로그를 보시면 전체 이미지를 제대로 미러링하지 못했다고 뜹니다.  
->이때의 원인은 참조하는 DB(eg. /tmp/132891387/bundles.db)의 각 operator값이 name:xx image:xx로 되어있어야 하는데 에러나는 operator들은 name:xx value:xx로 되어있습니다.  
->
->이부분은 아직 제대로 해결하지 못했으므로 추후에 다시 기술하겠습니다.  
 
-몇가지 이미지가 제대로 parsing되지 않아서 미러링되지 않았지만 일단 일부 이미지라도 미러링에 성공하였습니다.  
+>보이시나요 전체 미러하는데 3시간 반이 소요되었습니다.(v4.7기준)  
+>용량도 무려 450GB나 잡아먹습니다!
+>![image](https://user-images.githubusercontent.com/15958325/126107682-0fb3a242-a732-4c0d-b04a-d2dc1da5db0b.png)  
 
-두가지 방법 모두, `catalog mirror` 커맨드가 끝나게되면 두가지 파일이 생깁니다.  
+
+
+`oc adm catalog mirror` 커맨드가 끝나게되면 두가지 파일이 생깁니다.  
 - `imageContentSourcePolicy.yaml` : 매니페스트파일에 담겨있는 이미지 레퍼런스들과 미러된 레지스트리간의 규칙을 정의
 - `mapping.txt` : 레지스트리에 담긴 모든 이미지소스가 담겨있음. 미러링할때 여기담긴 리스트를 커스텀해서 원하는 구성을 적용가능
 
-#### 4. imageContentSourcePolicy & catalogSource
+### 2.3 imageContentSourcePolicy & catalogSource
 imageContentSourcePolicy와 catalogSource를 생성합니다.  
 
 ~~~sh
-$ oc apply -f ./redhat-operators-manifests/imageContentSourcePolicy.yaml
+$ oc apply -f imageContentSourcePolicy.yaml
 ~~~
 
 ~~~sh
@@ -203,7 +324,7 @@ metadata:
   namespace: openshift-marketplace
 spec:
   sourceType: grpc
-  image: registry.gru.hololy-dev.com:5000/olm/redhat-operators:v1
+  image: registry.test.hololy.net:5000/olm/redhat-operators:v1
   displayName: My Operator Catalog
   publisher: grpc
 ~~~
@@ -229,13 +350,11 @@ pakagemanifest 확인:
 ~~~sh
 $ oc get packagemanifest -n openshift-marketplace
 ~~~
-![image](https://user-images.githubusercontent.com/15958325/95081174-212a4e00-0754-11eb-9b84-db5e4a44b466.png)  
+![image](https://user-images.githubusercontent.com/15958325/126107877-0186fd79-a8fc-4770-9488-447e2bfee98d.png)  
+
 
 웹 콘솔로 확인해보면 아래와 같이 사용할 수 있는 오퍼레이터가 생긴 것을 보실 수 있습니다.  
-![image](https://user-images.githubusercontent.com/15958325/95081192-28e9f280-0754-11eb-94a6-47047f3ee2b7.png)
-
-비록 현재는 모든 오퍼레이터들을 정상적으로 받지 못하였지만 추후에 parsing문제들을 해결하고 나면 포스팅을 수정하도록 하겠습니다.  
-
+![image](https://user-images.githubusercontent.com/15958325/126107911-d641b586-3ef6-4e2a-91b3-c27944b94cae.png)  
 
 
 ## 나올 수 있는 에러들
