@@ -1,5 +1,5 @@
 ---
-title: "Openshift4 Operations -Errors"
+title: "Openshift4 Operations -Troubleshooting"
 categories: 
   - OCP
 tags:
@@ -17,7 +17,7 @@ sitemap :
 ## Overview
 Openshift를 다루며 생겼던 에러들에 대해서 정리해둔 문서입니다.  
 
-설치할때 만난 에러들은 여기 -> [Openshift4.3 Installation on Baremetal -Errors](https://gruuuuu.github.io/ocp/ocp4-install-error/)
+설치할때 만난 에러들은 여기 -> [설치 Troubleshooting](https://gruuuuu.github.io/ocp/ocp4-install-error/)
 
 # Errors
 ## 1. remote error: tls: internal error
