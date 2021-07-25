@@ -170,7 +170,8 @@ $ oc patch ingresscontroller.operator default \
 
 ![image](https://user-images.githubusercontent.com/15958325/126899776-3f057456-00e9-41c6-9ede-cc660a32acb6.png)  
 
-또한 브라우저 인증서 설정을 보게되면 신뢰할 수 있는 루트기관까지 제대로 연결된 모습을 확인할 수 있습니다.
+또한 브라우저 인증서 설정을 보게되면 신뢰할 수 있는 루트기관까지 제대로 연결된 모습을 확인할 수 있습니다.  
+
 ![image](https://user-images.githubusercontent.com/15958325/126899807-cca632b8-c362-452c-a768-6ce83e4fb2bf.png)  
 
 
