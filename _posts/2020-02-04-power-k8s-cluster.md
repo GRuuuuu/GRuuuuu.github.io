@@ -19,6 +19,9 @@ sitemap :
 
 이런 목적을 가지고 이기종간의 쿠버네티스 클러스터 구성과, `pod scheduling`을 통해 특정 노드에 pod을 배포하는 방법에 대해서 다루겠습니다.  
 
+> (21.08.06)  
+>`Node Affinity` 수정 (`RequiredDuringExecution` 현재 지원 x)
+
 # Prerequisites
 해당 포스팅의 클러스터 환경은 다음과 같습니다.  
 
@@ -231,11 +234,13 @@ k8s는 `Affinity`를 권장하고 있습니다.
 - IgnoredDuringExecution : Runtime에 Node label이 바뀌어도 무시
 - RequiredDuringExecution : Runtime에 Node label이 바뀌어서는 안되며 조건에 충족해야함
 
-아래와 같이 총 4가지 표현식을 사용할 수 있습니다.  
+아래와 같이 총 2가지 표현식을 사용할 수 있습니다.  
 `requiredDuringSchedulingIgnoredDuringExecution`  
 `preferredDuringSchedulingIgnoredDuringExecution`  
-`requiredDuringSchedulingRequiredDuringExecution`  
-`preferredDuringSchedulingRequiredDuringExecution`  
+
+> 아래 2가지 표현식은 추후 지원 예정:  
+>`requiredDuringSchedulingRequiredDuringExecution`  
+>`preferredDuringSchedulingRequiredDuringExecution`  
 
 또한 다음 operator를 사용해서 key:value간의 관계를 폭넓게 다룰 수 있습니다.  
 
