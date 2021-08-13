@@ -176,7 +176,7 @@ $ opm index prune \
 - `-f` : 원본 이미지
 - `-p` : 필요한 이미지
 - `-i` : Operator Registry base image (only for IBM Power & Z)
-- `-t` : 필요한이미지만 뽑은 이미지 태그(로컬 registry 정보를 적어줄 것)
+- `-t` : 필요한이미지만 뽑은 이미지 태그(ex. `registry.test.hololy.net:5000/namespace/red~:v4.7`)
 
 실행 후 아래와 같이 이미지가 생긴 것을 확인 가능:  
 ~~~sh
