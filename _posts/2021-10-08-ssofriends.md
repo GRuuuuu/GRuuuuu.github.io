@@ -135,12 +135,12 @@ Third-Party App에게 리소스 소유자를 대신하여 리소스 서버에서
 예를 들어 다음과 같은 경우를 예시로 들 수 있습니다.  
 ![3](https://user-images.githubusercontent.com/15958325/137652947-17b0138d-f9b3-4ff3-a88a-0ca04877610d.png)  
 
-1. 사용자는 3rd party app에 있는 "facebook 친구 리스트 import" 단자를 클릭함
-2. 사용자가 Facebook에 성공적으로 로그인하면, Facebook 친구 목록에 접근하는 것을 허가할 것인지에 대한 메시지가 표시됨  
+1.사용자는 3rd party app에 있는 "facebook 친구 리스트 import" 단자를 클릭함  
+2.사용자가 Facebook에 성공적으로 로그인하면, Facebook 친구 목록에 접근하는 것을 허가할 것인지에 대한 메시지가 표시됨  
 
 ![4](https://user-images.githubusercontent.com/15958325/137652950-809de581-da03-4d1d-836d-e9b336644b52.png)  
 
-3. 사용자가 Yes를 클릭하면 3rd party app에 Facebook 친구 목록을 가져올 수 있는 **권한**, 그리고 승인을 부여하는 **토큰**과 함께 사용자는 app으로 리다이렉트됨  
+3.사용자가 Yes를 클릭하면 3rd party app에 Facebook 친구 목록을 가져올 수 있는 **권한**, 그리고 승인을 부여하는 **토큰**과 함께 사용자는 app으로 리다이렉트됨  
 
 OAuth는 사용자가 자격 증명을 공유하지 않고도 app에서 리소스에 액세스 할 수 있습니다.  
 즉, 3rd앱이 facebook아이디를 몰라도 facebook에 있는 정보를 서비스에서 안전하게 사용할 수 있다는 의미입니다.    
