@@ -341,7 +341,7 @@ ID Token(JWT)를 통해서 누가 인증을 했는지, 발행자(issuer)가 누�
 ## Appendix. SAML vs OAuth2.0 vs OIDC
 마지막으로 세가지 방식의 차이점을 알아보겠습니다.  
 
--|SAML|OAuth2.0|OIDC
+.|SAML|OAuth2.0|OIDC
 ---|---|---|---
 Format|XML|JSON|JSON
 Authorization|O|O|X
