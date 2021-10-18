@@ -25,10 +25,10 @@ sitemap:
 
 이름 그대로 단일 로그인, 즉 한번의 로그인으로 여러개의 애플리케이션들을 이용할 수 있게해주는 서비스 입니다.
 
-![1](https://user-images.githubusercontent.com/15958325/137651563-f936fa92-37e8-480d-b449-0d05f63c6657.png)  
-SSO가 없다면 위와 같이 사용하고자 하는 서비스마다 따로따로 계정을 갖고 있어야 하지만,
+![1](https://user-images.githubusercontent.com/15958325/137668561-5b9fa59a-0c9b-46fd-9d5f-98ee2e1492eb.png)    
+SSO가 없다면 사용하고자 하는 서비스마다 따로따로 계정을 갖고 있어야 하지만,
 
-![2](https://user-images.githubusercontent.com/15958325/137651565-1f654388-42b7-4b01-8e57-c20f22b06d66.png)  
+![2](https://user-images.githubusercontent.com/15958325/137668566-d8cb5017-2324-4784-88ec-caf4b3acae02.png)     
 SSO가 도입된다면 서비스마다 개별로 계정을 만드는 대신 하나의 계정으로 연관된 서비스들을 사용할 수 있게 됩니다.
 
 사용자로써는 여러개의 계정(비밀번호)을 일일히 기억할 필요가 없게 되고,  
