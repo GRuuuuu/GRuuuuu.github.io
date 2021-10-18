@@ -16,7 +16,7 @@ sitemap:
 ## Overview
 
 우리는 여러 사이트를 돌아다니면서 내가 "나"임을 증명하기 위해 계정을 만들고 로그인을 하게 됩니다.  
-예전에는 여러 사이트마다 각자 계정을 만드는 일이 잦았는데 최근엔 대형 회사들(eg. Google, Naver, Facebook 등)의 계정으로 로그인을 대신 할 수 있게 되었습니다.
+예전에는 여러 사이트마다 각자 계정을 만드는 일이 잦았는데 최근엔 대형 회사들(eg. Google, Naver, Facebook 등)의 계정으로 로그인을 대신 할 수 있게 되었습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/137650440-23361196-d93a-4595-8114-40b895df2992.png)   
 
 자연스럽게 사용하는 기능이지만 자세히는 몰랐던 내용들, SSO와 SSO를 구현하기 위한 몇가지 인증 방법에 대해서 알아보도록 하겠습니다.
@@ -134,11 +134,13 @@ Third-Party App에게 리소스 소유자를 대신하여 리소스 서버에서
 
 예를 들어 다음과 같은 경우를 예시로 들 수 있습니다.  
 ![3](https://user-images.githubusercontent.com/15958325/137652947-17b0138d-f9b3-4ff3-a88a-0ca04877610d.png)  
+
 1. 사용자는 3rd party app에 있는 "facebook 친구 리스트 import" 단자를 클릭함
-2. 사용자가 Facebook에 성공적으로 로그인하면, Facebook 친구 목록을 공유하라는 메시지가 표시됨  
+2. 사용자가 Facebook에 성공적으로 로그인하면, Facebook 친구 목록에 접근하는 것을 허가할 것인지에 대한 메시지가 표시됨  
 
 ![4](https://user-images.githubusercontent.com/15958325/137652950-809de581-da03-4d1d-836d-e9b336644b52.png)  
-3. 사용자가 Yes를 클릭하면 3rd party app에 Facebook 친구 목록을 가져올 수 있는 권한과 승인을 부여하는 토큰과 함께 사용자는 app으로 돌아감  
+
+3. 사용자가 Yes를 클릭하면 3rd party app에 Facebook 친구 목록을 가져올 수 있는 **권한**, 그리고 승인을 부여하는 **토큰**과 함께 사용자는 app으로 리다이렉트됨  
 
 OAuth는 사용자가 자격 증명을 공유하지 않고도 app에서 리소스에 액세스 할 수 있습니다.  
 즉, 3rd앱이 facebook아이디를 몰라도 facebook에 있는 정보를 서비스에서 안전하게 사용할 수 있다는 의미입니다.    
