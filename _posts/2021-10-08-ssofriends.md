@@ -164,7 +164,7 @@ Access Token은 임의의 문자열 값이고, 토큰을 발급해 준 서비스
 
 **SAML**에서 `SAMLAssertion`이 안에 User의 인증정보를 갖고 있어서, 해당 Assertion을 가지면 User의 인증/권한을 사용할 수 있듯이  
 **OAuth**에서는 `Access Token`이 이와 비슷한 역할을 수행하게 됩니다.  
-(Access Token는 인증은 불가능, 권한에 대한 허가만 가능)   
+(Access Token는 인증에 대한 정보는 없고, 권한에 대한 허가만 가능)   
 
 
 ![5](https://user-images.githubusercontent.com/15958325/137664378-1bb5e28d-26b9-4236-9dd9-54769b46b681.png)  
