@@ -19,7 +19,7 @@ Kubernetes같은 경우는 클러스터 생성시, 도메인이 필요하지 않
 
 **Openshift**는 클러스터 생성시, 도메인을 넣어서 설치를 하게 되어있습니다. 그래서 클러스터가 가지고 있는 기본 도메인이 있고 서비스를 `expose`하여 route를 생성하게 되면 `<svcName>.apps.<basedomain>`이런 식으로 주소를 부여받게 됩니다.
 
-그런데 Management Cluster의 경우 자동적으로 클러스터에 부여받는 domain이 있는데요, 대부분의 경우 그 domain이 어마어마하게 깁니다.
+그런데 Managed Cluster의 경우 자동적으로 클러스터에 부여받는 domain이 있는데요, 대부분의 경우 그 domain이 어마어마하게 깁니다.
 
 ```
 $ oc get route
@@ -29,7 +29,6 @@ NAME                               HOST/PORT                                    
 test-router         test-router-testnamespace.kr-ddd-298fdf11110631bdad517f871be4f871-0000.seo01.containers.appdomain.cloud                test-svc    8000                    None
 ```
 
-(이게 머시당가)
 
 미관상 보기 좋게 하기위해서, 또는 기존의 도메인 말고 다른 도메인으로 클러스터의 서비스에 접근하고 싶을 때, **ingress를 사용하면 간단하게 해결할 수 있습니다.**
 
