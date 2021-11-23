@@ -26,6 +26,10 @@ sitemap :
 
 참고 : openshift document - [Installing a cluster on bare metal in a restricted network](https://docs.openshift.com/container-platform/4.3/installing/installing_bare_metal/installing-restricted-networks-bare-metal.html)  
 
+>**수정)**  
+>211123. `additionalTrustBundle` install-config.yaml에 추가방법 추가
+
+
 ## Prerequisites
 
 제가 이번에 사용한 노드들의 스펙입니다.
@@ -773,10 +777,6 @@ platform:
 fips: false
 pullSecret: '{"auths": ...}'
 sshKey: 'ssh-ed25519 AAAA...'
-additionalTrustBundle: | 
-  -----BEGIN CERTIFICATE----- 
-  ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ 
-  -----END CERTIFICATE----- 
 imageContentSources:
 - mirrors: 
   - <local_registry>/<local_repository_name>/release 
@@ -784,6 +784,10 @@ imageContentSources:
 - mirrors: 
   - <local_registry>/<local_repository_name>/release 
   source: registry.svc.ci.openshift.org/ocp/release
+additionalTrustBundle: | 
+  -----BEGIN CERTIFICATE----- 
+  ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ 
+  -----END CERTIFICATE----- 
 ~~~
 
 여기서 수정해 주어야 할 것들 :  
@@ -803,11 +807,17 @@ imageContentSources:
     ~~~
 
 6. `sshKey` : 위에서 `ssh-keygen`으로 생성한 public key(~/.ssh/id_rsa.pub)
-7. `additionalTrustBundle` : registry만들 때 사용한 cert파일(/opt/registry/certs/domain.crt)   
+7. `imageContentSources` : 로컬 MirrorRegistry 미러링끝나고 나서 출력된 imageContentSources를 그대로 붙여넣어주시면 됩니다.  
+8. `additionalTrustBundle` : registry만들 때 사용한 cert파일(/opt/registry/certs/domain.crt)   
     아래 사진과 같이 추가해주시면 됩니다. 왼쪽에 노란색 펜으로 표시한 부분처럼 indent에 주의하여 붙여넣어야 합니다.  
     ![image](https://user-images.githubusercontent.com/15958325/95045080-181d8a80-071c-11eb-82f1-1b2a2067af08.png)   
+    **꿀팁)**
+    ~~~
+    $ echo "additionalTrustBundle: |" >> install-config.yaml
+    $ cat /opt/registry/certs/domain.crt |sed 's/^/\ \ /g' >> install-config.yaml
+    ~~~
 
-8. `imageContentSources` : 로컬 MirrorRegistry 미러링끝나고 나서 출력된 imageContentSources를 그대로 붙여넣어주시면 됩니다.  
+
 
 #### 5. Manifests & Ignitions
 설치를 진행하면서 install-config.yaml파일은 사라지므로 백업을 떠두고 진행하도록 합니다.  
