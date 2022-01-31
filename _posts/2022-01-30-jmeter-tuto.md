@@ -199,7 +199,7 @@ Request 탭에서는 실제 어떤 데이터를 보냈는지 확인할 수 있�
 
 Result Tree로 정확한 Request를 보냈는지 확인하고 부하테스트를 진행하는것이 좋습니다.  
 
-### Graph Results
+#### Graph Results
 Request와 Response의 특정 항목들에 대한 그래프를 그려줍니다.  
 
 Thread Group > Add > Listener > Graph Results   
