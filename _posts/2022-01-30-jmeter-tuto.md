@@ -127,7 +127,7 @@ Name과 Comments엔 해당 Request의 이름과 description을 적어주고,
 **Server Name or IP** : Request를 보낼 서버의 정보를 기입합니다.  
 **HTTP Request** : `GET`/`POST`/`HEAD`/`PUT`/`OPTIONS`/`TRACE`/`DELETE`/`PATCH` 중 원하는 방식을 선택합니다.  
 **Path** : URL Path를 기입합니다. (ex. `GRuuuuu` -> `github.com/GRuuuuu`)  
-**Parameters/BodyData** : 서버에서 파라미터 값을 어떻게 처리하느냐에 따라 선택 (Request의 Content type이 `application/json`라면 `body data` `application/www-x-form-urlencoded`라면 `parameters`)  
+**Parameters/BodyData** : 서버에서 파라미터 값을 어떻게 처리하느냐에 따라 선택 (Request의 Content type이 `application/json`라면 `body data`, `application/www-x-form-urlencoded`라면 `parameters`)  
 
 ### Request 날릴 준비
 준비된 웹서버가 있다면 테스트할 웹서버의 api 형식을 보고 넣으면 되고,  
@@ -156,7 +156,7 @@ POST요청이니 body값을 확인하기위해 payload 탭을 눌러서 확인�
 
 ![image](https://user-images.githubusercontent.com/15958325/151761194-c67bbb03-cc8f-42c0-9d7f-2a1057df383f.png)  
 
-그리고 마지막으로 Response값을 확인해봅니다.(테스트결과와 확인하기 위해)  
+그리고 마지막으로 Response값을 확인해봅니다.(테스트결과와 일치하는지 확인하기 위해)  
 ![image](https://user-images.githubusercontent.com/15958325/151762496-3d927fbd-e717-4916-9e20-fa8d82860136.png)  
 
 이제 필요한 정보들은 다 모였으니 JMeter 테스트케이스를 만들어봅시다!   
