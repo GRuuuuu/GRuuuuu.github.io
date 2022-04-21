@@ -648,6 +648,7 @@ curl -X "POST" "https://(endpoint)/(bucket-name)/(object-key)?uploads"
 curl -X "PUT" "https://(endpoint)/(bucket-name)/(object-key)?partNumber=(sequential-integer)&uploadId=(upload-id)"
  -H "Authorization: bearer (token)"
  -H "Content-Type: (content-type)"
+ --data-binary @"(file-path)"
 ~~~
 
 순차적으로 `sequential-integer` 값 할당. (n>1, n<10000)  
