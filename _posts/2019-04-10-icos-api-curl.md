@@ -18,6 +18,9 @@ IBM Cloud Object Storage API는 객체 읽기 및 쓰기를 위한 REST 기반 A
 
 아래 챕터부터 CLI환경에서 curl command를 이용해 ICOS와 통신하는것에 대해 기술하겠습니다.  
 
+>수정  
+>22.04.21 upload object API부분 local file 경로받는 부분을  `--data-binary @`로 변경  
+
 ## 2. Credential & Authentication
 ### endpoint  
 cos의 endpoint는 cos인스턴스 > Endpoint > cos만들때설정들을 입력하면 endpoint를 얻을 수 있습니다.  
@@ -430,17 +433,17 @@ bucket에 object를 업로드합니다.
 $ curl -X "PUT" "https://(endpoint)/(bucket-name)/(object-key)" \
  -H "Authorization: bearer (token)" \
  -H "Content-Type: (content-type)" \
- -d "(object-contents)"
+ --data-binary @"(local-file-path)"
 ~~~  
 `object-key`에는 파일의 name과 확장자  
 `content-type`은 파일의 확장자에 따른 type정보. 다음링크를 참고 -> [content-type](https://www.iana.org/assignments/media-types/media-types.xhtml)  
-`object-contents`에는 업로드하려는 파일의 로컬 경로  
+`local-file-path`에는 업로드하려는 파일의 로컬 경로  
 >예시)   
 >~~~bash
 >curl -X "PUT" "https://s3.us-south.cloud-object-storage.appdomain.cloud/test-bucket-api/cat.png" \
 > -H "Authorization: bearer eyJraWQiOiIyMDE3MTE..." \
 > -H "Content-Type: image/png" \
-> -d "/cat.png"
+> --data-binary @"/cat.png"
 >~~~  
 
 **출력**  
