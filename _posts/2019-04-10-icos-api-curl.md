@@ -600,6 +600,190 @@ $ curl -X "POST" "https://(endpoint)/(bucket-name)?delete" \
 </DeleteResult>
 ~~~  
 
+## 3.20 Multipart
+사이즈가 매우 큰 파일을 분할하여 병렬 upload 처리를 하는 방법입니다.  
+
+4가지 step을 밟아야 합니다.
+1. 파일쪼개기
+2. Multipart 시작
+3. Part단위로 upload
+4. upload된 Part들을 하나의 파일로 묶어서 저장
+
+### 3.20.1 파일쪼개기  
+ex) Linux의 경우 `split`사용
+~~~
+$ split -n 4 random_zipcodeKR.txt random_zipcodeKR.txt_
+
+$ ls -alh
+total 2.4G
+drwxrwxr-x  2 gru gru 4.0K Apr 21 07:15 .
+drwxr-xr-x 17 gru gru 4.0K Apr 21 07:14 ..
+-rwxrwxr-x  1 gru gru 1.2G Dec 28 15:15 random_zipcodeKR.txt
+-rw-rw-r--  1 gru gru 295M Apr 21 07:15 random_zipcodeKR.txt_aa
+-rw-rw-r--  1 gru gru 295M Apr 21 07:15 random_zipcodeKR.txt_ab
+-rw-rw-r--  1 gru gru 295M Apr 21 07:15 random_zipcodeKR.txt_ac
+-rw-rw-r--  1 gru gru 295M Apr 21 07:16 random_zipcodeKR.txt_ad 
+~~~
+### 3.20.2 Multipart Upload 시작하기
+
+**입력**  
+~~~
+curl -X "POST" "https://(endpoint)/(bucket-name)/(object-key)?uploads"
+ -H "Authorization: bearer (token)"
+~~~
+
+**출력**
+~~~xml
+<InitiateMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Bucket>some-bucket</Bucket>
+  <Key>multipart-object-123</Key>
+  <UploadId>01000750-45a2-8152-9314-27b6cabc412a</UploadId>
+</InitiateMultipartUploadResult>
+~~~
+
+### 3.20.3 part upload
+
+**입력**  
+~~~
+curl -X "PUT" "https://(endpoint)/(bucket-name)/(object-key)?partNumber=(sequential-integer)&uploadId=(upload-id)"
+ -H "Authorization: bearer (token)"
+ -H "Content-Type: (content-type)"
+~~~
+
+순차적으로 `sequential-integer` 값 할당. (n>1, n<10000)  
+`upload-id` 에는 위에서 받은 id값 할당  
+
+>예시)   
+>~~~bash
+>curl -X "PUT" "https://cloud-object-storage-url/bucketName/sample1G.txt?partNumber=1&uploadId=01000750-45a2-8152-9314-27b6cabc412a" \
+> -H "Authorization: bearer $TOKEN" \
+>--data-binary @"./random_zipcodeKR.txt_aa"
+>~~~   
+>파일이 1개 이상이면 `partNumber`를 1씩 증가시키면서 upload해야함  
+
+**출력**  
+`-vvv`을 붙여야 필요한 값을 얻을 수 있음  
+~~~
+...
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 100 Continue
+* We are completely uploaded and fine
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Thu, 01 Jan 1970 00:00:00 GMT
+< X-Clv-Request-Id: 71b2ccf7-3e90-4439-a324-27e0a5db6108
+< Server: Cleversafe
+< X-Clv-S3-Version: 2.5
+< x-amz-request-id: 71b2ccf7-3e90-4439-a324-27e0a5db6108
+< ETag: "f6dc63cad9838b4ee8811393472bc9ab"
+< Content-Length: 0
+~~~
+
+뒤에서 분할 업로드 된 파일들을 식별하는 식별자로 `ETag`값을 사용하니, 반드시 메모해둘것  
+
+### 3.20.4 Complete a multipart upload
+
+**입력**  
+~~~
+curl -X "POST" "https://(endpoint)/(bucket-name)/(object-key)?uploadId=(upload-id)"
+ -H "Authorization: bearer (token)"
+ -H "Content-Type: text/plain; charset=utf-8"
+ -d "<CompleteMultipartUpload>
+         <Part>
+           <PartNumber>1</PartNumber>
+           <ETag>(etag)</ETag>
+         </Part>
+         <Part>
+           <PartNumber>2</PartNumber>
+           <ETag>(etag)</ETag>
+         </Part>
+       </CompleteMultipartUpload>"
+~~~
+위에서 얻은 ETag값을 순차적으로 넣을 것
+
+>예시)  
+>`Content-MD5` : gSv/+7KDNhb+Gv2vSVq7WQ==  
+>~~~bash
+>curl -X "POST" "https://cloud-object-storage-url/bucketName/sample1G.txt?uploadId=01000750-45a2-8152-9314-27b6cabc412a" \
+> -H "Authorization: $TOKEN" \
+> -H "Content-Type: text/plain; charset=utf-8" \
+> -d "<CompleteMultipartUpload>
+>         <Part>
+>           <PartNumber>1</PartNumber>
+>           <ETag>f6dc63cad9838b4ee8811393472bc9ab</ETag>
+>         </Part>
+>         <Part>
+>           <PartNumber>2</PartNumber>
+>           <ETag>67cbdbde0503410f21f7cead601d6c0e</ETag>
+>         </Part>
+>...
+>       </CompleteMultipartUpload>"
+>~~~  
+
+**출력**  
+~~~xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CompleteMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Location>http://cloud-object-storage-url/bucketName/sample1G.txt</Location>
+  <Bucket>bucketName</Bucket>
+  <Key>sample1G.txt</Key>
+  <ETag>"ca54e12384f94c2f2bb6a7cff8848936-4"</ETag>
+</CompleteMultipartUploadResult>
+~~~
+
+<img width="1247" alt="image" src="https://user-images.githubusercontent.com/15958325/164446656-69f91ae5-3a5c-432b-a5ee-b08c7205f36d.png">  
+
+
+
+### 3.20.5 아직 안끝난 multipart upload 보기
+
+**입력**   
+~~~
+curl "https://(endpoint)/(bucket-name)/?uploads"
+ -H "Authorization: bearer (token)"
+~~~
+
+**출력**   
+
+~~~
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ListMultipartUploadsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Bucket>bucketName</Bucket>
+  <KeyMarker/>
+  <UploadIdMarker/>
+  <NextKeyMarker>sample1G.txt</NextKeyMarker>
+  <NextUploadIdMarker>01000750-45a2-8152-9314-27b6cabc412a</NextUploadIdMarker>
+  <MaxUploads>1000</MaxUploads>
+  <IsTruncated>false</IsTruncated>
+  <Upload>
+    <Key>sample1G.txt</Key>
+    <UploadId>01000750-45a2-8152-9314-27b6cabc412a</UploadId>
+    <Initiator>
+      <ID>576d6bf3-acc4-4a07-bbeb-2352e614469b</ID>
+      <DisplayName>576d6bf3-acc4-4a07-bbeb-2352e614469b</DisplayName>
+    </Initiator>
+    <Owner>
+      <ID>576d6bf3-acc4-4a07-bbeb-2352e614469b</ID>
+      <DisplayName>576d6bf3-acc4-4a07-bbeb-2352e614469b</DisplayName>
+    </Owner>
+    <StorageClass>STANDARD</StorageClass>
+    <Initiated>2022-04-21T05:40:05.794Z</Initiated>
+  </Upload>
+</ListMultipartUploadsResult>
+~~~
+
+### 3.20.6 아직 안끝난 multipart upload 삭제하기
+
+**입력**   
+~~~
+curl -X "DELETE" "https://(endpoint)/(bucket-name)/(object-key)?uploadId=(uploadId)"
+ -H "Authorization: bearer (token)"
+~~~
+
+**출력**  
+없음
+
+
 끗
 
 ----
