@@ -35,10 +35,10 @@ sitemap:
 
 목표는 nvme0n1p4파티션을 120GB짜리 4번파티션과 800GB짜리 5번 파티션으로 나누는 것!  
 
-4번 삭제: 
+4번 삭제:    
 ![image](https://user-images.githubusercontent.com/15958325/181913755-c14177f5-ee9d-4e9e-95c1-583fa4a16dbc.png)    
 
-새로 120GB짜리 4번 파티션 생성
+새로 120GB짜리 4번 파티션 생성  
 ![image](https://user-images.githubusercontent.com/15958325/181913794-0ce4eaa4-29f4-4319-9b77-29180d25a1b7.png)  
 ![image](https://user-images.githubusercontent.com/15958325/181913808-c2ee4666-edcf-4890-8b64-a2a0e170cc34.png)   
 
