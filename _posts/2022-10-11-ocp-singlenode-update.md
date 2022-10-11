@@ -30,7 +30,7 @@ default-scheduler  0/1 nodes are available: 1 node(s) didn't match pod anti-affi
 
 ## 원인
 예시로 `openshift-console` project의 console pod는 replica가 2개임  
-하지만 노드가 하나뿐이라 하나만 동작하고 나머지 하나는 Pending상태이고,  
+하지만 노드가 하나뿐이라 하나만 동작하고 나머지 하나는 Pending상태이다.  
 Update시 Cluster Operator가 이를 비정상적인 상태로 파악해 다음 update step으로 넘어가지 않을 수 있음  
 ~~~
 $ oc get pod
