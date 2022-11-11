@@ -337,6 +337,45 @@ schedule 백업은 `schedule-{time}`의 이름으로 생성됩니다.
 스토리지에 저장되는 이름도 schedule이 붙습니다.  
 ![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/5.png)  
 
+### 2. ODF를 사용하고 있을 때의 PV 백업
+ODF는 `ceph`를 기반으로 동작하기 때문에, csi snapshot기능을 이용한 백업이 가능합니다.  
+
+ODF를 배포하게 되면 자동으로 `storageClass`와 `VolumeSnapshotClass`가 정의됩니다.  
+
+우리가 해줘야 할 것은, `VolumeSnapshotClass`에 label을 한 줄 추가해주는 것입니다.  
+
+~~~
+$ oc get volumesnapshotclass
+NAME                                        DRIVER                                  DELETIONPOLICY   AGE
+ocs-storagecluster-cephfsplugin-snapclass   openshift-storage.cephfs.csi.ceph.com   Delete           140d
+ocs-storagecluster-rbdplugin-snapclass      openshift-storage.rbd.csi.ceph.com      Delete           140d
+~~~
+
+snapshot을 뜰 class모두에 아래와 같은 label을 추가해주시면 됩니다.  
+~~~
+velero.io/csi-volumesnapshot-class: "true"
+~~~
+
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/13.png)   
+
+그리고 Backup CR은 위와 동일하게, `restic`부분만 제외해서 올려주시면 됩니다.  
+~~~yaml
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: backup
+  namespace: openshift-adp
+  labels:
+    velero.io/storage-location: velero-sample-1
+spec:
+  defaultVolumesToRestic: false
+  storageLocation: velero-sample-1
+  ttl: 720h0m0s
+  volumeSnapshotLocations:
+    - velero-sample-1
+~~~
+
+
 ## 마지막 재밌는 기능
 OADP는 velero를 기반으로 만들어진 오퍼레이터라, velero가 지원하는 기능은 공식문서에 적혀있지 않더라도 사용할 수 있습니다.  
 
