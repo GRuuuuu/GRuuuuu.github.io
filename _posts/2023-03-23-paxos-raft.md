@@ -236,5 +236,6 @@ Consensus Algorithm: 5.4.3 Safty argument](https://www.usenix.org/system/files/c
 paxos는 그냥 핥아보기만하고 raft는 깊게 파고들어서 그런걸까요?ㅋㅋㅋ  
 아니면 이정도는 누워서 떡먹기라고 생각하는 스탠포드 학생들이 대단한 것일까요....   
 역시 컴퓨터 굇수들은 무서워요   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/16.png)   
 
 ----
