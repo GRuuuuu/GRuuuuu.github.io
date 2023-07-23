@@ -24,7 +24,7 @@ OpenShift에서 가장 쉽게 스토리지를 구성할 수 있는 방법인 `Op
   
 ![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC1.png)  
 
-크게보면 `RADOS`라는 스토리지 노드 위에 `LIBRAODS`라는 `RADOS`의 라이브러리가 있고, Object Storage서비스를 제공하는 RADOSGW(`rgw`), Block Device(`rbd`), File system(`cephfs`)으로 구성되어 있습니다.  
+크게보면 `RADOS`라는 스토리지 노드 위에 `LIBRADOS`라는 `RADOS`의 라이브러리가 있고, Object Storage서비스를 제공하는 RADOSGW(`rgw`), Block Device(`rbd`), File system(`cephfs`)으로 구성되어 있습니다.  
 
 >여담으로 RADOS는 paxos알고리즘을 기반으로 만들어졌다고 한다!  
 >[RADOS: A Scalable, Reliable Storage Service for Petabyte-scale Storage Clusters -4.1 Paxos Service](https://ceph.io/assets/pdfs/weil-rados-pdsw07.pdf)  
