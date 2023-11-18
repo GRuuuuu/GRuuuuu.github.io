@@ -25,6 +25,9 @@ OperatorHub는 쉽게 말해 사용자들이 편하게 app을 배포&관리할 �
 
 이번 포스팅에서는 **OperatorHub를 위한 Custom Catalog제작과 폐쇄망에서의 이미지 미러링**에 대해서 알아보도록 하겠습니다.  
 
+>**수정)**  
+>231118) `oc-mirror`로 mirror하는 방법 추가
+
 ## 1. Managing Custom Catalog
 >참고 : [Managing custom catalogs](https://docs.openshift.com/container-platform/4.13/operators/admin/olm-managing-custom-catalogs.html)  
 
@@ -259,9 +262,19 @@ catalogsource.operators.coreos.com/my-operator-catalog created
 
 registry to registry로 mirror하는 방법은 옛날 글을 참조 -> [호롤리/Configuring OperatorHub for restricted networksPermalink](https://gruuuuu.github.io/ocp/operatorhub/#2-configuring-operatorhub-for-restricted-networks)  
 
-이 포스팅에서는 registry에서 로컬에 file로 mirror하는 방법을 알아보도록 하겠습니다!  
+이 포스팅에서는 registry에서 로컬에 file로 mirror하는 두가지 방법을 알아보도록 하겠습니다!  
 
-### 2.1 mirroring registry to file
+### 2.1 oc adm catalog mirror로 미러하기
+
+요 방법은 위에서 작업했던 custom index image가 반드시 필요합니다.  
+혹은 전체 index이미지를 다운받기 위해 redhat 공식 index이미지들을 사용하여도 괜찮습니다.  
+>Openshift에서 기본으로 제공하는 catalog index image list:
+>- `registry.redhat.io/redhat/redhat-operator-index:v4.12`
+>- `registry.redhat.io/redhat/community-operator-index:v4.12`
+>- `registry.redhat.io/redhat/certified-operator-index:v4.12`
+>- `registry.redhat.io/redhat/redhat-marketplace-index:v4.12`
+
+#### 2.1.1 mirroring registry to file
 
 podman auth.json을 환경변수로 세팅
 ~~~
@@ -294,7 +307,7 @@ drwxr-xr-x. 3 gru  gru  4096 Oct 22 21:10 v2
 
 v2를 usb에 복사하고 요걸 폐쇄망 시스템에 복사해둡니다.  
 
-### 2.2 mirroring file to local registry
+#### 2.1.2 mirroring file to local registry
 그리고 이걸 폐쇄망의 로컬 레지스트리에 밀어넣어야 합니다.  
 아래 커맨드는 v2폴더의 부모 폴더에서 실행하시면 됩니다.    
 ~~~
@@ -306,7 +319,7 @@ $ oc adm catalog mirror file://local/index/<repository>/<index_image>:<tag> <mir
 $ curl -u <id>:<password> <registry>/v2/_catalog     {"repositories":["restricted/local-index-test-catalog-test-operator","restricted/minio-minio","restricted/minio-minio-operator1","restricted/minio-operator","test-catalog/test-operator"]}
 ~~~
 
-### 2.3 `catalogSource`와 `imageContentSourcePolicy` 배포
+#### 2.1.3 `catalogSource`와 `imageContentSourcePolicy` 배포
 
 이제 필요한 이미지들이 전부 local registry로 push되었으니 `catalogSource`와 `imageContentSourcePolicy`(Quay나 dockerHub같은 외부 레지스트리가 아닌 local registry에서 pull하기 위한 policy정의파일) 을 만들어서 배포해야 합니다.  
 
@@ -342,7 +355,79 @@ local-index-test-catalog-test-operator-z8t5c   1/1     Running   0          81s
 
 ![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-10-24-ocp-olm-mirror.md/3.png)
 
+### 2.2 oc mirror로 미러하기
+위의 방법은 일부 이미지만 따로 빼서 파일로 떨구기 여러모로 귀찮은 점이 있습니다.  
+index 이미지의 전체가 아닌 일부 이미지만 미러하려면 따로 커스텀 카탈로그 이미지를 만들어야 하기 때문입니다(1번참고).
 
-완료!
+#### 2.2.1 `oc-mirror` 설치
+더 편하게 mirror를 할 수 있게, `oc-mirror`라는 플러그인을 따로 제공합니다.  
+-> [download](https://console.redhat.com/openshift/downloads)  
+
+**Openshift disconnected installation tools**섹션에 oc mirror plugin을 다운받고, 압축을 해제한 뒤에 `oc-mirror`를 `$PATH`중 어딘가에 옮겨두면 됩니다.  
+
+`oc mirror help`로 제대로 설치가 되었는지 확인하면 끝  
+
+#### 2.2.2 ImageSetConfiguration 작성하기
+그런 다음 index이미지에서 어떤 이미지들을 가져올건지 정의하는 `ImageSetConfiguration`을 작성해줍니다.  
+
+>(참고) Openshift에서 기본으로 제공하는 catalog index image list:
+>- `registry.redhat.io/redhat/redhat-operator-index:v4.12`
+>- `registry.redhat.io/redhat/community-operator-index:v4.12`
+>- `registry.redhat.io/redhat/certified-operator-index:v4.12`
+>- `registry.redhat.io/redhat/redhat-marketplace-index:v4.12`
+
+index이미지에 어떤 이미지들이 있는지 확인하려면 :  
+~~~
+$ oc mirror list operators --catalog=registry.redhat.io/redhat/community-operator-index:v4.12
+~~~
+
+어떤 index이미지를 사용할건지, 어떤 operator이미지들을 가져올건지 정했다면 아래와 같이 `ImageSetConfiguration`을 작성해줍니다.  
+~~~yaml
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v1alpha2
+archiveSize: 4                                                      
+storageConfig:                                                      
+  #local registry에 바로 mirror하려면
+  #registry:
+  #  imageURL: example.com/mirror/oc-mirror-metadata                 
+  #  skipTLS: false
+  #file로떨구려면
+  local:
+    path: /local/path
+mirror:
+  platform:
+    channels:
+    - name: stable-4.12                                             
+      type: ocp
+    graph: true                                                     
+  operators:
+  - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.14  
+    packages:
+    - name: serverless-operator                                     
+      channels:
+      - name: stable                                                
+  additionalImages:
+  - name: registry.redhat.io/ubi9/ubi:latest                        
+  helm: {}
+~~~
+
+local registry로 mirror하는 경우:  
+~~~
+$ oc mirror --config=./imageset-config.yaml docker://registry.example:5000    
+~~~
+
+파일로 mirror하는 경우:  
+~~~
+$oc mirror --config=./imageset-config.yaml file://<path_to_output_directory> 
+~~~
+
+이렇게 local registry에 원하는 operator 이미지만 mirror하거나, 파일로 떨굴 수 있습니다.  
+
+mirror하고 나면 output파일들에 대한 폴더가 생성되고 그 안에는 tar파일이 생깁니다.  
+이걸 usb같은 저장장치에 담아서 폐쇄망에 꽂고 local registry에 load하면 됩니다.  
+
+같은 폴더에 있는 `oc-mirror-workspace`에는 `ImageContentSourcePolicy` 와 `CatalogSource` Yaml파일이 있고, 이녀석들을 클러스터에 배포해주면 완료입니다!  
+
+끝!
 
 ----

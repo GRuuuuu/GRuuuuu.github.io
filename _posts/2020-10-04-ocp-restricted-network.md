@@ -27,7 +27,8 @@ sitemap :
 참고 : openshift document - [Installing a cluster on bare metal in a restricted network](https://docs.openshift.com/container-platform/4.3/installing/installing_bare_metal/installing-restricted-networks-bare-metal.html)  
 
 >**수정)**  
->211123. `additionalTrustBundle` install-config.yaml에 추가방법 추가
+>211123. `additionalTrustBundle` install-config.yaml에 추가방법 추가  
+>231114. self-signed certificate 생성 방법 추가
 
 
 ## Prerequisites
@@ -395,37 +396,49 @@ Offline으로 설치를 진행하기 때문에 미리 로컬에 이미지 레지
 #### 1. SSL생성
 registry와 ssl인증을 기반으로 통신을 하기 때문에 registry에 등록할 ssl certificate를 생성해주어야 합니다.  
 
-openshift 공식 document에서는 openssl로 사설ssl를 만들어 테스트를 하도록 가이드를 하고 있지만, 이렇게되면 container pull 등에 TLS 인증 해제 설정이 필요하고, 제가 직접 해보니 잘 안됩니다...  
+되도록이면 공인ssl를 발급받아서 사용하는 것을 추천드립니다.  
 
-그래서 되도록이면 공인ssl를 발급받아서 사용하는 것을 추천드립니다.  
-=> [ZeroSSL에서 무료 인증서 발급받기](https://gruuuuu.github.io/network/openssl/)   
+**(1) 공인인증서 발급받기**  
+- [호다닥 공부해보는 x509와 친구들(2) - Let’s Encrypt](https://gruuuuu.github.io/security/letsencrypt/)   
 
-인증서를 발급받으면 zip파일에 3가지 파일이 있을겁니다.  
-![image](https://user-images.githubusercontent.com/15958325/95036640-81dd6a80-0703-11eb-9896-33b75e422d25.png)  
+위 링크를 따라 인증서를 생성하고  
+`privkey.pem`을 비밀키로, `fullchain.pem`을 인증서로 사용하시면 됩니다.  
 
-`certificate.crt`와 `ca_bundle.crt`를 합쳐줍니다.  
-~~~sh
-$ cat certificate.crt bundle.crt > domain.crt
+>아래 예제에서는 비밀키를 `domain.key`라는 이름으로, 인증서를 `domain.crt`라는 이름으로 진행하고 있으니 이름을 변경해서 사용하시면 됩니다.  
+
+**(2) OpenSSL로 Self-Signed Certificate 생성하기**  
+공인인증서를 받기 어려운 환경이라면 OpenSSL로 사설 인증서를 발급받을 수도 있습니다.  
+다만 self-signed는 신뢰할 수 있는 인증기관에서 발급받은 인증서가 아니므로, 추가적으로 해줘야하는 부분들이 있습니다.  
+
+하나의 certificate에 여러개의 hostname을 등록할 수 있는 subjectAltName(SAN) 방식을 통해 인증서를 생성합니다.  
+
 ~~~
-그 다음 `domain.crt`를 열어서 파일 중간을 끊어주도록 합니다.  
-~~~
-...
------end----------begin-----
-...
-를
-
-...
------end-----
------begin-----
-...
-로 줄바꿈
+$ openssl req -nodes -x509 -sha256 -newkey rsa:4096 \
+ -keyout domain.key \
+ -out domain.crt \
+ -days 356 \
+ -subj "/C=KR/ST=seoul/L=seoul/O=cj/OU=cloud/CN=xxx.com" \
+ -addext "subjectAltName = DNS:localhost,DNS:xxx.com,DNS:bastion.xxx.com,DNS:api.ocp.xxx.com,DNS:api-int.ocp.xxx.com,DNS:*apps.ocp.xxx.com"
 ~~~
 
+이렇게 나온 crt파일을 `/etc/pki/ca-trust/source/anchors/` 밑에 두고, 아래 명령어로 신뢰할 수 있는 인증서 리스트를 업데이트 해줍니다.  
 
-**(optional)** 네이밍 일관성을 위해 `private.key`도 `domain.key`로 이름을 변경해주겠습니다.  
-~~~sh
-$ mv private.key domain.key
 ~~~
+$ update-ca-trust extract 
+~~~
+
+그 다음, 아래 명령어로 제대로 list에 등록되었는지 확인:  
+~~~
+$ trust list
+~~~
+
+crt파일도 검증:  
+~~~
+$ openssl verify xxx.crt 
+~~~
+
+>위에서 언급했듯이 사설인증서이므로, 이 인증서를 신뢰할 수 있는 연결(https)에 사용하려면 host와 client모두 해당 인증서를 trust list에 추가해주어야 합니다.  
+
 
 #### 2. registry 설정
 폴더 생성:  
