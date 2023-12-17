@@ -44,8 +44,9 @@ sitemap:
 그러면 2차원 공간에서의 벡터를 생각해보겠습니다.  
 ![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-12-17-what-is-vector.md/3.png)  
 우리에게 익숙한 평면좌표계가 있고 x축(가로) y축(세로)을 기준으로 벡터를 표현할 수 있습니다.  
-그걸 점처럼 순서쌍으로 나타낼 수 있습니다.  $$(3,2)$$  
+그걸 점처럼 순서쌍으로 나타낼 수 있습니다. -> $$(3,2)$$  
 혹은 2차원 행렬로도 나타낼 수 있습니다.  
+
 $$ \left[\begin{array}{cc} 3\\ 2 \end{array}\right] $$   
 
 3차원은 어떨까요?  
@@ -53,11 +54,13 @@ $$ \left[\begin{array}{cc} 3\\ 2 \end{array}\right] $$
 위와 같이 z축(높이)이 추가되었고 벡터는 가로,세로,높이를 모두 가진 순서쌍 혹은 3차원 행렬로 표현될 수 있을겁니다.  
 
 $$(x,y,z)$$  
+
 $$ \left[\begin{array}{cc} x\\ y \\z \end{array}\right] $$   
 
 4차원부터는 사실 3차원에 사는 우리들의 인지범위를 넘어서는 영역이기 때문에 그림으로 표현하기 어렵게 되지만,  
 벡터를 수식으로 표현할 수 있게된 우리들은 어렵지않게 그 형태를 예상할 수 있을 것입니다.  
 $$(x,y,z,...)$$  
+
 $$ \left[\begin{array}{cc} x\\ y \\z\\... \end{array}\right] $$  
 
 >**이것저것)**  
