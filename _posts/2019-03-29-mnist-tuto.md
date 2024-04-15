@@ -69,17 +69,17 @@ credential 정보를 생성하면 json형식의 데이터를 확인할 수 있�
 window의 경우  
 ~~~bash
 set ML_ENV= https://us-south.ml.cloud.ibm.com
-set ML_USERNAME=838080c7-6c01-47d5-94f4-3a05cb1d45f8 
-set ML_PASSWORD=c1cc6587-612e-40f5-a180-86af4e219fdb 
-set ML_INSTANCE=e5b6ff8e-fb66-4809-8974-2a9e2164d8a6
+set ML_USERNAME=xxx-xxx-xxx-xxx-xxx 
+set ML_PASSWORD=xxx-xxx-xxx-xxx-xxx 
+set ML_INSTANCE=xxx-xxx-xxx-xxx-xxx 
 ~~~
 
 linux와 macOS의 경우
 ~~~bash
 export ML_ENV= https://us-south.ml.cloud.ibm.com
-export ML_USERNAME=838080c7-6c01-47d5-94f4-3a05cb1d45f8 
-export ML_PASSWORD=c1cc6587-612e-40f5-a180-86af4e219fdb 
-export ML_INSTANCE=e5b6ff8e-fb66-4809-8974-2a9e2164d8a6
+export ML_USERNAME=xxx-xxx-xxx-xxx-xxx  
+export ML_PASSWORD=xxx-xxx-xxx-xxx-xxx  
+export ML_INSTANCE=xxx-xxx-xxx-xxx-xxx 
 ~~~
 
 ### Test
@@ -117,8 +117,8 @@ cos서비스로 이동하여 Manage in IBM Cloud를 클릭합니다.
 ![image](https://user-images.githubusercontent.com/15958325/55233856-1a707000-526d-11e9-886c-02fac9ba2ac5.png)   
 >생성하고나서 access_key_id와 secret_access_key의 정보는 다른곳에 기입해 둡시다!  
 >ex)  
-> "access_key_id": "2157c9a2ac1a4c0e8d9f07beba1524c6",  
-> "secret_access_key": "89df186e4a4ed60f14d2b32cdd1ec55bf9f5c753ee96fe81"
+> "access_key_id": "xxxxx",  
+> "secret_access_key": "xxxxxx"
 
 ### Make Bucket
 COS세팅이 되었다면 이제 Bucket을 두개 만들어 줄겁니다. 하나는 트레이닝 시킬 데이터들의 셋, 하나는 트레이닝하고 난 결과 데이터셋을 저장할 버킷입니다.  
