@@ -55,7 +55,6 @@ $ bx plugin install machine-learning
 ![image](https://user-images.githubusercontent.com/15958325/55232892-2eff3900-526a-11e9-9e04-14b5c4192e91.png)  
 
 credential 정보를 생성하면 json형식의 데이터를 확인할 수 있습니다.  
-![image](https://user-images.githubusercontent.com/15958325/55232946-5d7d1400-526a-11e9-8e61-58421c0b6fe8.png)   
 
 그다음 터미널을 열어서 환경변수를 세팅해 줍니다.   
 
