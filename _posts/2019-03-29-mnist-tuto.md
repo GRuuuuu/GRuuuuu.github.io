@@ -105,7 +105,6 @@ cos를 추가합니다.
 ![image](https://user-images.githubusercontent.com/15958325/55233809-02005580-526d-11e9-88b8-51e3abdb3c4f.png)  
 
 cos서비스로 이동하여 Manage in IBM Cloud를 클릭합니다.  
-![image](https://user-images.githubusercontent.com/15958325/55233844-15abbc00-526d-11e9-9b8b-434a45d82e71.png)  
 
 서비스 인증정보 탭에서 credential을 추가합니다. 이는 watson ML에서 cos에 접근하기 위해 필요한 정보들입니다.  
 각 항목에 들어가는 값은 다음 사진과 같습니다. 
