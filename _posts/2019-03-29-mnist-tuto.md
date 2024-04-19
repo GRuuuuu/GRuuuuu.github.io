@@ -49,7 +49,6 @@ $ bx plugin install machine-learning
 이제 플러그인에서 사용할 환경변수를 세팅해주어야합니다.  
 
 [Watson Studio](https://dataplatform.cloud.ibm.com/)로 이동하여 Services > Watson Service에서 ML서비스를 생성합니다.  
-![image](https://user-images.githubusercontent.com/15958325/55232505-1e01f800-5269-11e9-9b03-4cb49e43979b.png)    
 
 생성한 ML서비스를 선택하고, 서비스 인증정보 탭을 들어가서 credential정보를 추가합니다. 각 항목에 들어가는 정보는 다음 사진과 같습니다.  
 ![image](https://user-images.githubusercontent.com/15958325/55232892-2eff3900-526a-11e9-9e04-14b5c4192e91.png)  
