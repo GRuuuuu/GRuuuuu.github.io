@@ -49,7 +49,7 @@ OADP plug-in|Function|Storage location|
 
 ### 1. OADP operator 설치
 Operator Hub에서 OADP operator를 설치합니다.
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/2.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/2.png)   
 
 
 ### 2. S3 storage secret 생성
@@ -232,7 +232,7 @@ $ oc exec -it web-0 -- cat /usr/share/nginx/html/index.html
 hellohello!
 ~~~
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/8.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/8.png)  
 
 ### 5. Backup
 
@@ -259,10 +259,10 @@ spec:
 ~~~
 
 생성하면 다음과 같이 status를 확인할 수 있습니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/9.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/9.png)  
 
 백업했던 파일들의 storage location으로 가보면 파일들이 저장되고 있는 모습을 확인할 수 있습니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/3.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/3.png)  
 
 Backup status가 성공으로 바뀌고나면 복구 테스트를 위해 namespace와 pv를 삭제해줍니다.  
 
@@ -291,11 +291,11 @@ spec:
   restorePVs: true         # 이 옵션이 true이면 PV까지 같이 복구
 ~~~
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/10.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/10.png)  
 
 이렇게 복구 status가 성공으로 뜨고나면, 삭제되었던 namespace인 `backup-test`와 내부 리소스들, 그리고 PV까지 정상적으로 복구된 모습을 확인할 수 있습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/11.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/11.png)  
 
 PV복구 확인:  
 ~~~
@@ -329,13 +329,13 @@ spec:
 ~~~
 
 >Openshift cluster의 내부 time이 server time과 다를 수도 있으므로 `openshift-adp-controller-manager` pod의 터미널을 통해 시간을 알아내는 것도 방법입니다.  
->![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/12.png)  
+>![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/12.png)  
 
 schedule 백업은 `schedule-{time}`의 이름으로 생성됩니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/4.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/4.png)  
 
 스토리지에 저장되는 이름도 schedule이 붙습니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/5.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/5.png)  
 
 ### 2. ODF를 사용하고 있을 때의 PV 백업
 ODF는 `ceph`를 기반으로 동작하기 때문에, csi snapshot기능을 이용한 백업이 가능합니다.  
@@ -356,7 +356,7 @@ snapshot을 뜰 class모두에 아래와 같은 label을 추가해주시면 됩�
 velero.io/csi-volumesnapshot-class: "true"
 ~~~
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/13.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/13.png)   
 
 그리고 Backup CR은 위와 동일하게, `restic`부분만 제외해서 올려주시면 됩니다.  
 ~~~yaml
@@ -381,9 +381,9 @@ OADP는 velero를 기반으로 만들어진 오퍼레이터라, velero가 지원
 
 그 중 재밌는 기능이 Cloud migration입니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-10-21-oadp-backup-restore/6.png)  
->참고1 :  [How Velero Works](https://velero.io/docs/main/how-velero-works/#object-storage-sync)  
->참고2 : [Cluster migration](https://velero.io/docs/main/migration-case/)
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-21-oadp-backup-restore/6.png)  
+>참고1 :  [How Velero Works](https://velero.io/docs/main/2022/how-velero-works/#object-storage-sync)  
+>참고2 : [Cluster migration](https://velero.io/docs/main/2022/migration-case/)
 
 velero는 백업한 리소스들을 S3호환 스토리지에 저장해두는데, single source of truth(SSOT)에 의거하여 S3 스토리지의 파일들을 지속적으로 체크합니다.  
 

@@ -15,7 +15,7 @@ sitemap :
 ---
 
 ## IAM (Identity and Access Management)
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-11-28-security-terms/1.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-11-28-security-terms/1.png)  
 - 디지털 ID를 소유한 유저 혹은 application에게 **리소스에 접근할 수 있는 적절한 권한**을 제공하는 방식
 - 암호/MFA/지문 등의 인증 절차를 거치면 리소스권한을 부여
 - IAM솔루션마다 조금씩 기능은 다르지만 대부분 아래 기능을 제공
@@ -27,7 +27,7 @@ sitemap :
 
 ## PAM (Privileged Access Management)
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-11-28-security-terms/2.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-11-28-security-terms/2.png)  
 - IAM은 단순히 계정의 권한을 제어하는 역할
 - IAM만으론 권한있는 사용자의 접근을 통제하지 못한다. 
 - 예를들어 권한있는 사용자의 계정이 탈취당하거나 그사람이 나쁜마음을 품었을 경우 속수무책으로 당하는것
@@ -42,7 +42,7 @@ sitemap :
 - **특권 계정의 액세스 오남용을 차단하고 자산을 안전하게 관리하는것이 목표**
 
 ## Federated Identity Management (Federated SSO)
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022-11-28-security-terms/33.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-11-28-security-terms/33.png)  
 
 - 신뢰관계에 있는 다른 조직이나 3rd party 업체에 인증을 맡기는 것
 - `SSO`가 **하나의 도메인** 하에서의 서비스간 인증을 간편하게 하는 절차라면 (ex. 구글로그인 -> 구글캘린더 접속)
