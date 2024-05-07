@@ -74,7 +74,7 @@ Vector의 의미를 알았으니, 이제는 이 Vector를 어떻게 활용할 �
 그럼 이런 단어들을 어떻게 벡터화시키냐!  
 바로 embedding vector를 만드는데 최적화된 모델인 **embedding model**을 사용하여 벡터화하게됩니다.  
 
-(그림)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/1.png) 
 
 사람이 embedding vector를 확인하고 의미를 파악하기는 어려우나, 서로 다른 단어나 문서로부터 추출된 **embedding vector들간의 거리를 계산하면 이들간의 의미적 관계를 파악**할 수 있습니다.  
 
@@ -83,7 +83,7 @@ Vector의 의미를 알았으니, 이제는 이 Vector를 어떻게 활용할 �
 
 >위에서는 텍스트만 예시로 들었지만, 이미지도 벡터화 시켜서 임베딩시킬 수 있습니다!   
 >아래 이미지는 `mnist`(숫자손글씨 이미지세트)  
->(그림)  
+>![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/2.png)   
 > - 색상 및 질감과 같은 이미지의 시각적 특징을 캡쳐
 > - 모델이 이미지 분류나 객체 감지같은 컴퓨터 비전 작업을 수행할 수 있게 함  
 
@@ -99,32 +99,118 @@ Vector의 의미를 알았으니, 이제는 이 Vector를 어떻게 활용할 �
 수천개의 다차원 벡터사이 거리 메트릭을 비교하는 것은 시간이 많이 소요될 수 있기때문에 VectorDB는 정확도와 속도사이 균형을 유지하는 것이 중요합니다.  
 
 아래 표는 VectorDB가 vector를 저장할 때의 과정을 도식화 한 장표입니다.  
-(그림)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/3.png)  
 
 ### 1. Indexing
 더 빠른 탐색을 가능하게 하는 자료구조로 벡터를 매핑하는 과정입니다.  
-여러 ANNS(Approximate Nearest Neighbors Search)알고리즘을 활용합니다.  
-기본 개념은 정확한 결과보다 타겟과 유사한 값들을 서치하는 것이라고 보시면 됩니다.  
+여러 `ANNS(Approximate Nearest Neighbors Search)알고리즘`을 활용합니다.  
+기본 개념은 **정확한 결과보다 타겟과 유사한 값들을 검색하는 것**이라고 보시면 됩니다.  
 
 몇가지 알고리즘을 간단히 소개하고 넘어가겠습니다.  
-#### a. Random Projection
+
+>**References :**  
+>- [Pinecone/What is a Vector Database?](https://www.pinecone.io/learn/vector-database/)  
+>- [Pinecone/Nearest Neighbor Indexes for Similarity Search](https://www.pinecone.io/learn/series/faiss/vector-indexes/)  
+>- [Understanding similarity or semantic search and vector databases](https://medium.com/@sudhiryelikar/understanding-similarity-or-semantic-search-and-vector-databases-5f9a5ba98acb)
+
+#### a. Flat Index (No Optimization)
+별도의 Indexing 기법 없이 벡터를 저장하는 방법입니다.  
+
+저장된 모든 벡터들과 유사도를 계산해 가장 높은 유사도를 지닌 벡터를 찾는 방법으로 검색하게 됩니다.  
+
+일반적으로 10000~50000개 정도의 벡터에서 적당한 성능과 높은 정확성을 얻을 수 있는 방법이지만, 이보다 데이터가 많아진다면 속도가 느려진다고 합니다.  
+
+#### b. Random Projection
 랜덤한 벡터를 만들어 원래 벡터와 내적 -> 차원이 줄어들지만 원래 벡터와의 유사성은 유지할 수 있고 고차원의 원래 벡터보다 탐색속도가 빨라질 수 있습니다.  
 다만 Approximation임을 명심해야 합니다.  
 
 > 대체 어떻게 원 벡터와 내적시키면 차원이 줄어드는지 모르는 사람들을 위한 한장요약:   
->(그림)  
+>![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/4.png)  
 >3차원상 노란점(1,2,3)을 2차원상의 파란 면에 정사영 시킨다고 했을 때의 예제입니다.  
 
-#### b. PQ(Product Quantization)
+#### c. PQ(Product Quantization)
 원 벡터를 균등하게 몇 개의 서브 벡터로 쪼개고, 각 서브 벡터들을 Quantization하여 크기를 줄이는 방법입니다.  
 
-(그림)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/5.png)  
+
+빠르고 정확도도 좋으며 큰 데이터셋에서 사용하기 좋은 기법이라고 합니다.  
 
 >**Quantization(양자화)란?**   
 >일반적으로 Quantization이란 lower preciision bits로 매핑하는 것을 의미합니다.  
 >예를 들어 우리가 소숫점을 표현할때에는 Float32의 경우, 총 32bit를 사용하고  
 >이를 정수형인 Int8, 총 8bit로 표현한다면 그 경향은 비슷하겠지만 표현할 수 있는 숫자의 범위가 상대적으로 제한될 것입니다.  
->(그림)  
+>![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/6.png)  
 >즉, 값을 표현하는데 사용하는 bit수를 줄임으로써 정확도는 다소 떨어지겠으나, 메모리 사용량을 절감시키고, 계산 소요 시간을 줄일수 있다는 장점이 있습니다.  
 
-#### c. LSH(Locality-Sensitive Hashing)
+#### d. LSH(Locality-Sensitive Hashing)
+
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/7.png)  
+
+벡터들을 Hashing함수에 한번 돌려서 Bucket에 매핑하는 기법입니다.  
+
+유사도 검색을 할 때에도 쿼리문에 대한 벡터를 동일한 Hashing함수를 사용하여 같은 Bucket에 있는 벡터들하고만 비교하여 찾는 방식으로 동작합니다.  
+
+전체 데이터와 비교하는 것이 아니라 Bucket에 있는 데이터들 사이에서만 찾기 때문에 빠르게 검색이 가능합니다.  
+
+Bucket이 많을수록 좋은 결과를 낼 테지만, 더 많은 메모리가 필요할 것입니다.  
+
+#### e. HNSW(Hierarchical Navigable Small World graph)
+이름 그대로, 주어진 벡터들을 가지고 n개의 레이어를 가진 그래프를 생성합니다.  
+각 벡터 엣지간 거리는 그 벡터들 사이의 유사도를 나타낸다고 보시면 됩니다.  
+
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/8.png)  
+
+1. 최상위 레이어의 임의의 노드에서 탐색을 시작하고, 가장 가까운 노드로 이동
+2. 현재 레이어에서 더 가까워질 수 없다면 하위 레이어로 이동
+3. 모든 벡터가 존재하는 최하위 레이어에 도달할 때까지 반복
+4. 쿼리 벡터와 유사도가 가장 높은 벡터 발견!  
+
+레이어를 나눔으로써 검색 시 local minimum에 빠지는 것을 방지할 수 있고, 속도와 정확도도 높아 큰 데이터셋에서 쓰기 좋은 기법입니다.   
+
+#### f. IVF (Inverted file index)
+
+일반적으로 Inverted Index란 책 맨 뒤에 있는 색인을 생각하시면 됩니다.  
+
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/11.png)  
+
+맨 처음에는 책의 개요와 목차가 있지만, 책 마지막에는 책에 나왔던 단어들의 리스트와 그 단어가 위치한 페이지를 확인할 수 있는 부분이 있죠!  
+
+컴퓨터세상에서는 DB에 데이터를 저장할 때 데이터에서 테이블이나 raw data인 문서의 위치로의 매핑을 같이 저장하는 것을 Inverted Index 혹은 Inverted File이라고 부릅니다.  
+
+VectorDB에서의 IVF알고리즘은 **Clustering** + **Inverted File** 이라고 보시면 됩니다.  
+
+벡터들을 `K-means` 와 같은 Clustering 알고리즘을 통해 N개의 Cluster로 나누어, vector의 indexd와 각 cluster의 centroid id를 cluster별 **inverted list** 형태로 저장하게 됩니다.  
+
+검색 쿼리가 주어지면, 그 쿼리가 포함되는 cluster를 찾고, 해당 cluster의 inverted list 내 벡터들에 대해 검색을 수행하게 됩니다.  
+
+근데 쿼리 벡터가 클러스터에 가장자리에 존재한다면, 아래 사진과 같이 청록색 클러스터의 벡터가 더 가까움에도 불구하고 쿼리벡터가 위치한 빨간색 클러스터의 벡터들에서만 검색을 시도할 것입니다.  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/12.png)  
+
+이를 방지하기 위해 `nprobe`라는 파라미터를 도입했고, `nprobe`의 값에 따라 검색할 클러스터의 개수를 지정해줄 수 있습니다.  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/9.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-05-02-vector-store.md/10.png)  
+
+`LSH`와 `HNSW`알고리즘과 마찬가지로 `IVF`도 검색할 공간을 줄여 검색 속도를 높이는 방법입니다.  
+검색할 공간을 줄인다는 의미는, 모든 데이터를 확인하는 것이 아니라 일부만 확인하는 것이므로 검색속도와 정확도를 위해 파라미터 조정이 반드시 필요합니다.  
+
+### 2. Querying
+앞의 Indexing 알고리즘을 어떻게 하느냐에 따라 검색 방법이 달라집니다.  
+
+Querying 단계에서는 검색 쿼리가 들어왔을 때, 설정한 Indexing 알고리즘에 따라 유사도 검색을 실행하는데   
+이 때 유사도 검색을 어떤 방식으로 할것이냐! 를 결정하는 부분입니다.  
+
+크게 세가지 방법이 있습니다.  
+
+a. **Cosine Similarity** : 두 벡터간의 각도를 측정, -1~1사잇값으로 1에 가까울수록 유사한 벡터, -1에 가까울수록 정 반대의 벡터  
+b. **Euclidean distance(L2)** : 두 벡터 사이의 직선거리, 0~무한대 사잇값으로 0에 가까울수록 유사한 벡터, 값이 커질수록 다른 벡터  
+c. **Dot Product**(내적) : 두 벡터 사이의 내적, -∞에서 ∞사잇값으로 양수는 같은 방향, 음수는 반대방향
+
+### 3. Filtering
+마지막 Filtering단계에서는 결과값, 혹은 메타데이터의 필터링을 통해 원하는 결과값을 얻어내는 단계입니다.  
+
+크게 두가지로 나뉩니다.  
+a. **Pre-filtering** : Vector Search 이전에 수행, 탐색 공간을 줄이는 장점이 있지만, metadata filter 기준에 맞지 않은 결과는 무시될 수 있고 쿼리 프로세싱을 느리게 만들 수 있음   
+b. **Post-filtering** : Vector search 이후에 수행, 모든 결과를 고려해 필터링할 수 있지만, 오버헤드로 쿼리프로세싱을 느리게 만들수있음  
+
+## VectorDB 종류
+지금까지 VectorDB의 기본적인 동작원리와 개념들에 대해서 알아봤습니다.  
