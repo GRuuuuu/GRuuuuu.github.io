@@ -21,7 +21,7 @@ Openshift : `v4.12`
 Master Nodes(cpu/ram/storage): `16/64/500G` X3   
 
 ## ERROR
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-08-28-etcdGRPCRequestSlow-issue/1.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-08-28-etcdGRPCRequestSlow-issue/1.png)  
 
 클러스터에서 지속적으로 `etcdGRPCRequestSlow` 에러 발생, API server에서의 ETCD connection timeout발생으로 인한 클러스터 불안정, OAuthServer의 Down을 야기  
 
@@ -63,13 +63,13 @@ $  curl -k https://{cluster_apiserver_url} -w "%{time_connect}\n"
 histogram_quantile(0.99, irate(etcd_disk_wal_fsync_duration_seconds_bucket[5m]))
 ~~~
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-08-28-etcdGRPCRequestSlow-issue/2.jpg)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-08-28-etcdGRPCRequestSlow-issue/2.jpg)   
 
 ~~~
 histogram_quantile(0.999, irate(etcd_disk_wal_fsync_duration_seconds_bucket[5m]))
 ~~~
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-08-28-etcdGRPCRequestSlow-issue/3.jpg)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-08-28-etcdGRPCRequestSlow-issue/3.jpg)   
 
 
 두 지표 모두 권장사항은 `0.015<x<0.02` 사이여야하는데 아득히 상회하고 있는 모습을 확인할 수 있습니다.  

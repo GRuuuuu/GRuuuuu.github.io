@@ -248,8 +248,8 @@ spec:
 catalogsource.operators.coreos.com/my-operator-catalog created
 ~~~
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-10-24-ocp-olm-mirror.md/1.png)  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-10-24-ocp-olm-mirror.md/2.png)
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-10-24-ocp-olm-mirror.md/1.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-10-24-ocp-olm-mirror.md/2.png)
 
 위와 같이 클러스터에서 custom catalog의 operator들을 사용할 수 있게 됩니다!  
 
@@ -353,7 +353,7 @@ NAME                                           READY   STATUS    RESTARTS   AGE
 local-index-test-catalog-test-operator-z8t5c   1/1     Running   0          81s
 ~~~
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-10-24-ocp-olm-mirror.md/3.png)
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-10-24-ocp-olm-mirror.md/3.png)
 
 ### 2.2 oc mirror로 미러하기
 위의 방법은 일부 이미지만 따로 빼서 파일로 떨구기 여러모로 귀찮은 점이 있습니다.  

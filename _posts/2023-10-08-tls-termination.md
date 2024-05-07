@@ -60,7 +60,7 @@ SSL의 취약점을 보완해서 나온 업데이트 버전 TLS!
 TLS는 안전한 인터넷 통신을 위한 암호화 및 인증 프로토콜이고 **TLS Handshake**는 TLS를 사용하는 통신 프로세스입니다.  
 어떻게 서버와 클라이언트가 서로를 인식하고, 검증하고, 안전하게 통신을 할 수 있는지 알아보도록 하겠습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2021-08-29-what-is-x509/14.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2021-08-29-what-is-x509/14.png)  
 
 1. `ClientHello` : Client가 Server에게 "HELLO"메세지를 전송하면서 Handshake 프로세스가 개시됩니다. 이 때 Client는 랜덤한 난수데이터와, 지원하는 암호화 방식들, TLS버전 등을 Server에 같이 보냅니다.  
 2. `ServerHello` : `ClientHello`메세지에 대한 응답으로, Server의 인증서와 TLS에 사용할 암호화 종류, Server에서 생성한 랜덤한 난수데이터를 Client에 보냅니다.  
@@ -72,13 +72,13 @@ TLS는 안전한 인터넷 통신을 위한 암호화 및 인증 프로토콜이
 
 이 대칭키를 해킹으로 뺏겨버리면 쉽게 정보가 누출될 수 있으니 TLS Handshake에서는 키 자체를 통신망에 노출시키지 않고 Server와 Client모두 동일한 키를 가질 수 있도록 하고 있습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2021-08-29-what-is-x509/15.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2021-08-29-what-is-x509/15.png)   
 
 5. `ClientKeyExchange` : Client는 주고받은 랜덤데이터를 조합하여 PMS(Pre Master Secret)이라는 일종의 난수값을 생성해 Server가 보내준 인증서의 Server공개키로 암호화해 Server로 전송합니다.  
 6. `ChangeCipherSpecFinished` : Server/Client는 PMS, Client 난수, Server 난수 세가지 값을 바탕으로 각각 같은 대칭키를 생성하고 이 키를 이용해 암호화 통신을 시작합니다.  
 
 한 장으로 정리해보면 아래와 같은 모양이 됩니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-10-08-tls-termination/1.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-10-08-tls-termination/1.png)  
 > 이미지 출처 : [Cloudflare/What is a TLS handshake?](https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/)  
 
 
@@ -91,7 +91,7 @@ TLS는 안전한 인터넷 통신을 위한 암호화 및 인증 프로토콜이
 
 이러한 전략을 **TLS Termination** 또는 **TLS/SSL Offloading**이라고 부릅니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-10-08-tls-termination/2.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-10-08-tls-termination/2.png)   
 > 이미지 출처 : [wiki/TLS termination proxy](https://en.wikipedia.org/wiki/TLS_termination_proxy)   
 
 - 실제 TLS통신은 Proxy/LB와 Client사이, Public Network에서만 이뤄짐
@@ -117,7 +117,7 @@ OpenShift의 `Route`는 `Ingress`와 비슷하게 `Service`들의 로드밸런�
 
 총 세가지 정책이 있습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-10-08-tls-termination/3.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-10-08-tls-termination/3.png)    
 
 1. **Edge**: `Route`가 데이터를 복호화하고 복호화된 트래픽을 서비스에 전달, 클러스터 내에서는 해당 트래픽이 insecure함
 2. **Re-encrypt**: `Route`가 데이터를 다시 암호화하여 서비스로 전송   

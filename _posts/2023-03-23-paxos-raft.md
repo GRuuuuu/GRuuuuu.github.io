@@ -15,7 +15,7 @@ sitemap :
 ---
 
 ## Distributed System과 Consensus Algorithm
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/1.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/1.png)  
 
 싱글 컴퓨터로는 성능의 향상에 있어 제한이 있습니다. 만약 해당 컴퓨터에 장애가 발생한다고 한다면 꼼짝없이 돌아가던 서비스도 멈추게 될거고요.  
 
@@ -47,7 +47,7 @@ Paxos 알고리즘은 1989년에 처음 공개되었으며 그리스의 팩소�
 > 참고한 영상 : [Google TechTalks: The Paxos Algorithm](https://youtu.be/d7nAGI_NZPk)  
 
 ### Overview
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/2.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/2.png)  
 1. Paxos알고리즘은 총 세개의 역할을 정의합니다.  
     - `Proposer` : 특정 값을 제안함
     - `Accepter` : `Proposer`에게 온 값들중에 하나를 선택함  
@@ -61,16 +61,16 @@ Paxos 알고리즘은 1989년에 처음 공개되었으며 그리스의 팩소�
 
 #### Proposer가 1개일 경우
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/3.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/3.png)  
 
 1. **PREPARE** : `Proposer`가 어떤 값을 제안하기 위해 제안번호(ID)를 먼저 `Accepter`들한테 보냄
 2. **PROMISE** : `Accepter`는 제안한 번호(ID)이하의 값을 받지 않겠다고 약속 (ex. 5가오면 5이하의 숫자는 무시됨)  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/4.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/4.png)  
 
 3. **ACCEPT** : 다수의 `Accepter`가 동일한 ID의 **PROMISE**메세지를 `Proposer`에게 보냈다면 `Proposer`는 해당 ID와 VALUE를 `Accepter`에게 보냄   
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/5.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/5.png)  
 
 4. **ACCEPTED** : `Accepter`는 메세지(ID,VALUE)를 받고 ID가 마지막으로 약속한 값인 경우에만 VALUE를 받아들이고 VALUE를 `Proposer`와 `Learner`에게 전파한다
 만약 마지막으로 약속한 값이 아닐경우 `Accepter`는 메세지를 무시할 수 있고, 거절응답을 P에게 보낼 수 있음
@@ -89,7 +89,7 @@ Paxos 알고리즘은 1989년에 처음 공개되었으며 그리스의 팩소�
 
 
 그래서 한장으로 정리하면 아래와 같은 도식이 그려지게 됩니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/6.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/6.png)  
 >Image from "[Google TechTalks: The Paxos Algorithm](https://youtu.be/d7nAGI_NZPk)"
 
 이 외에도 여러 if시나리오가 있지만, 이 문서에서는 그렇게 deep하게 다루지는 않을 생각입니다.  
@@ -110,7 +110,7 @@ Paxos 알고리즘은 1989년에 처음 공개되었으며 그리스의 팩소�
 Raft는 논문 제목에서 알 수 있듯이 "이해 가능한" 합의 알고리즘을 만드는 데 초점을 두고 있습니다.  
 
 > 논문의 저자들은 Paxos와 Raft중 어떤게 더 이해하기 쉽고 구현하기 쉽겠느냐고 스탠포드대학 컴퓨터공학과 학생들에게 survey를 진행했고, 결과는 다음과 같았다고 한다..!!!   
->![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/7.png)   
+>![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/7.png)   
 
 그럼 지금부터 Paxos와 동일한 결과와 효율성을 지니고 있지만 구조(방법)는 Paxos와 다른! Raft 알고리즘에 대해 알아보도록 하겠습니다.  
 
@@ -126,16 +126,16 @@ Paxos에서 각 노드가 역할이 정해져있었던 것과 다르게 Raft에�
 분산 시스템에서 각 노드들은 내부적으로 임기를 가지고 있습니다.  
 대통령 선거하듯이 1대, 2대 이런식으로요.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/8.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/8.png)  
 리더로 선출된 노드는 주기적으로 비어있는 `AppendEntries`라는 RPC프로토콜을 사용해 follower들에게 자신이 살아있다는 것을 알립니다.  
 (새로운 엔트리를 follower에게 전파할때도 동일한 프로토콜 사용)  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/9.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/9.png)   
 
 각 노드는 150ms~300ms 사이의 랜덤하게 할당된 타임아웃 시간이 존재하고,  
 follower는 특정 시간동안 리더한테서의 신호를 받지 못하면 자신이 리더가 되기위해 반란을 일으킵니다.   
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/10.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/10.png)  
 
 1. 저장된 임기번호(term)을 1증가시키고 새로운 선거를 진행
 2. 본인이 스스로 후보(candidate)가 되어 자신에게 투표를 진행하고 다른 follower들에게 투표요청 `RequestVote` RPC 프로토콜을 사용해 함수를 호출한다
@@ -154,12 +154,12 @@ follower는 특정 시간동안 리더한테서의 신호를 받지 못하면 �
 - Index : log 저장할때의 번호 (1부터시작함)
 - Data
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/11.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/11.png)   
 
 1.클라이언트가 리더에게 변경사항을 보냄  
 2.변경사항은 리더의 로그엔트리에 저장됨  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/12.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/12.png)  
 
 3.`AppendEntries` RPC를 호출해서 log를 전달  
 4.Follower는 새로받은 로그를 저장하고 성공 응답을 보냄    
@@ -181,7 +181,7 @@ follower는 특정 시간동안 리더한테서의 신호를 받지 못하면 �
 >4. **새로운 엔트리를 추가**
 >5. "새로 추가된 엔트리의 index"와 "leader의 commitIndex"중 작은 값을 follower의 commitIndex에 set
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/13.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/13.png)  
 
 5.과반수 follower의 응답을 받았으면 리더는 자신의 로그엔트리를 커밋하고 클라이언트에 응답을 보냄  
 6.follower들한테도 변경사항이 커밋되었음을 알림 -> follower들 자신의 로그엔트리 커밋  
@@ -189,7 +189,7 @@ follower는 특정 시간동안 리더한테서의 신호를 받지 못하면 �
 
 ### Leader Completeness 
 아래 사진의 경우에서는  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/14.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/14.png)  
 과반수의 노드(여기선 3개의 노드)에 복제되었으므로 커밋된 것으로 간주하고, 이를 **Committed Entries**(여기서는 7)라고 칭합니다.   
 
 한 번 커밋된 엔트리는 다음 임기의 리더들에게 반드시 포함될 것을 보장하는데, 이를 **Leader Completeness**라고 합니다.  
@@ -212,7 +212,7 @@ follower는 특정 시간동안 리더한테서의 신호를 받지 못하면 �
 
 Raft에서는 위 두가지 규칙을 통해서 Leader Completeness를 보장하고 있습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/15.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/15.png)   
 > 박스안의 숫자는 임기를 의미합니다.   
 
 한 번 순서를 따라가보도록 하겠습니다.  
@@ -236,6 +236,6 @@ Consensus Algorithm: 5.4.3 Safty argument](https://www.usenix.org/system/files/c
 paxos는 그냥 핥아보기만하고 raft는 깊게 파고들어서 그런걸까요?ㅋㅋㅋ  
 아니면 이정도는 누워서 떡먹기라고 생각하는 스탠포드 학생들이 대단한 것일까요....   
 역시 컴퓨터 굇수들은 무서워요   
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-03-23-paxos-raft/16.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-03-23-paxos-raft/16.png)   
 
 ----

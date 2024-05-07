@@ -56,7 +56,7 @@ Assisted Installer는 RedHat에서 SaaS형태로 제공되며, 사용하기 편�
 >1. 해당 문서는 Assisted Installer SaaS를 사용해 OpenShift 4.12를 설치하는 과정을 담았습니다.  
 >2. SaaS를 사용하는 경우라면 Cluster가 반드시 Public에 연결된 상태여야 합니다.  
 >3. 참고용 아키텍처:   
->![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/0.png)  
+>![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/0.png)  
 > 모든 노드는 private network에만 연결되어 있고 public으로 나갈때만 bastion을 gateway로 ip masquerade하게 했습니다.  
 >물론 외부에서의 패킷도 bastion노드 위의 LB를 통해 각 노드로 보낼 수 있습니다.  
 > 이런 구조 하에서도 정상적으로 설치가 된 것을 보면 Assisted Installer는 IP가 아닌 Domain기반으로 통신을 하는 것 같습니다.  
@@ -68,15 +68,15 @@ Assisted Installer는 RedHat에서 SaaS형태로 제공되며, 사용하기 편�
 RedHat Hybrid Cloud Console로이동-> https://console.redhat.com/
 
 OpenShift 선택    
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/1.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/1.png)    
 
 Create Cluster > Datacenter > Create Cluster   
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/2.png)    
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/3.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/2.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/3.png)    
 
 기본적인 클러스터 정보들을 채워넣습니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/4.png)    
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/5.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/4.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/5.png)    
 
 - 싱글노드면 SNO에 체크
 - Pull Secret을 현재 포탈에 로그인한 사용자가 아닌 다른사람 것으로 사용하려면 `Edit pull secret`을 체크하고 변경
@@ -84,62 +84,62 @@ Create Cluster > Datacenter > Create Cluster
 - Host Network Configuration도 상황에 맞게 선택, 이 문서에서는 Static으로 진행  
 
 Static IP로 진행하기를 선택했기 때문에 그에 대한 정보들을 기입해줍니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/6.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/6.png)    
 
 전역 설정을 마쳤으면, 각 노드에 대한 ip와 mac주소를 지정해줍니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/7.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/7.png)    
 
 그리고나서 OpenShift와 같이 설치할 Operator도 선택해줍니다. (클러스터 구성 후 manual로 진행할 수도 있습니다.)  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/8.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/8.png)    
 
 ### 2. OS 부팅
 설정 입력이 끝나면 Discovery iso파일을 다운로드 받게 됩니다.  
 RHCOS와 Assisted service와의 통신을 담당할 agent가 담긴 파일이고, 모든 호스트에 동일한 iso를 배포하게 됩니다.  
 
 다운로드 받기 전에 host에 추가할 ssh key를 작성해주고,  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/9.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/9.png)   
 
 다운로드 받아서,    
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/10.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/10.png)     
 
 다운로드 받은 iso로 vm을 부팅해줍니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/11.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/11.png)     
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/12.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/12.png)     
 
 부팅되면서 agent가 돌아가면서 Assisted Installer에 호스트가 떴음을 알리고, 호스트에 대한 inventory 정보를 송신합니다.  
 그럼 Assisted Installer는 호스트의 정보를 확인하고 기존에 작성했던 네트워크 파라미터들을 보내주고 부팅을 마치게 됩니다.    
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/13.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/13.png)     
 
 정상적으로 부팅되면 Assisted Installer의 Host discovery에서 확인할 수 있습니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/14.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/14.png)     
 
 부팅된 호스트들의 Role(Master/Worker)을 정해줍니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/15.png)     
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/16.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/15.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/16.png)     
 최소 클러스터 구성조건인 Master 3개 Worker3개 이상이 채워지면 next 버튼이 활성화됩니다.  
 
 > 아래 경고는 ODF설치옵션을 활성화 했을 경우 확인할 수 있습니다.
 >ODF에 사용할 노드들은 os설치 디스크 외의 디스크들은 모두 로컬 스토리지로 편입되니 미리 포맷하라는 내용입니다.  
 >
->![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/17.png)     
+>![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/17.png)     
 >디스크가 여러개라면 어떤디스크를 ODF용으로 사용할건지도 정해줄 수 있습니다.  
->![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/18.png)     
+>![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/18.png)     
 
 ### 3. OpenShift 설치
 다음은 네트워크 파트입니다.  
 bastion혹은 사용하고 있는 DNS, LB장비가 있다면 User-Managed Networking을 선택합니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/19.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/19.png)     
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/20.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/20.png)     
 
 
 설치를 진행하기 전 리뷰페이지입니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/21.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/21.png)     
 
 모든 설정이 제대로 들어갔다면 Install Cluster 버튼을 클릭해줍니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/22.png)     
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/23.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/22.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/23.png)     
 
 만약 status가 오랫동안 pending상태에 있다면 직접 서버에 들어가서 journal log를 보면서 트러블슈팅해줘야 합니다.  
 
@@ -149,13 +149,13 @@ bastion혹은 사용하고 있는 DNS, LB장비가 있다면 User-Managed Networ
 
 ### 4. 설치완료!
 좀 기다리면 클러스터 설치가 완료되고, web화면에서 결과를 확인할 수 있습니다.   
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/24.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/24.png)     
 
 Launch Openshift Console버튼을 누르면 콘솔로 리다이렉트됩니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/25.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/25.png)     
 
 옵션으로 줬던 ODF설치도 정상적으로 된 것을 확인할 수 있습니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-07-23-ocp-assisted-service/26.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-07-23-ocp-assisted-service/26.png)     
 
 
 트러블슈팅한 시간을 생각해도 기존에 했던 방식보다 훨씬 쉽고 간편해진 것 같습니다.  

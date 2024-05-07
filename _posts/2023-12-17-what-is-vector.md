@@ -35,14 +35,14 @@ sitemap:
 
 그래서 이런 Vector를 수학적으로 계산하려면 어떻게 표현하여야 할까요?  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-12-17-what-is-vector.md/2.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-12-17-what-is-vector.md/2.png)  
 
 어떤 시점 A로부터 종점 B까지의 벡터를 $$\vec{AB}$$ 이렇게 화살표를 사용하여 표현합니다.  
 
 위에서 예시로 든 물체의 속력을 벡터로 표현한다면, 화살표의 방향이 벡터의 방향이고, 화살표의 길이가 크기가 되겠습니다.  
 
 그러면 2차원 공간에서의 벡터를 생각해보겠습니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-12-17-what-is-vector.md/3.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-12-17-what-is-vector.md/3.png)  
 우리에게 익숙한 평면좌표계가 있고 x축(가로) y축(세로)을 기준으로 벡터를 표현할 수 있습니다.  
 그걸 점처럼 순서쌍으로 나타낼 수 있습니다. -> $$(3,2)$$  
 혹은 2차원 행렬로도 나타낼 수 있습니다.  
@@ -50,7 +50,7 @@ sitemap:
 $$ \left[\begin{array}{cc} 3\\ 2 \end{array}\right] $$   
 
 3차원은 어떨까요?  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-12-17-what-is-vector.md/4.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-12-17-what-is-vector.md/4.png)  
 위와 같이 z축(높이)이 추가되었고 벡터는 가로,세로,높이를 모두 가진 순서쌍 혹은 3차원 행렬로 표현될 수 있을겁니다.  
 
 $$(x,y,z)$$  
@@ -72,13 +72,13 @@ $$ \left[\begin{array}{cc} x\\ y \\z\\... \end{array}\right] $$
 ## DataScience에서의 Vector
 그럼 이제 DataScience로 넘어와서 인터넷에 넘쳐나는 여러 데이터들을 생각해봅시다.  
 각종 원시데이터들은 분석 및 처리를 위해 의미있는 정보를 뽑아내 정형화하여 사용하게 됩니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-12-17-what-is-vector.md/5-0.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-12-17-what-is-vector.md/5-0.png)   
 
 정형화한다면 아래와 같은 형태로 될것입니다.   
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-12-17-what-is-vector.md/5.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-12-17-what-is-vector.md/5.png)   
 
 이 중 하나의 레코드를 뽑아서 수식의 형태로 표현한다면 아래와 같이 표현되겠죠!  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-12-17-what-is-vector.md/6.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-12-17-what-is-vector.md/6.png)   
 
 자세히 보니 위에서 봤던 수학의 벡터표현과 비슷합니다.  
 각 요소의 의미만 다르지 하나의 벡터안에 여러개의 인자가 들어가 있다는 점은 동일합니다.  
@@ -98,7 +98,7 @@ $$ \left[\begin{array}{cc} x\\ y \\z\\... \end{array}\right] $$
 
 C++의 vector는 `STL(Standard Template Library)`에 포함된 클래스인데, Alexander Stepanov라는 디자이너에 의해 이름이 붙여졌습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-12-17-what-is-vector.md/7.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-12-17-what-is-vector.md/7.png)   
 
 어떤 자료형도 넣을 수 있는 동적 배열이고, vector를 생성하면 메모리 heap에 생성되며 동적할당됩니다.   
 각 요소는 임의로 접근이 가능할 수 있고, 필요에 따라 유동적으로 크기를 조정할 수 있습니다.  

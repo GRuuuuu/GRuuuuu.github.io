@@ -22,7 +22,7 @@ OpenShift에서 가장 쉽게 스토리지를 구성할 수 있는 방법인 `Op
 이 `Ceph`를 Kubernetes위에 올리려면 `Rook`이라는 도구를 사용해 올릴 수 있고 이 문서에서 자세히 다루진 않겠습니다.  
 
   
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC1.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC1.png)  
 
 크게보면 `RADOS`라는 스토리지 노드 위에 `LIBRADOS`라는 `RADOS`의 라이브러리가 있고, Object Storage서비스를 제공하는 RADOSGW(`rgw`), Block Device(`rbd`), File system(`cephfs`)으로 구성되어 있습니다.  
 
@@ -31,7 +31,7 @@ OpenShift에서 가장 쉽게 스토리지를 구성할 수 있는 방법인 `Op
 
 그리고 이런 서비스들을 제공하는 ceph cluster는 클러스터 관리를 위한 4개의 컴포넌트를 갖고 있습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC2.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC2.png)  
 
 - **OSD 데몬**: 데이터를 저장하고 복제, 분산하는 역할
 - **Monitor** : 클러스터상태를 체크
@@ -48,8 +48,8 @@ OpenShift에서 가장 쉽게 스토리지를 구성할 수 있는 방법인 `Op
 
 제 경우에는 worker노드가 16개인 클러스터에 ODF를 올렸었는데, OSD pod들이 cpu를 2코어씩 가져가니까 순식간에 CPU Request Commitment가 80%까지 차버렸었습니다...  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC3.png)  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC4.jpg)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC3.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC4.jpg)  
 
 사용률은 1core도안되는데 request만 42core인 기묘한 상황   
 
@@ -67,12 +67,12 @@ OpenShift에서 가장 쉽게 스토리지를 구성할 수 있는 방법인 `Op
 
 ODF Operator를 살펴보면 `StorageSystem`이라는 녀석이 있습니다.  
 이게 최상단에서 클러스터의 설정들을 관리하는 녀석이라고 생각하시면 됩니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC4.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC4.png)   
 
 yaml을 까보면 `StorageSystem`이 관리하고 있는 instance들의 정보만 나오지 막상 수정할 수 있는 부분은 보이지 않습니다.  
 
 그래서 `StorageSystem`이 관리하는 instance중 하나인 `StorageCluster`로 내려갑니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC5.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC5.png)   
 
 yaml을 열어보면 `storageCluster`에서 관리하는 노드들, instance들, 각종 `ceph`, `noobaa`설정이 보입니다.  
 
@@ -152,7 +152,7 @@ spec:
 ## 결과
 
 이렇게 설정을 변경하고 몇 분 기다리면 바꾼 설정값대로 pod들이 다시 기동하고 클러스터의 CPU Request Commitment는 납득가능한 수준으로 떨어진 것을 확인할 수 있었습니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC6.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-06-11-ceph-resource-custom/%EA%B7%B8%EB%A6%BC6.png)   
 
 운영하다가 설정해준 request/limit값이 사용량에 비해 낮다고 생각이 들면 다시 조정해주면 됩니다!  
 

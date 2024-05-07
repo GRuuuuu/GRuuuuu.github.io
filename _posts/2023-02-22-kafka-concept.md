@@ -16,10 +16,10 @@ sitemap :
 예를 들어서 특정 서비스를 제공하는 app이 있다고 가정하고 그 app의 로그를 받아서 처리하는 또다른 app이 있다고 가정해봅시다.  
 
 대충 아래와 같은 모습이 되겠습니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-02-22-kafka-concept/1.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-02-22-kafka-concept/1.png)    
 
 하지만 점점 더 복잡한 서비스에서는 어떻게 될까요?  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-02-22-kafka-concept/2.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-02-22-kafka-concept/2.png)    
 위와 같이 수많은 소스 application과 타겟 application들이 직접적으로 통신하게 되면서 서비스 구조도 복잡해지고, 통신 프로토콜의 파편화가 심해지게 됩니다.  
 
 이렇게 되면 **배포나 장애에 대응하기 어려워지고, 유지보수가 힘들어진다**는 단점이 있습니다.  
@@ -29,7 +29,7 @@ sitemap :
 소셜 네트워크 앱중 하나인 "**LinkedIn**"의 개발자들도 이와 같은 문제를 갖고 있었습니다.  
 2011년 **LinkedIn**은 이런 복잡함을 해결하고자 소스app과 타겟app의 커플링을 낮게 하려하였고 분산메시징시스템인 **Apache Kafka**를 개발하였습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-02-22-kafka-concept/3.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-02-22-kafka-concept/3.png)  
 
 그림에서 확인할 수 있다시피, Kafka는 데이터 파이프라인을 파편화하지않고 **모든 이벤트/데이터의 흐름을 중앙집중화** 시켰습니다.   
 그래서 모든 application은 다른 app이아니라 kafka만 바라보면 되는 구조가 되는 것이죠.  
@@ -49,7 +49,7 @@ Kafka는 2011년 오픈소스로 공개되었고, 2012년 10월 Apache 인큐베
 ### Topic
 Kafka는 이벤트 스트리밍 플랫폼입니다. Kafka에 전달되는 메세지 스트림의 추상화된 개념을 Topic이라고 부릅니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-02-22-kafka-concept/4.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-02-22-kafka-concept/4.png)  
 
 이벤트를 만들어내는 Producer가 어떤 Topic에 데이터를 적재할건지, Consumer는 어떤 Topic에서 데이터를 읽을건지(구독할건지) 정하게 됩니다.  
 
@@ -58,7 +58,7 @@ Topic은 여러개 생성할 수 있으며, 각각의 메세지를 목적에 맞
 ### Partition
 각 Topic은 내부에 더 세분화된 단위인 Partition을 가지고 있습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-02-22-kafka-concept/5.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-02-22-kafka-concept/5.png)  
 
 - 메세지가 들어오면 순차적으로 추가되며, Consumer가 메세지를 읽을 때에는 Queue의 선입선출(FIFO)과 비슷하게 오래된 메세지부터 읽게됨
 - Queue와 다른 점은 **레코드를 읽어도 사라지지 않는다**는 점
@@ -69,7 +69,7 @@ Topic은 여러개 생성할 수 있으며, 각각의 메세지를 목적에 맞
 
 Topic은 하나 이상의 Partition을 가질 수 있는데, 여러개의 Partition을 가지고 있는 경우를 생각해보겠습니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-02-22-kafka-concept/6.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-02-22-kafka-concept/6.png)  
 
 - 데이터를 적재할 시, 키값을 지정해주어 **특정 Partition**에만 데이터 적재 가능
 - 키값을 지정해주지 않았을 경우, **Round-robin방식**으로 데이터 적재
@@ -92,7 +92,7 @@ Partition에 저장된 데이터는 삭제할 시점을 설정해줄 수 있습�
 
 ### Broker
 Broker는 Kafka가 설치되어있는 서버의 단위입니다.  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-02-22-kafka-concept/7.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-02-22-kafka-concept/7.png)   
 
 - 보통 3개 이상 권장
 - replication을 지정해주면 그 수만큼 **원본+복제본** 생성
@@ -114,14 +114,14 @@ Producer는 데이터를 만들어내고 Kafka Topic에 데이터를 적재시�
 ### Consumer
 Consumer는 Kafka Topic에서 데이터를 읽어오는 주체입니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-02-22-kafka-concept/8.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-02-22-kafka-concept/8.png)  
 
 - Consumer가 데이터를 읽은 지표인 `offset`정보는  `__consumer_offset` 토픽에 저장되어 Consumer에 장애가 발생해도 원래 위치부터 읽기 시작 가능
 - Topic의 Partition과 Consumer그룹은 **1:N**매칭으로, 동일 그룹내 한개의 컨슈머만 연결가능 -> **메세지가 순서대로 처리되도록 보장**
 - Consumer 그룹 내 Consumer 개수는 Partition개수보다 **적거나 같아야** 함
 
 Consumer Group이 여러개 존재할 경우,  
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023-02-22-kafka-concept/9.png)  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2023/2023-02-22-kafka-concept/9.png)  
 
 - 여러 Consumer Group을 통해 병렬처리 가능
 - `__consumer_offset` 토픽에는 Consumer group별/토픽별로 offset을 나눠서 저장하기 때문에	**Consumer group이 다르면 각자의 그룹은 서로 영향을 끼치지않음**
