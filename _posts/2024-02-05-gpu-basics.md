@@ -34,7 +34,7 @@ GPU(Graphic Processing Unit)
 - 반면 GPU는 수천개의 성능이 높지 않은 프로세싱 코어를 갖고 있으며 **단순하지만 많은 연산**을 수행하도록 설계
 - 예를 들어 수백개의 단순한 연산을 초등학생 100명과 1명의 공학박사가 해결한다고 생각하면됨
 
-![1](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024-02-05-gpu-basics.md/1.png)  
+![1](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-02-05-gpu-basics.md/1.png)  
 
 ## 그래픽 연산이란?
 알다시피 CPU는 컴퓨터의 핵심 엔진이며 고성능의 프로세싱 코어를 갖고 있습니다.  
@@ -45,7 +45,7 @@ GPU(Graphic Processing Unit)
 
 그렇다면 그래픽 연산이란 무엇일까요?  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024-02-05-gpu-basics.md/2.jpg)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-02-05-gpu-basics.md/2.jpg)   
 
 모니터에 뿌려지는 이미지들은 Pixel이라는 작은 점들로 이루어져 있습니다.  
 현재 가장 범용적으로 사용되는 해상도인 1920x1080의 Pixel 수는 200만개 정도 입니다.  
@@ -54,13 +54,13 @@ GPU(Graphic Processing Unit)
 
 1초에 30프레임이면 컴퓨터가 1초에 계산해야하는 Pixel의 개수는 6000만개정도가 되겠죠!  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024-02-05-gpu-basics.md/3.png)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-02-05-gpu-basics.md/3.png)   
 물론 이 계산을 CPU가 처리해 줄 수도 있겠지만, 효율적이지 않습니다.  
 수백 수천만개의 단순 연산을 몇 개의 고성능 코어로 돌리게 되기 때문에 정말 빠르게 처리해야하는 중요한 작업들이 딜레이될 수도 있습니다.  
 
 3D그래픽은 어떨까요?   
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024-02-05-gpu-basics.md/4.jpg)   
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-02-05-gpu-basics.md/4.jpg)   
 
 이 경우 조금 더 복잡한 연산이 들어가게 되는데, 하나의 정점데이터에는 좌표값(position), 방향(normal), 이미지 좌표(texture coordinate) 등 여러 정보가 포함됩니다.  
 
@@ -71,7 +71,7 @@ GPU(Graphic Processing Unit)
 이는 행렬의 곱셈 형태로 실시간 계산이 되게 됩니다.  
 
 ## 대량 데이터 처리가 빠른 GPU
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024-02-05-gpu-basics.md/5.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-02-05-gpu-basics.md/5.png)     
 위 그림은 CPU와 GPU의 구조를 개략적으로 나타낸 그림입니다.  
 CPU에서 논리 연산을 수행하는 장치를 ALU(Arithmetic Logic Unit, 산술 논리 연산 장치)라고 부르는데, 요놈이 많을 수록 동시에 계산할 수 있는 수가 많아집니다.  
 
@@ -103,11 +103,11 @@ GPU의 코어 하나는 한 번에 하나의 스레드를 처리할 수 있습�
 1000000개의 스레드가 있다고 생각해봅시다.  
 우리가 가진 GPU의 코어는 1000개이구요.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024-02-05-gpu-basics.md/7.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-02-05-gpu-basics.md/7.png)     
 스레드를 1000개의 묶음으로 묶으면 한 묶음에 1000개의 스레드가 있을 것이고,  
 코어를 10개씩 묶으면 하나에 100개의 코어가 존재할 것입니다.  
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024-02-05-gpu-basics.md/8.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-02-05-gpu-basics.md/8.png)     
 또 이 스레드 묶음에서 100개씩 묶어준다면 100개의 코어에서 한 번에 처리가 가능해집니다.  
 이때의 단위를 Nvidia에서는 `Warp`, AMD에서는 `Wavefront`라고 부릅니다.  
 
@@ -115,7 +115,7 @@ GPU의 코어 하나는 한 번에 하나의 스레드를 처리할 수 있습�
 
 ## ML, Blockchain
 
-![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024-02-05-gpu-basics.md/6.png)     
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2024/2024-02-05-gpu-basics.md/6.png)     
 머신러닝에서는 대량의 데이터가 입력되고 연산되어 값을 도출하는데,  
 이는 곱하기와 더하기를 반복하는 단순 계산들이어서 GPU를 활용하기에 좋습니다.  
 
