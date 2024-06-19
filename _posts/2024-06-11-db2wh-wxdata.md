@@ -407,4 +407,31 @@ s3스토리지의 타입이 무엇인지 확인하고 위의 가이드를 따라
 
 설정 이후 `bigsql stop`/`bigsql start`은 잊지말기  
 
+### native zStandard library not available: this version of libhadoop was built without zstd support
+
+>참고 : [How to change compression when writing parquet files using pyspark #4914](https://github.com/apache/iceberg/issues/4914)
+
+Db2 `11.5.9`에서 `zstd`알고리즘으로 압축된 데이터는 지원하지 않기때문에 발생하는 에러.  
+
+최초 Table을 만들때 `lz4`, `snappy`, `gzip` 중 하나로 압축 알고리즘을 정해야 한다.  
+(spark configuration으로 설정하는 것은 제대로 반영이 되지 않음, 반드시 table property로 줄 것)
+
+예시)  
+~~~python
+def create_table_from_parquet_data(spark):
+    # load parquet data into dataframce
+    df = spark.read.option("header",True).parquet("file:///mnts/files/ddd.parquet")
+    # write the dataframe into an Iceberg table
+    df.writeTo("catalog.schema.table").tableProperty("write.parquet.compression-codec","gzip").create()
+~~~
+
+~~~python
+def ingest_from_csv_temp_table(spark):
+    # load csv data into a dataframe
+    csvDF = spark.read.option("header",True).csv("file:///mnts/files/sss.csv")
+    csvDF.createOrReplaceTempView("tempCSVTable")
+    # load temporary table into an Iceberg table
+    spark.sql('create or replace table catalog.schema.table using iceberg TBLPROPERTIES (\'write.parquet.compression-codec\' = \'gzip\') as select * from tempCSVTable ')
+~~~
+
 ----
