@@ -234,13 +234,13 @@ DB20000I  The LIST STORAGE ACCESS command completed successfully.
 wxdata의 metastore 정보를 Db2wh에 등록합니다.  
 
 ~~~
-CALL SYSHADOOP.REGISTER_EXT_METASTORE('{metastore이름}', 'type=watsonx-data,uri=thrift://{HMS Thrift URL}',?,?);
+CALL SYSHADOOP.REGISTER_EXT_METASTORE('{metastore-name}', 'type=watsonx-data,uri=thrift://{HMS Thrift URL}',?,?);
 ~~~
 
 연결 시 SSL사용할건지 여부 체크, true라면 metastore의 tls secret을 같이 등록해줘야합니다.  
 ~~~
-CALL SET_EXT_METASTORE_PROPERTY('wxd-hms', 'use.SSL', 'true', ?, ?)
-CALL SET_EXT_METASTORE_PROPERTY('wxd-hms', 'ssl.cert', '{/path/to/cert}', ?, ?);
+CALL SET_EXT_METASTORE_PROPERTY('{metastore-name}', 'use.SSL', 'true', ?, ?)
+CALL SET_EXT_METASTORE_PROPERTY('{metastore-name}', 'ssl.cert', '{/path/to/cert}', ?, ?);
 ~~~
 
 > **metastore의 TLS certificate 가져오기**  
