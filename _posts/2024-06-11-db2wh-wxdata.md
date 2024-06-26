@@ -25,8 +25,8 @@ Db2 warehouse에서 만든 테이블을 watsonx.data의 spark나 presto engine�
 
 ## Environment
 Openshift : `4.15.x`  
-CP4D : `4.8.5`  
-WatsonX.data : `1.1.4`   
+CP4D : `5.0.0`  
+WatsonX.data : `2.0.0`   
 Db2 warehouse : `s11.5.9.0` (24.06.10 기준 반드시 standalone Db2wh를 사용할 것, cpd위의 Db2wh는 안됨)   
 
 ## STEP
