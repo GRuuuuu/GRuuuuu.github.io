@@ -5,7 +5,7 @@ categories:
 tags:
   - DB
   - DataScience
-last_modified_at: 2024-06-19T13:00:00+09:00
+last_modified_at: 2024-06-26T13:00:00+09:00
 toc: true
 author_profile: true
 sitemap:
@@ -18,8 +18,8 @@ watsonx.data에서 스키마와 테이블을 생성하고 데이터를 적재하
 
 ## Environment
 Openshift : `4.15.x`  
-CP4D : `4.8.5`  
-WatsonX.data : `1.1.4`   
+CP4D : `5.0.0`  
+WatsonX.data : `2.0.0`   
 
 
 ## Data Ingestion
@@ -97,7 +97,7 @@ volume이름을 확인했다면 해당 볼륨의 path로 이동하여 `{spark en
 
 
 
-### 3. CURL로 spark job 돌리기
+### 3-1. CURL로 spark job 돌리기 (feat. Analytics Engine)
 
 gui를 접근하지 못한다거나, batch 작업을 돌려야 하는 경우 curl로도 spark job을 실행시킬 수 있습니다.  
 
@@ -154,6 +154,91 @@ $ curl -k -X POST https://{SPARK_ENGINE_ENDPOINT}/spark_applications -H "Authori
 
 빠진 부분을 잘 채워서 실행시키면 GUI에서 spark job을 실행시켰던 것 처럼, spark engine에서 실행되고 있는 job의 status와 로그들을 확인할 수 있습니다.  
 
+### 3-2. CURL로 spark job 돌리기 (feat. Native Spark)
+Watsonx.data 2.0.0부터 spark engine을 native로 지원하기 시작했습니다!    
+native spark는 wxdata에 등록되고 spark에 연결된 스토리지와 카탈로그의 credential정보들은 자동으로 default configuration에 등록됩니다.  
+
+때문에 CURL과 python application에 적어야 할 configuration의 개수가 현저히 줄었는데요,  
+
+sample python app:  
+~~~py
+from pyspark.sql import SparkSession
+import os
+from datetime import datetime
+
+def init_spark():
+    spark = SparkSession.builder.appName("lh-hms-cloud").enableHiveSupport().getOrCreate()
+    return spark
+
+def create_database(spark,bucket_name,catalog):
+    spark.sql(f"create database if not exists {catalog}.ivttestdb LOCATION 's3a://{bucket_name}/'")
+    
+    
+def list_databases(spark,catalog):
+    # list the database under lakehouse catalog
+    spark.sql(f"show databases from {catalog}").show()
+
+def basic_iceberg_table_operations(spark,catalog):
+    # demonstration: Create a basic Iceberg table, insert some data and then query table
+    print("creating table")
+    spark.sql(f"create table if not exists {catalog}.ivttestdb.testTable(id INTEGER, name VARCHAR(10), age INTEGER, salary DECIMAL(10, 2)) using iceberg").show()
+    print("table created")
+    spark.sql(f"insert into {catalog}.ivttestdb.testTable values(1,'Alan',23,3400.00),(2,'Ben',30,5500.00),(3,'Chen',35,6500.00)")
+    print("data inserted")
+    spark.sql(f"select * from {catalog}.ivttestdb.testTable").show()
+
+
+
+def clean_database(spark,catalog):
+    # clean-up the demo database
+    spark.sql(f'drop table if exists {catalog}.ivttestdb.testTable purge')
+    spark.sql(f'drop database if exists {catalog}.ivttestdb cascade')
+
+def main():
+    try:
+        spark = init_spark()
+        
+        create_database(spark,"<bucket_name>","<catalog_name>")
+        list_databases(spark,"<catalog_name>")
+        basic_iceberg_table_operations(spark,"<catalog_name>")
+        
+        
+    finally:
+        # clean-up the demo database
+        clean_database(spark,"<catalog_name>")
+        spark.stop()
+
+if __name__ == '__main__':
+    main()
+~~~
+
+sample curl command :    
+~~~
+curl --request POST \
+  --url https://{spark_endpoint}/applications \
+  --header 'Authorization: ZenApiKey {Your ZenApiKey}' \
+  --header 'Content-Type: application/json' \
+  --header 'LhInstanceId: {wxdata instance id}' \
+  --data '{
+  "application_details": {
+    "application": "/mnts/{CPD_PV_PATH}",
+    "conf": { 
+            "spark.hive.metastore.client.plain.username": "xxx",
+            "spark.hive.metastore.client.plain.password": "ddd",
+            "spark.hadoop.wxd.cas.apiKey": "ZenApiKey {Your ZenApiKey}"
+    }
+  },
+  "volumes": [
+    {
+      "name": "{CPD_NAMESPACE}::{CPD_PV_NAME}",
+      "mount_path": "/mnts/{CPD_PV_PATH}"
+    }
+  ]
+}'
+~~~
+
+
+
 
 ### 4. vscode extension 사용하기
 > native spark engine만 사용가능
@@ -203,5 +288,14 @@ spark configuration에 추가 :
 .config("spark.hive.metastore.client.plain.username","ddd") \
 .config("spark.hive.metastore.client.plain.password","ddd") \
 ~~~
+
+### Unable to calculate a request signature: Server returned HTTP response code: 422 for URL: https://ibm-lh-lakehouse-cas-svc.cpd-inst-operand.svc.cluster.local:3500/cas/v1/signature: Unable to calculate a request signature: Server returned HTTP response code: 422 for URL: https://ibm-lh-lakehouse-cas-svc.cpd-inst-operand.svc.cluster.local:3500/cas/v1/signature
+native spark engine에서 job을 돌릴 시 발생하는 에러
+ 
+spark configuration에 이녀석을    
+`.config("spark.hadoop.wxd.cas.apiKey", "<zenapikey>")`   
+
+이렇게 바꿔보자 :   
+`.config("spark.hadoop.wxd.cas.apiKey", "ZenApiKey <your ZenApiKey>")`
 
 ----
