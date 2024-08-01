@@ -76,7 +76,8 @@ Cluster operator network should not be upgraded between minor versions: OpenShif
 
 [Migrating from the OpenShift SDN network plugin](https://docs.openshift.com/container-platform/4.16/networking/ovn_kubernetes_network_provider/migrate-from-openshift-sdn.html)  
 
-1. 네트워크 기존 설정 백업  
+1. 네트워크 기존 설정 백업   
+
 ~~~
 $ oc get Network.config.openshift.io cluster -o yaml > cluster-openshift-sdn.yaml
 
