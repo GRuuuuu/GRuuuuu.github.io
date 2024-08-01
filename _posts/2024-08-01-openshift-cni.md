@@ -156,6 +156,7 @@ network.config.openshift.io/cluster patched
 6. 끝나면 모든 노드 리부트(수동)   
 
 7. 확인    
+
 ~~~
 $ oc get network.config/cluster -o jsonpath='{.status.networkType}{"\n"}'
 OVNKubernetes
