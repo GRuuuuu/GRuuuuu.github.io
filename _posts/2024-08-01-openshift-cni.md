@@ -108,21 +108,21 @@ status:
 - 172.30.0.0/16
 ~~~
 
-2. `Network.operator.openshift.io` CR의 migration필드를 `OVNKubernetes`로 변경
+2. `Network.operator.openshift.io` CR의 migration필드를 `OVNKubernetes`로 변경    
 ~~~
 $ oc patch Network.operator.openshift.io cluster --type='merge' --patch '{ "spec": { "migration": { "networkType": "OVNKubernetes" } } }'
 network.operator.openshift.io/cluster patched
 ~~~
 
-3. 노드들이 재시작 될 때까지 대기
+3. 노드들이 재시작 될 때까지 대기     
 
-4. 아래 명령어로 configuration이 적용되었는지 확인  
+4. 아래 명령어로 configuration이 적용되었는지 확인     
 ~~~
 $ oc describe node | egrep "hostname|machineconfig"
 ~~~
 
 >일단 이 단계까지만 와도 pending되었던 cluster upgrade가 진행이 됩니다.  
->cluster upgrade 도중에 migration을 진행하고 있었다면 모든 작업이 종료된 이후에 마저 migration을 진행하는 것이 좋을 것 같습니다.  
+>cluster upgrade 도중에 migration을 진행하고 있었다면 모든 작업이 종료된 이후에 마저 migration을 진행하는 것이 좋을 것 같습니다.     
 >~~~
 >$ oc describe node | egrep "hostname|Done"
 >    kubernetes.io/hostname=master0.wxai.garagekr.com
@@ -147,15 +147,15 @@ $ oc describe node | egrep "hostname|machineconfig"
 >    machineconfiguration.openshift.io/state: Done
 >~~~
 
-5. migration 스타트
+5. migration 스타트   
 ~~~
 $ oc patch Network.config.openshift.io cluster --type='merge' --patch '{ "spec": { "networkType": "OVNKubernetes" } }'
 network.config.openshift.io/cluster patched
 ~~~
 
-6. 끝나면 모든 노드 리부트(수동)
+6. 끝나면 모든 노드 리부트(수동)   
 
-7. 확인
+7. 확인    
 ~~~
 $ oc get network.config/cluster -o jsonpath='{.status.networkType}{"\n"}'
 OVNKubernetes
@@ -163,7 +163,7 @@ OVNKubernetes
 $oc get co ->에러없어야함
 ~~~
 
-8. 뒷정리    
+8. 뒷정리      
 
 migration 끄기
 ~~~
