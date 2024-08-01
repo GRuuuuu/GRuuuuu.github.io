@@ -76,7 +76,7 @@ Cluster operator network should not be upgraded between minor versions: OpenShif
 
 [Migrating from the OpenShift SDN network plugin](https://docs.openshift.com/container-platform/4.16/networking/ovn_kubernetes_network_provider/migrate-from-openshift-sdn.html)  
 
-1. 네트워크 기존 설정 백업   
+1.네트워크 기존 설정 백업   
 
 ~~~
 $ oc get Network.config.openshift.io cluster -o yaml > cluster-openshift-sdn.yaml
@@ -108,15 +108,15 @@ status:
 - 172.30.0.0/16
 ~~~
 
-2. `Network.operator.openshift.io` CR의 migration필드를 `OVNKubernetes`로 변경    
+2.`Network.operator.openshift.io` CR의 migration필드를 `OVNKubernetes`로 변경    
 ~~~
 $ oc patch Network.operator.openshift.io cluster --type='merge' --patch '{ "spec": { "migration": { "networkType": "OVNKubernetes" } } }'
 network.operator.openshift.io/cluster patched
 ~~~
 
-3. 노드들이 재시작 될 때까지 대기     
+3.노드들이 재시작 될 때까지 대기     
 
-4. 아래 명령어로 configuration이 적용되었는지 확인     
+4.아래 명령어로 configuration이 적용되었는지 확인     
 ~~~
 $ oc describe node | egrep "hostname|machineconfig"
 ~~~
@@ -147,15 +147,15 @@ $ oc describe node | egrep "hostname|machineconfig"
 >    machineconfiguration.openshift.io/state: Done
 >~~~
 
-5. migration 스타트   
+5.migration 스타트   
 ~~~
 $ oc patch Network.config.openshift.io cluster --type='merge' --patch '{ "spec": { "networkType": "OVNKubernetes" } }'
 network.config.openshift.io/cluster patched
 ~~~
 
-6. 끝나면 모든 노드 리부트(수동)   
+6.끝나면 모든 노드 리부트(수동)   
 
-7. 확인    
+7.확인    
 
 ~~~
 $ oc get network.config/cluster -o jsonpath='{.status.networkType}{"\n"}'
@@ -164,7 +164,7 @@ OVNKubernetes
 $oc get co ->에러없어야함
 ~~~
 
-8. 뒷정리      
+8.뒷정리      
 
 migration 끄기
 ~~~
