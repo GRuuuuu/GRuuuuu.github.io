@@ -325,7 +325,7 @@ Access Token을 발급하기 위해 사용자 인증을 하긴 하였으나 **Ac
 `exp`(expiration time) : 토큰의 유효시간  
 `iat`(issued at) : 토큰이 발행된 시간  
 
-`claims` 필드는 원한다면 추가로 다른 값들을 추가할 수 있습니다. (ex. `eamil`, `address`, `id` 등)  
+`claims` 필드는 원한다면 추가로 다른 값들을 추가할 수 있습니다. (ex. `email`, `address`, `id` 등)  
 
 ID Token(JWT)를 통해서 누가 인증을 했는지, 발행자(issuer)가 누구인지 등을 알 수 있습니다.  
 
@@ -355,7 +355,7 @@ Best Suited for|SSO for Enterprise(Not well suited for mobile)|API authorization
 - **OAuth2.0** : Authorization만 제공, JSON기반, 자격증명을 app과 공유하지 않고도 자원을 사용할 수 있게 해줌
 - **OpenID Connect** : OAuth2.0과 함께 주로 사용, JSON기반, mobile과 native app에서 사용될 수 있는 구조를 가짐
 
-### OAuth2.0 Pseudo Authentication and OPenID
+### OAuth2.0 Pseudo Authentication and OpenID
 이 포스팅을 만들면서 꽤나 많은 자료들을 읽었는데 이부분이 많이 헷갈려서 정리할겸 적어둡니다.  
 
 참고 : [WIKI:OpenID vs. pseudo-authentication using OAuth](https://en.wikipedia.org/wiki/OAuth#OpenID_vs._pseudo-authentication_using_OAuth)  
@@ -367,7 +367,7 @@ OpenID는 `Authentication`을 목표로 설계된 툴입니다.
 하지만 인터넷에 검색해보면 OAuth로 인증을 시도하는 몇가지 사례들을 볼 수 있습니다.(실제로도 OAuth로 인증 프로토콜을 구축하는 것은 가능합니다)  
 이때 OAuth로 인증하는 것을 **Pseudo Authentication**이라고 부릅니다.  
 
-왜 Pseudo Athentication이라고 할까요?  
+왜 Pseudo Authentication이라고 할까요?  
 
 아래 OAuth로 인증을 시도할 경우의 취약점들을 보면 왜 허위/사칭 인증이라고 적어놨는지 알 수 있습니다.
 
