@@ -119,7 +119,7 @@ optimizer는 cost가 가장 낮은 plan을 선택
 
 
 ### 1. ibm-lh client 설치
---> https://www.ibm.com/docs/en/watsonx/watsonxdata/2.0.x?topic=package-installing-lh-client  
+--> [](https://www.ibm.com/docs/en/watsonx/watsonxdata/2.0.x?topic=package-installing-lh-client)  
 
 ~~~
 $ bin/presto-cli --version
@@ -129,7 +129,7 @@ Presto CLI 0.286-44efa19
 ### 2. Query Engine 등록
 
 쿼리엔진 java나 c++등록하고 아래 링크의 절차를 따라 Query optimization기능을 활성화시켜줍니다.  
--> https://www.ibm.com/docs/en/watsonx/watsonxdata/2.0.x?topic=optimizer-activating-query-v201-later
+-> [](https://www.ibm.com/docs/en/watsonx/watsonxdata/2.0.x?topic=optimizer-activating-query-v201-later)
 
 활성화가 완료되고 나서, presto cli가 설치된 서버로 돌아옵니다.
 
