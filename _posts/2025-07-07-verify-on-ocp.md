@@ -715,7 +715,7 @@ Create SSL Certificate Database
 만들었던 keystore를 선택하고 Edit   
 ![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/refs/heads/main/2025/2025-07-07-verify-on-ocp.md/5.png)  
 
-Certificate Load
+Certificate Load   
 ![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/refs/heads/main/2025/2025-07-07-verify-on-ocp.md/6.png)  
 
 ![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/refs/heads/main/2025/2025-07-07-verify-on-ocp.md/7.png)  
