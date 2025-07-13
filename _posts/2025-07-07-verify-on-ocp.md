@@ -690,6 +690,7 @@ postgresql-6764746786-hrwrf    1/1     Running            0                 27h
 #### 5.9 Route
 이제 외부에서 IVIA를 접근할 수 있도록 Route를 생성해주어야 합니다.  
 `passthrough`로 생성해주면 됩니다.  
+그리고 url은 Openshift에서 자동으로 생성되는 url로 사용해도 무방합니다.  
 
 외부로 열어야하는 서비스 : config, web reverse proxy  
 
