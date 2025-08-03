@@ -2,7 +2,7 @@ disabled = false
 languageCode = "en"
 languageName = "Korean"
 weight = 1
-title = "호롤리한 하루"
+title = "Hololy Day"
 
 [params]
   displayName = "KR"
