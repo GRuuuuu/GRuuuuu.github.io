@@ -7,6 +7,9 @@ on:
     branches:
       - main
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -56,7 +59,7 @@ jobs:
           hugo \
             --gc \
             --minify \
-            --baseURL "gruuuuu.hololy.org"          
+            --baseURL "${{ steps.pages.outputs.base_url }}/"          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -66,7 +69,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: gruuuuu.hololy.org
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
