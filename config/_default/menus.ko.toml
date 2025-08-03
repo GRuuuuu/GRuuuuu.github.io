@@ -9,6 +9,11 @@
 # By default the menu is ordered alphabetically. This can be
 # overridden by providing a weight value. The menu will then be
 # ordered by weight from lowest to highest.
+[[main]]
+  name = "About"
+  pre = "eye"
+  weight = 1
+  pageRef = "about"
 
 [[main]]
   name = "Blog"
