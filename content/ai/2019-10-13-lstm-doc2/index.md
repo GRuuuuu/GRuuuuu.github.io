@@ -1,0 +1,195 @@
+---
+title: "호다닥 공부해보는 RNN 친구들(2) - LSTM & GRU"
+slug: lstm-doc2
+tags:
+  - ML
+  - RNN
+  - LSTM
+  - GRU
+date: 2019-10-13T13:00:00+09:00
+---
+[호다닥 공부해보는 RNN 친구들(1) - RNN(Recurrent Neural Networks)](https://gruuuuu.github.io/machine-learning/lstm-doc/)에서 이어지는 글입니다.  
+
+## RNN의 고질적인 문제
+이전의 계산결과를 바탕으로 계산한다는 RNN의 특징은 어찌보면 사람의 뇌와 많이 닮았습니다. 그래서 Neural Network라는 이름을 붙인것일지도 모릅니다.  
+그래서 사람의 신경망과 닮은 이 특징은 단점도 가지고 있습니다.  
+
+>여러분은 **올해의 신년 다짐**이 뭐였는지 기억나시나요?  
+>작년은? 10년전은 기억하고 계신가요?  
+
+물론 어딘가에 기록해두고 꾸준히 실천하고 계신 분들도 있겠지만, 대다수는 그 당시에만 반짝 실천하고 시간이 흐를수록 잊어버리겠죠. 저는 기억도 안납니다.  
+
+RNN도 비슷합니다.  
+처음 입력으로 받은 정보는 학습에 강한 영향을 끼치다가 점점 새로운 입력이 들어오면서 처음 입력값의 영향력은 점차 감소하고 결국 학습에 아무런 영향을 끼치지 못하게 됩니다.  
+
+![image](https://user-images.githubusercontent.com/15958325/66256055-1c3f6100-e7c5-11e9-907b-c6182256a32c.png)
+
+
+이를 RNN의 **장기 의존성 문제**(the problem of Long-Term Dependencies)라고도 하고, 네트워크 학습에 사용하는 경사도(Gradient)가 사라지는(Vanishing)현상이므로 **Vanishing Gradient Problem**이라고도 부릅니다.  
+
+## Vanishing(or Exploding) Gradient Problem
+이 문제는 오랜시간 Deep Learning 영역에서 골치를 썩여왔었습니다.   
+지금부터는 왜 이런 현상이 발생하는지 알아보도록 하겠습니다.  
+
+먼저 신경망의 역전파에 대해서 알고있어야 하는데 자세한 설명은 다음 동영상으로 대체하고 진행하겠습니다.  :  
+[lec9-2: 딥넷트웍 학습 시키기 (backpropagation)](https://youtu.be/573EZkzfnZ0)   
+
+먼저 역전파를 하는 이유는 **결과의 오류를 바로잡기 위함**이고, 이를 위해 각 layer들의 가중치(w)를 조절하게 됩니다.  
+
+cost함수를 최적화하기 위해 기울기를 구하게 되고 이때 기울기는 해당 함수의 미적분값이겠죠.  
+
+문제는 여기서 발생합니다.  
+신경망이 **곱하기연산**을 기반으로 만들어져 있기 때문에, 미적값이 1보다 조금만 커도 gradient값이 **발산**하게 되고 1보다 조금만 작아도 gradient값이 **소실**하게 됩니다.  
+
+> EX)  
+> 1.1^100 = 13,780.6  
+> 0.9^100 = 0.0000265
+
+아래 사진은 sigmoid와 tanh의 그래프와 미적 그래프 입니다.   
+![image](https://user-images.githubusercontent.com/15958325/66532733-7042a080-eb4b-11e9-9c0a-23cfd82474fb.png)   
+![image](https://user-images.githubusercontent.com/15958325/66532761-910af600-eb4b-11e9-8c67-203f36f022cc.png)   
+
+sigmoid와 tanh 모두 미분함수가 절댓값 x 가 커질수록 0에 수렴하는 모양을 보이며 Backpropagation시 미분값이 소실될 가능성이 큽니다.  
+
+그래서 기존 RNN의 **장기 의존성 문제**(the problem of Long-Term Dependencies)가 발생하게 되었고, 이 다음부터 LSTM이 어떻게 문제를 해결하였는지에 대해 설명하도록 하겠습니다.  
+
+> **[리빙포인트 -ReLU]**   
+>
+> ![image](https://user-images.githubusercontent.com/15958325/66532803-b13ab500-eb4b-11e9-99e2-e01c372b5d93.png)   
+>
+> Vanishing Gradient Problem의 해결책 중 가장 일반적인 해결책은 기존의 `sigmoid`나 `tanh`을 `relu`로 바꾸는 것입니다.  
+> 하지만 본문에서 `relu`를 언급하지 않은 이유는, [이전 편](https://gruuuuu.github.io/machine-learning/lstm-doc/#activation-function)에서 언급했듯이 RNN계열은 **같은 레이어를 반복하는 특징**이 있기 때문입니다.  
+> RNN계열이 아닌 다른 네트워크 모델들은 relu가 훨---씬 효과적이니 참고하세요!
+
+
+# LSTM?
+## Concept
+**Long Short-Term Memory Units**(LSTM)은 기존 RNN의 문제를 극복하기 위해 90년대에 처음 등장한 개념입니다.   
+
+기존 RNN과 마찬가지로 체인구조를 가지고 있지만, 히든레이어에 sigmoid또는 tanh과 같은 활성화함수만 존재했던 RNN과 달리 LSTM은 **4개의 상호작용하는 작은 모듈**들이 존재하고 있습니다.  
+<center><img src="https://user-images.githubusercontent.com/15958325/66540998-b3f7d300-eb68-11e9-820e-d49ff8b80ff7.png"></center>   
+<center>기존의 RNN 모듈</center>  
+
+
+<center><img src="https://user-images.githubusercontent.com/15958325/66541012-c114c200-eb68-11e9-84b7-0a1b3b567f48.png"></center> 
+<center>4개의 작은 모듈들을 가지고 있는 LSTM</center>    
+
+LSTM 레이어를 하나 떼어서 라벨을 붙이면 다음과 같은 그림이 나오게 됩니다.  
+<center><img src="https://user-images.githubusercontent.com/15958325/66697080-5cdf3300-ed0d-11e9-9264-93917ca8e453.png"></center>    
+
+한 눈에 보이는 LSTM의 특징은 다음과 같습니다.  
+1. 레이어 안에는 **4개의 모듈** 존재
+2. 레이어 밖으로 나가는 선이 **두개**
+
+### 1.Gates
+앞서 언급한 4개의 모듈은 3개의 Gate로 표현됩니다.  
+
+- **forget gate (f)** : **과거 정보를 잊기**위한 게이트. 
+- **input gate (i)** : **현재 정보를 기억하기**위한 게이트. 
+- **output gate (o)** : 최종 결과 **h**를 위한 게이트.
+
+> 모든 Gate는 시그모이드 함수를 사용하고 출력 범위는 0 ~ 1 이기 때문에 그 값이 0이라면 정보를 잊고, 1이라면 정보를 온전히 기억하게 된다. 
+
+### 2.Cell State
+
+![image](https://user-images.githubusercontent.com/15958325/66697370-eee83b00-ed0f-11e9-8f5d-cb8183b2f581.png)  
+
+먼저 맨 위를 가로지르는 선 C를 **cell state**라고 부릅니다.  
+
+가장 눈에 띄는 부분은 **더하기(+)기호**입니다. 일반적인 RNN에서는 곱하기 연산으로만 이루어져 있었는데 LSTM에서는 피드백을 더하기(+)로 이음으로써 **Vanishing Gradient**와 같은 문제를 해결할 수 있습니다.  
+
+cell state 또한 이전에 배운 은닉 상태처럼 이전 시점의 cell state가 다음 시점의 cell state를 구하기 위한 입력으로서 사용됩니다.
+
+> **LSTM**은 이 cell state를 보호하고 컨트롤 하기 위한 세 가지 게이트: **forget, input, output gate**를 통해 vanishing gradient를 방지하고 그래디언트가 효과적으로 흐를 수 있게 한다.
+
+## Deep Dive
+
+지금부터는 LSTM의 학습과정을 수식을 통해 자세히 설명드리도록 하겠습니다.  
+
+### 1. Forget Gate
+
+LSTM의 첫번째 단계는 정보를 얼마나 잊을지에 관한 단계입니다.  
+![image](https://user-images.githubusercontent.com/15958325/66711741-9c208900-edcc-11e9-86f1-b4a5a4b20ab3.png)   
+
+이전상태의 hidden state(h)와 현재 상태의 input(x)이 시그모이드 함수를 거치면 0~1의 값이 나오게 됩니다.   
+
+이는 **삭제 과정을 거친 정보의 양**입니다. 0에 가까울수록 정보가 많이 삭제된 것이고 1에 가까울수록 정보를 온전히 기억하게 됩니다.  
+해당 값은 다다음 단계에서의 cell state update에서 cell state(C)에 적용되게 됩니다.
+
+### 2. Input Gate
+
+그 다음 Gate에서는 현재 상태의 input(x)를 얼마나 기억할 것인지에 대한것을 계산합니다.   
+![image](https://user-images.githubusercontent.com/15958325/66711815-24535e00-edce-11e9-8a9d-ac8a4ead43f1.png)   
+
+그림이 약간 헷갈리실 수도 있습니다.  
+
+이전상태의 hidden state(h)와 현재상태의 input(x)값을 시그모이드와 하이퍼볼릭탄젠트(tanh)로 지나게 합니다.  
+이렇게 하면 시그모이드를 지난 값은 0~1의 값을 가지며 gate의 역할을 하게 되고(**input gate**),  
+tanh를 지난 값은 -1~1의 값을 가지며 **현재 cell state**를 나타내게 됩니다.  
+>기존 RNN에서의 hidden state를 구하는 공식과 같은 것을 확인할 수 있습니다. 활성화함수가 tanh인것
+
+### 3. State Update
+
+1단계에서는 forget gate의 값이 나왓고, 2단계에서는 현재 cell state의 값, input gate의 값이 나왔으니 이제 해당 값들을 업데이트 해줘야 합니다.  
+
+![image](https://user-images.githubusercontent.com/15958325/66712342-5b2d7200-edd6-11e9-8e73-4c1324253fc8.png)  
+
+1. 이전단계의 cell state에 forget gate(**얼마나 잊을건지**)를 Hadamard product계산(각 행렬의 인자끼리 곱하기)
+2. 현재 cell state에 input gate(**얼마나 반영할지**)를 Hadamard product계산
+3. 2번의 결과를 1번의 결과와 더함
+4. 최종 결과를 다음 상태의 cell state로 보낸다
+
+> 만약 forget gate와 input gate 둘다 0이라면 이전단계의 cell state가 그대로 다음상태로 넘어갑니다.  
+> 만약 둘다 1이면 이전단계의 cell state는 전부 잊혀지고 현재 상태의 cell state가 그대로 다음상태로 넘어가게 됩니다.  
+
+
+### 4. Output Gate
+
+cell state의 계산은 끝났으니 이제 다음 상태로 보낼 (output)hidden state를 구해야합니다.  
+
+![image](https://user-images.githubusercontent.com/15958325/66712515-c4ae8000-edd8-11e9-8f3a-3db40e145ab8.png)   
+
+1. 3단계까지 이뤄진 cell state를 tanh취해줌
+2. 그대로 내보내는 것이 아니라 output gate를 통해 **얼마나 다음단계로 보낼건지**를 계산
+
+## Code
+tensorflow에서의 LSTM은 다음과 같이 구현될 수 있습니다.  
+~~~python
+# num_units : 몇 번 반복할건지
+lstm_cell = tf.nn.rnn_cell.LSTMCell(num_units=n_neurons)
+~~~
+
+# GRU (Gated Recurrent Unit)
+LSTM의 간소화된 버전입니다.  
+![image](https://user-images.githubusercontent.com/15958325/66712735-17d60200-eddc-11e9-9068-54e0feae9752.png)  
+
+GRU에서는 LSTM과 다르게 게이트가 2개인데, **Reset Gate(r)**과 **Update Gate(z)**입니다.  
+게이트 이름에서 알 수 있듯이, 리셋 게이트는 새로운 입력을 이전 메모리와 어떻게 합칠지를 정해주고, 업데이트 게이트는 이전 메모리를 얼만큼 기억할지를 정해줍니다.  
+
+긴 시퀀스를 잘 기억하게 해준다는 점에서 LSTM의 컨셉과 같지만 몇가지 차이점들이 있습니다.  
+
+- Gate개수 : LSTM은 3개, GRU는 **2개** 
+- LSTM에서의 C(cell state)와 h(hidden state)가 hidden state로 통합
+- Update Gate(z)가 LSTM에서의 forget, input gate를 제어
+- GRU에는 output gate가 없음
+
+### Reset Gate
+이전 hidden state와 입력(x)를 받아 sigmoid처리.  
+이전 hidden state에서 얼마나 값을 반영할 지 정하는 gate.
+
+### Update Gate
+1. 타 게이트 연산과 같이 이전상태의 hidden state와 입력값(x)를 sigmoid처리.  
+2. -1붙은 연산은 이전 상태를 얼마나 잊을지 (LSTM의 forget gate와 같은 역할)
+3. 현재상태(cell state)를 얼마나 반영할지 (LSTM의 input gate와 같은 역할)
+4. 최종 결과를 다음 상태의 hidden state로
+
+> 즉 update gate의 계산 한번으로 LSTM의 forget gate+input gate의 역할을 대신할 수 있다.
+
+## Code
+tensorflow에서의 GRU은 다음과 같이 구현될 수 있습니다.  
+~~~python
+# num_units : 몇 번 반복할건지
+gru_cell = tf.nn.rnn_cell.GRUCell(num_units=n_neurons)
+~~~
+
+----

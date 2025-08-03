@@ -1,0 +1,13 @@
+#TableOfContents {
+  max-width: 250px; 
+}
+
+
+@font-face {
+    font-family: font;
+    src: url('/fonts/IBMPlexSansKR-Text.ttf');
+}
+
+html {
+    font-family: font;
+}

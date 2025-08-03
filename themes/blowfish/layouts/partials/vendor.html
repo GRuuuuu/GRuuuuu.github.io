@@ -1,0 +1,105 @@
+{{/* jQuery */}}
+{{ $jqueryLib := resources.Get "lib/jquery/jquery.slim.min.js" | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+<script src="{{ $jqueryLib.RelPermalink }}" integrity="{{ $jqueryLib.Data.Integrity }}"></script>
+
+{{/* Mermaid */}}
+{{ if .Page.HasShortcode "mermaid" }}
+  {{ $mermaidLib := resources.Get "lib/mermaid/mermaid.min.js" }}
+  {{ $mermaidConfig := resources.Get "js/mermaid.js" }}
+  {{ $mermaidConfig := $mermaidConfig | resources.Minify }}
+  {{ $mermaidJS := slice $mermaidLib $mermaidConfig | resources.Concat "js/mermaid.bundle.js" | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <script
+    defer
+    type="text/javascript"
+    src="{{ $mermaidJS.RelPermalink }}"
+    integrity="{{ $mermaidJS.Data.Integrity }}"></script>
+{{ end }}
+
+{{/* Chart */}}
+{{ if .Page.HasShortcode "chart" }}
+  {{ $chartLib := resources.Get "lib/chart/chart.min.js" }}
+  {{ $chartConfig := resources.Get "js/chart.js" }}
+  {{ $chartConfig := $chartConfig | resources.Minify }}
+  {{ $chartJS := slice $chartLib $chartConfig | resources.Concat "js/chart.bundle.js" | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <script
+    defer
+    type="text/javascript"
+    src="{{ $chartJS.RelPermalink }}"
+    integrity="{{ $chartJS.Data.Integrity }}"></script>
+{{ end }}
+
+{{/* Katex */}}
+{{ if .Page.HasShortcode "katex" }}
+  {{ $katexCSS := resources.Get "lib/katex/katex.min.css" }}
+  {{ $katexCSS := $katexCSS | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="{{ $katexCSS.RelPermalink }}"
+    integrity="{{ $katexCSS.Data.Integrity }}">
+  {{ $katexLib := resources.Get "lib/katex/katex.min.js" }}
+  {{ $katexRenderLib := resources.Get "lib/katex/auto-render.min.js" }}
+  {{ $katexJS := slice $katexLib $katexRenderLib | resources.Concat "js/katex.bundle.js" | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <script
+    defer
+    type="text/javascript"
+    src="{{ $katexJS.RelPermalink }}"
+    integrity="{{ $katexJS.Data.Integrity }}"
+    id="katex-render"></script>
+  {{ $katexFonts := resources.Match "lib/katex/fonts/*" }}
+  {{ range $katexFonts }}
+    <!-- {{ .RelPermalink }} -->
+  {{ end }}
+{{ end }}
+
+{{/* TypeIt */}}
+{{ if .Page.HasShortcode "typeit" }}
+  {{ $typeitLib := resources.Get "lib/typeit/typeit.umd.js" | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <script defer src="{{ $typeitLib.RelPermalink }}" integrity="{{ $typeitLib.Data.Integrity }}"></script>
+{{ end }}
+
+{{/* Packery */}}
+{{ if .Page.HasShortcode "gallery" }}
+  {{ $packeryLib := resources.Get "lib/packery/packery.pkgd.min.js" }}
+  {{ $packeryLib = $packeryLib | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <script
+    defer
+    type="text/javascript"
+    src="{{ $packeryLib.RelPermalink }}"
+    integrity="{{ $packeryLib.Data.Integrity }}"></script>
+
+  {{ $jsShortcodeGallery := resources.Get "js/shortcodes/gallery.js" }}
+  {{ $jsShortcodeGallery = $jsShortcodeGallery | resources.Minify | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <script
+    type="text/javascript"
+    src="{{ $jsShortcodeGallery.RelPermalink }}"
+    integrity="{{ $jsShortcodeGallery.Data.Integrity }}"></script>
+{{ end }}
+
+{{/* tw-elements */}}
+{{ if or (.Page.HasShortcode "carousel") (.Page.HasShortcode "timeline") }}
+  {{ $twelementsLib := resources.Get "lib/tw-elements/index.min.js" }}
+  {{ $twelementsLib = $twelementsLib | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <script
+    defer
+    type="text/javascript"
+    src="{{ $twelementsLib.RelPermalink }}"
+    integrity="{{ $twelementsLib.Data.Integrity }}"></script>
+{{ end }}
+
+{{/* youtubeLite */}}
+{{ if .Page.HasShortcode "youtubeLite" }}
+  {{ $youtubeLiteCSS := resources.Get "lib/lite-youtube-embed/lite-yt-embed.css" }}
+  {{ $youtubeLiteCSS = $youtubeLiteCSS | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="{{ $youtubeLiteCSS.RelPermalink }}"
+    integrity="{{ $youtubeLiteCSS.Data.Integrity }}">
+  {{ $youtubeLiteLib := resources.Get "lib/lite-youtube-embed/lite-yt-embed.js" }}
+  {{ $youtubeLiteLib = $youtubeLiteLib | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <script
+    type="text/javascript"
+    src="{{ $youtubeLiteLib.RelPermalink }}"
+    integrity="{{ $youtubeLiteLib.Data.Integrity }}"></script>
+{{ end }}

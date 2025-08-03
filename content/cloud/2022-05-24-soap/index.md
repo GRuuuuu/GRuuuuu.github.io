@@ -1,0 +1,176 @@
+---
+title: "호다닥 공부해보는 SOAP"
+slug: soap
+tags:
+  - API
+  - SOAP
+date: 2022-05-24T13:00:00+09:00
+---
+
+## Overview
+OpenAPI에 대해 [포스팅](https://gruuuuu.github.io/programming/openapi/)을 적은지도 벌써 2달이 지났네요...   
+이번 포스팅에서는 SOAP에 대해서 알아보겠습니다.  
+
+## 1. SOAP란?
+
+![soap](https://user-images.githubusercontent.com/15958325/170813641-dcff1061-b2e9-44f1-8227-30207ae64d55.png)  
+
+SOAP의 풀네임은 **"Simple Object Access Protocol"** 로, `HTTP`, `HTTPS`, `SMTP` 등을 사용하여 `XML` 기반의 메시지를 컴퓨터 네트워크 상에서 교환하는 통신 프로토콜을 말합니다.  
+
+![tele](https://user-images.githubusercontent.com/15958325/170813643-ee74b358-f6cc-4f93-ad05-1eca1bd5e705.png)   
+**서로 다른 service들간의 연동을 목적**으로 상호 이해 가능한 포맷의 메세지를 송수신함으로써 **원격지에 있는 서비스객체나 API를 자유롭게 사용**하고자 하는 기업의 요구에서부터 탄생한 프로토콜입니다.
+
+과거에도 `DCOM`이나 `CORBA`과 같은 방법으로 원격지간 의사소통은 할 수 있었지만, 호환성과 보안상의 문제가 있었습니다. (일반적으로 tcp 트래픽은 방화벽에서 차단)  
+그래서 좀 더 범용적으로 사용할 수 있는 방법을 고민했고 인터넷을 사용하는 모든 서버에 의해 지원되는 **HTTP**를 활용한 **SOAP**가 등장하게 되었습니다.  
+
+### 동작 방식 Intro
+![soap](https://user-images.githubusercontent.com/15958325/170814450-e3806d84-0660-45ed-a4f8-d0449569db08.png)    
+근데 이 SOAP방식의 메세지 교환은 겉보기에는 굉장히 복잡해보입니다.  
+이 동작방식을 제대로 이해하기 위해서 각각의 요소들을 자세히 살펴보도록 하겠습니다.  
+
+### WSDL란?
+**WSDL(Web Services Description Language)** 는 웹서비스가 기술된 정의 파일의 총칭으로 XML을 사용해 기술됩니다.  
+
+**웹서비스의 구체적인 내용**이 기술되어있는 문서이고 서비스 제공장소, 서비스 메세지 포맷, 프로토콜들이 기술되어있습니다.  
+
+>아래 설명은 WSDL 2.0 기준입니다.  
+>W3 document ->  
+>- [WSDL Version 2.0 Part 1: Core Language](https://www.w3.org/TR/wsdl20/)  
+>- [WSDL Version 2.0 Part 2: Adjuncts](https://www.w3.org/TR/wsdl20-adjuncts/)
+
+![image](https://user-images.githubusercontent.com/15958325/170814499-fecdeac6-eab9-4a0d-9b2d-1927c89af89d.png)  
+
+- `Types` : 교환될 메세지 설명, 사용될 데이터 형식 정의
+- `Interface` : operation정의 (input과 output)
+- `Binding` : Interface에 정의된 작업에 대해 메세지 형식과 프로토콜 정의 (클래스화)
+- `Service` : WebService URL endpoint정의 
+
+예시 코드를 보면서 자세히 살펴보도록 하겠습니다.  
+
+전체 코드 -> [wsdl 2.0 sample code](https://raw.githubusercontent.com/GRuuuuu/temprepo/main/Files/hololy/220524-soap-rest/wsdl-2-sample.xml)  
+
+#### Types
+~~~xml 
+<wsdl:types>
+...
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:tns="http://example.org/calculator"
+                targetNamespace="http://example.org/calculator"
+                elementFormDefault="qualified"
+                attributeFormDefault="qualified">
+        <xs:element name="AddValuesRequest" type="tns:AddValuesType" />
+        <xs:element name="AddValuesResponse" type="tns:AddValuesResponseType" />
+
+        <xs:complexType name="AddValuesType">
+            <xs:sequence>
+                <xs:element name="FirstValue" type="xs:int" minOccurs="1" maxOccurs="1" />
+                <xs:element name="SecondValue" type="xs:int" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+
+        <xs:complexType name="AddValuesResponseType">
+            <xs:sequence minOccurs="1" maxOccurs="1">
+                <xs:element name="Result" type="xs:int" />
+            </xs:sequence>
+        </xs:complexType>
+...
+    </xs:schema>
+</wsdl:types>
+~~~
+**type** 파트에서는 교환될 메세지를 설명하고, 사용될 데이터 형식을 정의하게 됩니다.  
+`schema`를 통해 필요한 부분을 import하고, wsdl에서 사용할 데이터 형식을 정의합니다.  
+위의 예시 코드에서는 `AddValuesRequest`와 `AddValuesResponse`을 선언하고 데이터의 형식을 `<xs:complexType>`안에서 정의하고 있습니다.  
+
+ex)   
+- `AddValuesRequest`은 데이터 타입으로 `AddValuesType`을 사용  
+- `AddValuesType`은 `FirstValue`와 `SecondValue`을 자식 요소로 순서대로 가짐
+- `FirstValue`와 `SecondValue`는 `int`타입이며, 최소1개 최대1개만 정의될 수 있음 (값이 반드시 있어야 한다는 뜻)  
+
+
+#### Interface
+~~~xml
+<wsdl:interface name="CalculatorInterface">
+    <wsdl:fault name="fault" element="calc:CalculationFault" />
+    <wsdl:operation name="AddValues" pattern="http://www.w3.org/ns/wsdl/in-out" style="http://www.w3.org/ns/wsdl/style/iri" wsdl:safe="true">
+        <wsdl:documentation>Adds up passed values and returns the result</wsdl:documentation>
+        <wsdl:input messageLabel="in" element="calc:AddValuesRequest" />
+        <wsdl:output messageLabel="out" element="calc:AddValuesResponse" />
+        <wsdl:outfault messageLabel="fault" ref="tns:fault" />
+    </wsdl:operation>
+</wsdl:interface>
+~~~
+**Interface** 파트에서는 Operation 즉 함수를 정의하게 됩니다.   
+
+ex)  
+- Interface의 이름은 `CalculatorInterface`
+- 실패하였을 시, type에서 정의했던 `CalculationFault` 타입의 메세지 출력
+- Operation의 이름은 `AddValues`  
+- 함수의 input의 형식은 type에서 정의했던 `AddValuesRequest`
+- output의 형식은 `AddValuesResponse`  
+
+input과 output의 순서도 중요한데 총 4가지 경우가 있습니다. 해당 문서에서는 가장 많이 사용하는 두가지만 적겠습니다.  
+1. One-Way : input만 있는 경우 (클라이언트가 메세지만 보냄)
+2. Request-Response : 클라이언트 요청 -> 서버 응답 (input-output)  
+
+#### Binding
+~~~xml
+<wsdl:binding name="CalculatorBinding" interface="tns:CalculatorInterface" type="http://www.w3.org/ns/wsdl/soap" soap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP/">
+    <wsdl:operation ref="tns:AddValues" soap:mep="http://www.w3.org/2003/05/soap/mep/soap-response" />
+    <wsdl:fault ref="tns:fault" soap:code="soap:Sender" />
+</wsdl:binding>
+~~~
+**Binding** 파트에서는 Interface에 정의된 작업에 대해 메세지 형식과 프로토콜을 정의하게 됩니다.  
+
+
+ex)  
+- `CalculatorInterface` Interface에 대해 프로토콜로`soap`을 사용  
+
+> mep(message exchange pattern)에 대해서 제대로 이해못함... 나중에 이해되면 문서 수정 예정
+
+#### Service
+~~~xml
+<wsdl:service name="CalculatorService" interface="tns:CalculatorInterface">
+    <wsdl:endpoint name="CalculatorEndpoint" binding="tns:CalculatorBinding" address="http://localhost:8080/services/calculator" />
+</wsdl:service>
+~~~
+**Service** 파트에서는 WebService URL endpoint를 정의하게 됩니다.  
+
+ex)  
+- `CalculatorService`에 대한 요청은 `CalculatorEndpoint`에서 처리
+
+### UDDI란?
+**UDDI(Universal Description, Discovery and Integration)** 는 한단어로 public registry입니다.  
+무엇을 담느냐! 위의 `WSDL`을 담아둡니다.  
+
+전역 저장소이기 때문에 공개적으로 접근하고 WSDL을 검색할 수 있습니다.  
+
+### 동작 방식 
+
+자! 그러면 각 요소들이 어떤 역할을 하는지 알았으니, 다시 SOAP 아키텍처의 동작 방식을 알아보도록 하겠습니다.  
+
+![soap](https://user-images.githubusercontent.com/15958325/170814450-e3806d84-0660-45ed-a4f8-d0449569db08.png)  
+
+**Web Service Broker** : 여기선 UDDI, 서비스 등록 및 검색, 저장, 관리하는 주체  
+**Web Service Provider** : 웹 서비스를 구현하여 운영하고 제공하는 주체  
+**Web Service Consumer** : 웹 서비스를 요청하는 주체  
+
+1. 서비스 제공자는 UDDI에 사용가능한 WSDL 등록
+2. 서비스 사용자는 원하는 서비스를 위해 UDDI를 검색
+3. 원하는 서비스에 대한 WSDL 다운로드
+4. WSDL 문서를 처리하여 적절한 인터페이스에 맞게 SOAP메세지 작성
+5. HTTP를 통해 서비스 요청
+6. 서비스 제공자는 요청 값을 디코딩 -> 적절한 서비스 로직 수행
+7. 결과값을 SOAP메세지로 작성 후 HTTP를 통해 요청자에게 반환
+
+한문장으로 정리하면  
+사용자는 UDDI를 통해 자신이 원하는 웹 서비스를 검색하고, 서비스에 대한 파라미터나 리턴 타입 등의 자세한 내용을 알아낸 다음, SOAP 메시지의 형태로 HTTP 프로토콜을 사용하여 통신하는 것이 되겠습니다.  
+
+
+### 특징
+- **XML기반**으로 플랫폼에 독립적, 서로 다른 운영체제에서 실행되는 서비스간 통신방법을 제공
+- 프록시와 방화벽에 구애받지 않고, **HTTP, HTTPS**등을 통해 메세지를 교환
+- **확장**이 용이
+- **에러 처리**에 대한 내용이 기본적으로 내장
+- XML 형태로 메세지를 보내기때문에 다른 기술들에 비해 상대적으로 **처리속도가 느림**
+
+----

@@ -1,0 +1,265 @@
+---
+title: "Javascript 비동기 함수의 동작원리 (feat. EventLoop)"
+slug: async-js
+tags:
+  - JavaScript
+  - Programming
+  - Asynchronous
+date: 2022-10-08T13:00:00+09:00
+---
+## Overview
+
+이번 포스팅에서는 최근 Javascript관련 포스팅 3개를 작성하면서 개인적으로 궁금했던 내용을 다뤄보려고 합니다.  
+(1) [호다닥 톺아보는 Callback 함수](https://gruuuuu.github.io/javascript/callback/)  
+(2) [호다닥 톺아보는 Promise](https://gruuuuu.github.io/javascript/promise/)  
+(3) [호다닥 톺아보는 async&await](https://gruuuuu.github.io/javascript/asyncawait/)   
+
+## Javascript는 Single Thread
+Javascript는 Single Thread기반 언어입니다.  
+
+즉, **한 번에 하나의 작업만 수행이 가능**하다는 의미입니다.  
+
+그런데 여러 경우에서 동시에 병렬로 처리해야하는 작업들이 있습니다.  
+예를 들어 브라우저상에서 이미지 로딩이라던지, 스크롤 액션, 버튼 누르기 등등이 있죠.  
+버튼 누를때마다 작업이 완료될때까지 화면이 멈춘다면 최악의 유저경험을 선사해줄 수 있을겁니다.  
+
+그래서 Javascript는 비동기 함수들을 사용할 수 있게 지원해주고 있습니다.  
+
+비동기를 배울 때 가장 많이 사용하는 함수인 `setTimeout`이라던지, `ajax`, 또는 `Promise`객체를 반환함으로써 직접 비동기 함수를 만들 수도 있습니다.  
+
+근데 **Javascript**는 Single Thread언어인데 어떻게 비동기 로직을 다룰 수 있는걸까요?  
+`Promise`객체는 대체 어떤 녀석이길래 함수에서 `return new Promise`만 해주면 비동기가 되는걸까요?  
+
+## Call Stack
+비동기 로직을 이해하기 전에 우선 Javascript에서 함수의 호출과 처리가 어떤식으로 동작하는지 알아볼 필요가 있습니다.  
+
+**Call Stack**은 함수의 호출을 스택방식으로 기록하는 자료구조입니다.  
+프로그램에서 요청이 들어올 때마다, 순서대로 스택에 담고, **가장 나중에 들어온 작업을 먼저 처리하는 LIFO(Last In First Out)** 의 구조입니다.  
+
+Javascript는 Single Thread 기반 언어이기 때문에 하나의 Call Stack만을 가지고 있고, **한 번에 하나의 Task만 처리**할 수 있습니다.  
+
+간단한 코드 하나를 보겠습니다.  
+~~~js
+function fifth() { }
+function fourth() { fifth() }
+function third() { fourth() }
+function second() { third() }
+function first() { second() }
+
+first();
+~~~  
+![01callstack](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-08-async-js/01callstack.gif)  
+
+최상단 코드레벨에서 `first`라는 함수가 호출되었고 -> `second`부터 `fifth`까지 차례대로 호출되고 마지막 `fifth`함수부터 실행되고 반환되는 것을 확인할 수 있습니다.
+
+이렇게 동기 로직에서는 하나의 Task가 종료될 때까지 다른 Task는 실행되지 못하고 순차적으로만 실행될 수 있습니다.  
+
+## Promise
+다음은 Promise를 살펴보겠습니다.  
+
+~~~js
+function promiseFunc(){
+  return new Promise(function(res, rej)     
+  {// Doing something!
+    res(1);
+  });
+}
+console.log("2");
+promiseFunc().then(console.log);
+console.log("3")
+~~~
+
+1을 리턴하는 아주 간단한 Promise예제입니다.  
+
+
+![02promise](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-08-async-js/02promise.gif)  
+
+Promise가 포함되니 기존의 코드와 약간 동작이 달라집니다. 
+
+1. `console.log("2")` 실행
+2. `promiseFunc()` 실행
+3. promise의 `then`으로 전달되는 Callback함수가 **Microtask Queue**에 적재
+3. `console.log("3")` 실행
+4. Call Stack 비었음
+5. Event loop가 MicrotaskQueue에 쌓인 Task를 call stack에 다시 적재
+6. `console.log("1")` 실행
+
+이처럼 Promise, async/await와 같은 비동기 호출의 Callback 함수들은 **Microtask Queue**에 담기게 되고 **FIFO**(First In First Out)의 형태로 실행됩니다.  
+
+**Eventloop**는 현재 실행중인 Task가 있는지, Queue들에 적재된 Task가 있는지 주기적으로 확인하고,  
+만약 실행중인 Task가 Call Stack에 없다면 Queue에서 Task를 꺼내와 Call Stack에 올리고 실행시키는 역할을 합니다.  
+
+즉, Promise를 반환하면 비동기로 실행된다고 해서 병렬로 실행된다는 아니라는 것입니다.  
+정확히 말하면 Promise의 `then`, `catch`, `finally`로 전달되는 Callback 함수가 비동기로 실행되는 것이죠!  
+
+비동기함수를 동기처럼 실행시키려고 Callback함수를 붙인건데 정작 비동기로 실행되는 부분은 Callback함수라니 재밌고도 헷갈리는 것 같습니다.   
+
+특정 코드의 연산이 끝날 때까지 코드의 실행을 멈추지 않고, 다음코드를 먼저 실행하는게 **Javascript의 비동기처리** 라고 보면 될 것 같습니다.  
+
+>**한줄정리**  
+>- `Event loop`는 call stack을 지켜보다 비어있으면 Queue에 적재된 task를 실행
+>- Promise의 callback함수는 `Microtask Queue`에 적재
+
+## async & await
+그럼 이번엔 `async`와 `await`의 동작도 한번 보겠습니다.  
+
+~~~js
+function promiseFunc(){
+  return new Promise(function(res, rej)   
+  {// Doing something!
+    console.log("0")
+    res(1);
+  });
+}
+
+async function asyncFunc(){
+  console.log("2");
+  const res = await promiseFunc();
+  console.log(res);
+}
+
+console.log("3");
+asyncFunc();
+console.log("4");
+~~~
+
+![03asyncawait](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-08-async-js/03asyncawait.gif)  
+  
+
+1. `console.log("3")` 실행
+2. `asyncFunc()` 실행 
+3. `console.log("2")` 실행
+4. `promiseFunc()` 실행
+5. `console.log("0")` 실행
+6. promise 반환
+7. ✨`await`를 만나면 Microtask Queue에 적재
+8. `console.log("4")` 실행
+9. Call Stack이 비었음
+10. Event loop가 Microtask Queue에 쌓인 Task를 call stack에 다시 적재
+11. ✨`await` 이후 작업 진행 (`console.log("1")`)
+
+>**한줄정리**  
+>- `await`를 만나면 작업을 중지하고 `Microtask Queue`에 적재된다  
+
+## WebAPI
+그러면 Javascript 비동기 함수의 대표적 예시인 `setTimeout`과 같은 녀석들은 어떻게 처리되는 걸까요?  
+
+타이머기능이나 서버통신과 같은 작업들이야말로 병렬로 처리되어야 할 것 같은데요.  
+
+웹 코드를 작성하는데 필요한 작업들을 모아둔 API들이 있습니다.  
+**Web API**라고 부르고 이들은 브라우저나 nodeJS와 같은 **런타임**에 탑재되어 있습니다.  
+
+>놀랍게도 대표적으로 사용하는 Javascript Engine인 v8 (구글 크롬, NodeJS에서 사용)에는 Web API가 정의되어 있지 않습니다.  
+
+사용 가능한 전체 Web API목록은 -> [여기](https://developer.mozilla.org/ko/docs/Web/API)  
+
+`HTML DOM`에 관한 API, `ajax`에 사용되는 `XMLHttpRequest`, network통신할때 사용하는 `fetch`, 타이머기능을 갖고 있는 `setTimeout`,`setInterval` 등 여러 API가 있습니다.  
+
+예시를 보겠습니다.
+~~~js
+console.log("1");
+
+setTimeout(()=>{
+  console.log("after 3s!")
+},3000)
+
+console.log("2");
+
+setTimeout(()=>{
+  console.log("after 5s!")
+},5000)
+
+console.log("3");
+~~~
+
+![04webapi](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-08-async-js/04webapi.gif)  
+
+
+1. `console.log("1")` 실행
+2. ✨첫번째 `setTimeout()`의 동작을 브라우저 혹은 nodejs와 같은 런타임으로 위임
+3. `console.log("2")` 실행
+4. 두번째 `setTimeout()`의 동작을 위임
+3. `console.log("3")` 실행
+5. 3초후 첫번째 `setTimeout()`의 Callback함수가 Task Queue에 적재
+6. Call Stack이 비었음
+7. Event loop가 Task Queue에 쌓인 Task를 call stack에 다시 적재
+8. `console.log("after 3s!")` 실행
+9. 5초후 두번째 `setTimeout()`의 Callback함수가 Task Queue에 적재
+10. 반복...
+
+앞전의 Promise와는 조금 다른형태로 동작하고 있습니다.  
+Web API의 **비동기 작업들을 Javascript엔진과 별개의 공간(브라우저 혹은 런타임)에 위임**합니다.  
+
+그래서 타이머와 같은 병렬로 처리되어야 하는 작업들이 **멀티스레드로 동작**할 수 있는것입니다.  
+
+WebAPI들은 작업이 종료되고 나면 그들의 Callback함수가 **Task Queue**에 쌓입니다.  
+그리고 Promise때와 마찬가지로 Event loop가 지켜보고 있다가 CallStack이 비어있으면 Queue에서 작업을 꺼내서 CallStack에 쌓고 실행시킵니다.  
+
+>**한줄정리**  
+>- WebAPI의 비동기 함수들은 Javascript 엔진이 아닌 브라우저/런타임에서 **multi thread**로 동작한다!
+>- 작업이 완료되면 Callback함수들이 `Task Queue`에 적재되고 event loop에 의해 실행된다
+
+## Microtask Queue vs Task Queue
+비슷한 역할을 하는 Queue가 여러개있으니 각 Queue에 대한 우선순위도 존재할 것입니다.  
+
+아래 코드를 보겠습니다.
+~~~js
+console.log("1");
+
+setTimeout(()=>{
+  console.log("2")
+},0)
+
+console.log("3");
+
+Promise.resolve()
+  .then(() => {
+    console.log("4");
+  });
+
+Promise.resolve()
+  .then(() => {
+    console.log("5");
+  });
+  
+console.log("6");
+~~~
+
+![05queue](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-10-08-async-js/05queue.gif)  
+
+1. `console.log("1")` 실행
+2. `setTimeout()`의 동작을 브라우저 혹은 nodejs와 같은 런타임으로 위임
+3. 하지만 타이머가 0초이므로 바로 Callback함수를 Task Queue에 적재
+4. `console.log("3")` 실행
+5. 첫번째 `Promise` 실행 -> Microtask Queue에 callback 함수 적재
+6. 두번째 `Promise` 실행 -> Microtask Queue에 callback 함수 적재
+7. `console.log("6")` 실행
+8. Call Stack이 비었음
+9. Event loop가 Microtask Queue에 쌓인 Task를 call stack에 적재
+10. Microtask Queue가 전부 비워짐
+11. Event loop가 Task Queue에 쌓인 Task를 call stack에 적재
+
+이처럼 우선순위가 제일 높은 Queue는 `Microtask Queue`입니다.  
+Microtask Queue가 전부 비워지고 나면 `TaskQueue`를 비우게 됩니다.  
+
+하나 주의해야할 점은 `Microtask Queue`는 한번 비워질때 Queue에 쌓인 모든 task를 비우지만,  
+`Task Queue`는 한번에 Callback함수 하나씩을 실행합니다.  
+그래서 하나의 작업을 call stack에 올려서 실행하고나서 다른 작업이 들어오면 우선순위가 밀리게 됩니다.  
+
+그리고 본문엔 적지 않았지만, 사용자가 스크롤을 이동하거나 화면을 갱신하는 것과 같이 **브라우저 렌더링에 관련된 Task**들이 담기는 Queue가 따로 있습니다.  
+이름하야 **Animation Frames**!  
+우선순위는 `Microtask Queue`와 `TaskQueue`의 중간입니다.  
+
+>**한줄정리**  
+>- Event loop 우선순위 : `Microtask Queue` > `Animation Frames` > `Task Queue`  
+>- Event loop는 `Microtask Queue`나 `Animation Frames`와 같은 Queue에서는 모든 작업을 한번에 수행하지만, `Task Queue`에서는 한번에 하나의 작업만 수행
+
+## 마무리
+1. Queue들의 이름이 되게 다양하다... 대체 공식이름은 뭘까 싶을정도로 여러개이다.
+2. `Microtask Queue` == `Job Queue`
+3. `Task Queue` == `Macrotask Queue` == `Event Queue`
+4. Javascript의 엔진 자체는 Single Thread지만 특정 API들은 브라우저/런타임을 통해 Multi Thread로 작업이 가능
+5. Javascript의 비동기는 병렬처리가 아니다. event loop덕분에 코드를 끊기지 않고 실행할 수 있을 뿐
+6. Call Stack에 Task가 쌓여있으면 Queue의 Task들은 대기할 수밖에 없다. 그래서 작업이 많으면 Timer 함수의 정확성이 떨어질 수도 있다! (1초가 1초가 아닐수도 있다는 뜻)
+
+----

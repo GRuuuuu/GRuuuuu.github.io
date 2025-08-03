@@ -1,0 +1,409 @@
+---
+title: "예쁜 vim 만들기 (Arcy's vim)"
+slug: arcy-vim
+tags:
+  - vim
+  - Tips
+date: 2022-01-28T13:00:00+09:00
+---
+
+## Overview
+![image](https://user-images.githubusercontent.com/15958325/151500464-8ce9e8ab-d34d-436c-b692-0f161a5a584b.png)  
+
+아무 설정도 하지 않은 vim은 뭔가 황량합니다.  
+이 vim을 예쁘게 꾸미는 방법에 대해서 알아보도록 하겠습니다.  
+
+직접 vimrc를 설정해서 꾸밀수도 있지만, 시간이 오래걸리므로 쉽게 다른사람이 만든 vim 세팅을 다운로드해서 꾸며보도록 하겠습니다.  
+
+대신 각 라인마다 설명을 적어둘것이니 참고해서 커스텀하면 되겠습니다.  
+
+# vimrc 다운로드 (Arcy's vim)
+
+Download Link -> [https://arcy.org/.vimrc](https://arcy.org/.vimrc)  
+
+적용하고자 하는 시스템의 home 폴더에 다운받고 이름을 `.vimrc`로 지어주면 끝입니다.  
+
+![image](https://user-images.githubusercontent.com/15958325/151500983-6f852fcc-4097-46d6-b610-63b75074ef33.png)  
+
+그럼 예쁜 vim화면이!  
+![image](https://user-images.githubusercontent.com/15958325/151501523-5d11d0dd-5b0b-4cf6-9e59-a77ada682a94.png)  
+
+
+# Arcy's vimrc 설명
+
+>참고 :  
+>[vimdoc-options](http://vimdoc.sourceforge.net/htmldoc/options.html)  
+>[vimhelp - pi_netrw](https://vimhelp.org/pi_netrw.txt.html)  
+>[vim 키 노테이션](https://hidekuma.github.io/vim/the-vim-key-notations/)
+
+
+~~~
+let g:Arcy="4.9"
+let mapleader="\<Space>"
+~~~
+글로벌 변수인 `Arcy`와 `mapleader` 생성  
+`mapleader`는 `<leader>`와 매핑되는 키  
+
+>**Background++**  
+>vimrc 내 변수 선언   
+>
+>~~~
+>                (nothing) In a function: local to a function; otherwise: global 
+>buffer-variable    b:     Local to the current buffer.                          
+>window-variable    w:     Local to the current window.                          
+>tabpage-variable   t:     Local to the current tab page.                        
+>global-variable    g:     Global.                                               
+>local-variable     l:     Local to a function.                                  
+>script-variable    s:     Local to a :source'ed Vim script.                     
+>function-argument  a:     Function argument (only inside a function).           
+>vim-variable       v:     Global, predefined by Vim.
+>~~~
+
+>**Background ++**   
+>`set` 과 `let`의 차이  
+>
+>`let` : 변수 선언  
+>`set` : vim option에 값을 세팅
+
+~~~vim
+set nocompatible
+"set fileformat=unix
+set formatoptions=tcql
+~~~
+`set nocompatible` : 기존 vi와 기능적으로 호환되지 않게 함.(vim은 **V**i **IM**proved의 약자라 vi에서 사용가능한 기능외에도 추가 기능을 제공. `nocompatible`로 설정하면 이 추가기능들을 쓴다는거고, `compatible`로 설정하면 추가 기능을 못씀)  
+`"set fileformat=unix` : unix기반시스템에서는 default가 `unix`. window에서 쓰려면 `dos`, mac에서 쓰려면 `mac` 으로 설정  
+`set formatoptions=tcql` : 텍스트에디터 옵션(default=`tcq`). 참고 : [vimdoc-foTable](http://vimdoc.sourceforge.net/htmldoc/change.html#fo-table)  
+        - `t` : 입력한 text를 textwidth에 맞춰서 자동 줄바꿈  
+        - `c` : 입력한 comment를 textwidth에 맞춰서 자동 줄바꿈  
+        - `q` : `gq`명령어를 사용가능하게 함  
+        - `l` : textwidth보다 긴 text가 insert되었을 경우 일단 붙여넣기 하고 자동 formating은 안함    
+
+~~~vim
+set ai
+"set laststatus=2
+"set wrapmargin=2
+set visualbell
+set mat=3 showmatch
+"set term=xterm
+"set nu
+~~~
+`set ai` : 자동 들여쓰기  
+`"set laststatus=2` : 상태바 (0: 상태바 미표시, 1: 2개이상의 윈도우에서만 상태바 표시, 2: 항상표시)  
+`"set wrapmargin=2` : 들여쓰기(default 0, 변경하려면 textwidth가 0이어야 함)  
+`set visualbell` : 키 잘못눌렀을때 경고음 대신 화면반짝  
+`set mat=3 showmatch` : `showmatch`는 매칭되는 괄호로 커서가 잠시 옮겨갔다가 돌아오는데, `mat`(matchtime)은 커서가 옮겨가는 시간을 의미(3=0.3초, default 5)  
+`"set term=xterm` : 터미널 타입 (default $TERM)  
+`"set nu` : 줄 번호 표시  
+
+~~~vim
+set bs=2
+set nobackup
+set history=500 
+set ruler 
+set list lcs=tab:\|.,trail:~
+set viminfo='100,<50
+~~~
+`set bs=2` : 편집모드시 백스페이스 활성화 (2는 우리가 흔히 아는 backspace기능과 동일, 1은 시작부에서 이전줄로 안돌아감, 0은 backspace지원X)  
+`set nobackup` : 백업파일 안만듬  
+`set history=500` : 명령어의 히스토리 저장, 최대 500개  
+`set ruler` : 커서 위치 정보를 상태바에 표시  
+`set list lcs=tab:\|.,trail:~` : tab은 |...로 표시, trailing blank(라인뒤에 쓸데없이 공백있는거)는 ~로 표시   
+`set viminfo='100,<50` : .viminfo 파일에 기록하는 파일의 개수 100개 명령어의 개수 50개 이하   
+
+~~~vim
+set fencs=utf-8,cp949,euc-kr,ucs-bom,latin1
+set incsearch           " incremental searching
+set ignorecase smartcase
+set wildmenu
+~~~
+`set fencs=...` : 파일 인코딩 옵션   
+`set incsearch` : `/` 검색 시, 한 글자 씩 입력할 때마다 검색을 수행  
+`set ignorecase smartcase` : `ignorecase` - 검색 시 대소문자 무시, `smartcase` - 검색어에 대문자가 포함되어 있다면 대소문자를 무시하지 않음  
+`set wildmenu` : 명령어 자동완성, tab을 통해 어떤 명령어가 가능한지 visual로 보여줌  
+
+~~~vim
+" netrw setting
+let g:netrw_winsize = -28
+let g:netrw_chgwin = -1
+let g:netrw_browse_split = 0
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+" https://vi.stackexchange.com/questions/7889/cannot-exit-vim-even-using-q
+" Per default, netrw leaves unmodified buffers open. This autocommand
+" deletes netrw's buffer once it's hidden (using ':q', for example)
+autocmd FileType netrw setl bufhidden=delete
+~~~
+netrw는 창을 분할하여 탐색하고 동시에 편집도 가능하게 하는 툴이다(vim이 설치되어있으면 기본적으로 설치되어있음)  
+
+참고 : [vimhelp - pi_netrw](https://vimhelp.org/pi_netrw.txt.html)
+
+`let g:netrw_winsize = -28` : 세로(`:Lexplore`, `:Vexplore`)로 netrw를 띄웠을때의 window 가로 사이즈 (-28이면 왼쪽에 작게 netrw가 뜸)  
+`let g:netrw_chgwin = -1` : default -1, netrw에서 선택한 파일이 차지할 윈도우 number  
+`let g:netrw_browse_split = 0` : default 0, netrw에서 선택한 파일을 같은화면에 share(0)할건지 가로로 분할(1), 세로로 분할(2), 새로운 탭(3), 이전 윈도우(4)에서 띄울 건지 정하는 옵션  
+`let g:netrw_banner = 0` : netrw 배너 숨김(0), 활성화(1)  
+`let g:netrw_liststyle = 3` : 1줄 1파일(0), 1줄 1파일+파일정보출력(1), 1컬럼에 여러파일(2), 트리스타일(3)  
+`autocmd FileType netrw setl bufhidden=delete` : 몰?루... netrw를 사용할때 숨겨진 버퍼를 지워주는것같음... ([Cannot exit Vim even using q!](https://vi.stackexchange.com/questions/7889/cannot-exit-vim-even-using-q))  
+
+> **Background++**  
+>`autocmd`란?  
+>특정 이벤트가 발생할때 자동으로 명령을 수행할 수 있게 하는 명령어  
+>참고 : [vim의 autocmd 이벤트들](https://soooprmx.com/vim%EC%9D%98-autocmd-%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%93%A4/)  
+
+~~~vim
+if v:version >= 703
+  let undodir=$HOME."/.vim/undo"
+  if !isdirectory(undodir)
+    call mkdir(undodir, "p")
+  endif
+  set undofile                " Save undo's after file closes
+  set undodir=$HOME/.vim/undo " where to save undo histories
+  set undolevels=1000         " How many undos
+  set undoreload=10000        " number of lines to save for undo
+ endif
+~~~
+vim version이 703(v7.3)이상일때 실행:   
+undo한 내용들을 저장할 폴더를 생성하고,  
+1000번의 undo를 할 수 있게 하고, 10000줄의 undo history를 저장한다  
+
+~~~vim
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+~~~
+터미널 색상이 2가지 이상이거나 gui가 실행되고 있는 상태면  
+`syntax on` : syntax highlighting 활성화  
+`set hlsearch` : `/`로 검색한 결과에 highlighting  
+
+~~~vim
+" Force encoding as UTF-8, in cygwin ssh enviroment
+if stridx(&term, "xterm") >= 0 && stridx($USERDOMAIN, "NT AUTHORITY") >= 0
+  set enc=utf-8
+endif
+~~~
+터미널이 xterm 이고 `$USERDOMAIN`에 'NT AUTHORITY'가 포함되어있을 경우(cygwin환경에서 실행할 경우?), `utf-8` 설정   
+
+~~~vim
+set background=dark
+
+set <S-F1>=^[O2P
+set <S-F2>=^[O2Q
+set <S-F3>=^[O2R
+set <S-F4>=^[O2S
+~~~
+`set background=dark` : 배경 검은색   
+`set <S-F1>=^[O2P` : Shift+F1 = F13   
+`set <S-F2>=^[O2Q` : Shift+F2 = F14  
+`set <S-F3>=^[O2R` : Shift+F3 = F15  
+`set <S-F4>=^[O2S` : Shift+F4 = F16  
+
+~~~vim
+map <S-F1> :echo "Arcy's environment version " g:Arcy<cr>
+map <S-F2> :call Updateit()<CR>:source ~/.vimrc<CR>
+map <F3> :Lexplore<cr>
+map <S-F3> :bd<cr>
+map <F4> :up<cr>
+imap <F4> <ESC>:up<CR>a
+map <S-F4> :q<cr>
+map <F9> :<C-U>exec v:count1 . "cp"<CR>
+map <F10> :<C-U>exec v:count1 . "cn"<CR>
+map <S-F9> :bp<cr>
+map <S-F10> :bn<cr>
+map <F11> :N<cr>
+map <F12> :n<cr>
+map <S-F11> :tN<cr>
+map <S-F12> :tn<cr>
+map <C-j> <C-w>j     " 하
+map <C-k> <C-w>k     " 상
+map <C-h> <C-w>h     " 좌
+map <C-l> <C-w>l     " 우
+map <C-n> <C-w>n
+map <C-;> :redr!<cr>
+map <C-i> :tabprev<cr>
+map <C-p> :tabnext<cr>
+map <C-m> :tabnew<cr>
+~~~
+`<S-F1>` : `Shift+F1`, "Arcy's environment version " g:Arcy 출력 ex)Arcy's environment version 4.9   
+`<S-F2>` : `Shift+F2`, .vimrc 업데이트  
+`<F3>` : `F3`, 파일탐색기 좌측에 띄우기  
+`<S-F3>` : `Shift+F3`, 현재 버퍼에 들어있는 내용 삭제  
+`<F4>` : `F4`, 바뀐 내용만 저장  
+`imap <F4>` : `F4`, 편집모드에서도 사용가능, 바뀐 내용만 저장  
+`<S-F4>` : `Shift+F4`, 저장안하고 나가기   
+`<F9>`랑 `<F10>`은 잘 모르겠음...
+`<S-F9>` : `Shift+F9`, 버퍼에 있는 이전파일로 이동  
+`<S-F10>` : `Shift+F10`, 버퍼에 있는 다음파일로 이동  
+`<F11>` : `F11`, 파일이 여러개 열려있을때 이전 파일로 이동  
+`<F12>` : `F12`, 파일이 여러개 열려있을때 다음 파일로 이동   
+`<S-F11>` : `Shift+F11`, vim tags 관련... 일치하는 이전 Tag로 이동
+`<S-F12>` : `Shift+F12`, 일치하는 다음 Tag로 이동   
+`<C-j>` : `Ctrl+j`, 창 분할시 밑의 창으로 커서 이동  
+`<C-k>` : `Ctrl+k`, 창 분할시 위의 창으로 커서 이동  
+`<C-h>` : `Ctrl+h`, 창 분할시 왼쪽 창으로 커서 이동  
+`<C-l>` : `Ctrl+l`, 창 분할시 오른쪽 창으로 커서 이동  
+`<C-n>` : `Ctrl+n`, 새로운 창 분할   
+`<C-;>` : `Ctrl+;`, 창 새로고침  
+`<C-i>` : `Ctrl+i`, 이전 탭으로 이동   
+`<C-p>` : `Ctrl+p`, 다음 탭으로 이동  
+`<C-m>` : `Ctrl+m`, 새 탭 띄움   
+
+>windows나 가상머신에서 리눅스 띄워서 접속할경우 일부 커맨드가 안먹힐 수 있습니다.   
+>ex) ctrl+m누르면 tabnew가 실행되어야하는데 windows의 window minimize가 먼저떠서 터미널이 최소화됨
+
+~~~vim
+" Leader mapping
+noremap <Leader>b :term bash<CR>
+noremap <Leader>t :Sexplore<CR>
+noremap <Leader>T :Texplore<CR>
+noremap <Leader>gs :Git<CR>
+noremap <Leader>gd :Gdiff<CR>
+noremap <Leader>ge :Gedit<CR>
+noremap <Leader>gg :Ggrep <C-R><C-W><CR>
+noremap <Leader>du :diffupdate<CR>
+noremap <Leader>r :set relativenumber! nu!<CR>
+noremap <Leader>p :set paste!<CR>
+set pastetoggle=<F2>
+~~~
+
+`<Leader>b` : `<space>b`, bash 터미널을 창분할로 띄움   
+`<Leader>t` : `<space>t`, 파일 탐색기를 위쪽에 창분할로 띄움    
+`<Leader>t` : `<space>T`, 파일 탐색기를 현재창에 띄움  
+`<Leader>gs` : `<space>gs`, Git status   
+`<Leader>gd` : `<space>gd`, git diff 현재 파일의 어떤 부분이 수정되었는지 확인  
+`<Leader>ge` : `<space>ge`, 잘 몰?루겠음,,   
+`<Leader>gg` : `<space>gg`, git grep    
+`<Leader>du` : `<space>du`, 두 문서간의 차이점 비교  
+`<Leader>r` : `<space>r`, 상대 라인 넘버, 라인넘버 안보이게함(말로쓰려니까 이상한데 한번 실행해보면 알 수 있음)  
+`<Leader>p` : `<space>p`, 몰루...   
+`set pastetoggle=<F2>` : 편집모드와 paste모드를 왔다갔다할수있는 스위치  
+
+> **background ++**  
+>map과 noremap의 차이  
+>~~~
+>map j gg
+>map Q j
+>noremap q j
+>~~~
+>`map`의 경우 recursive하게 동작. ex) Q를 누를 경우 gg가 실행  
+>`noremap`의 경우 non-recursive하게 동작. ex) q를 누를 경우 j가 실행  
+
+> **background ++**  
+> `<leader>`는 기본적으로 `\`을 의미. ex) `<leader>T` -> `\t`   
+>`mapleader`변수를 선언함으로써 매핑되는 키를 변경할 수 있다   
+>~~~
+>let mapleader="\<Space>"
+>~~~
+>라고 선언하면 `<leader>`는 `공백`이 됨   
+
+~~~vim
+" Disable man page
+nnoremap K <nop>
+" Disable ex mode
+nmap Q q
+~~~
+`nnoremap K <nop>` : normal mode(esc누른상태)에서 K(현재 커서의 명령어 man페이지 띄우기) 비활성화  
+`nmap Q q` : ex모드 비활성화   
+
+~~~vim
+" Command mode remap
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <Esc>b <S-Left>
+cnoremap <Esc>f <S-Right>
+
+" Alt-Backspace to delete a word
+inoremap <Esc><Backspace> <C-w>
+cnoremap <Esc><Backspace> <C-w>
+~~~
+*`cnoremap` : 커맨드라인일때 적용되는 non-recursive 매핑  
+`<C-a>` : 커맨드라인에서 `Ctrl+a`를 누르면 home키 누른것같이 동작  
+`<C-e>` : 커맨드라인에서 `Ctrl+e`를 누르면 end키 누른것같이 동작  
+`<Esc>b` : 커맨드라인에서 `Esc+b`를 누르면 단어단위로 왼쪽으로 커서 이동  
+`<Esc>f` : 커맨드라인에서 `Esc+f`를 누르면 단어단위로 오른쪽으로 커서 이동  
+
+*`inoremap` : 편집모드일때 적용되는 non-recursive 매핑
+`inoremap <Esc><Backspace>` : 편집모드에서 `Esc+Backspace`누르면 단어단위로 지워짐  
+`cnoremap <Esc><Backspace>` : 커맨드라인에서 `Esc+Backspace`누르면 단어단위로 지워짐  
++)왠진모르겠는데 주석처럼 `Alt+Backspace`눌러도 단어단위로 지워짐  
+
+~~~vim
+" Auto close tag with HTML files
+function! s:CloseTags()
+  imap <C--> <lt>/<C-x><C-o>
+endfunction
+autocmd BufRead,BufNewFile *.html,*.js,*.xml,*.vue call s:CloseTags()
+~~~
+`<C-->` : 편집모드에서 `Ctrl+-`를 누르면 태그 자동완성...  (인데 테스트해봤을때 `Ctrl+-`가 먹질않아서 다른 키로 바꿔서 해봤더니 잘 된다!)  
+
+~~~vim
+" show relavite line number from cursor
+augroup numbertoggle
+  autocmd!
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal relativenumber number
+  autocmd WinLeave * setlocal norelativenumber number
+augroup END
+~~~
+vim 라인넘버를 커서를 기준으로 상대적으로 나타내게 함   
+
+~~~vim
+au BufNewFile,BufRead *.c          set si
+au BufNewFile,BufRead *.php        set si et sw=4 sts=4
+au BufNewFile,BufRead *.py         set si et sw=4 sts=4
+au BufNewFile,BufRead *.html,*.css set sw=8 sts=8 noet
+au BufNewFile,BufRead *.js,*.ts    set et sw=2 sts=2
+au BufNewFile,BufRead *.rdf        set et sw=2 sts=2
+au BufNewFile,BufRead *.vue        setlocal filetype=vue.html.javascript.css
+~~~
+
+파일 확장자에 맞춰 다른 설정 적용  
+`set si` : if문이나 for문 등에서 자동 들여쓰기 적용   
+`set et` : (expandtab) tab키 입력시 tab칸에 해당하는 개수만큼 공백칸이 생김. tab이 4칸이면 tab했을때 `/t`이아닌 공백4칸이 생긴단 뜻  
+`set sw=n` : (shiftwidth) 들여쓰기 칸 개수  
+`set sts=n` : (soft tab stop) tab키 눌렀을때 몇 칸 이동할건지   
+`set noet` : expandtab기능 안씀  
+ 
+~~~vim
+" Load Vundle
+if isdirectory($HOME."/.vim/bundle")
+  filetype off
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
+  Plugin 'VundleVim/Vundle.vim'
+  Plugin 'tpope/vim-fugitive' " Git management
+  Plugin 'AutoComplPop' " Auto complete popup
+  " Syntax
+  " Plugin 'vim-syntastic/syntastic'
+  " Plugin 'posva/vim-vue' " Vue.js
+  " Plugin 'fatih/vim-go' " Golang
+
+  call vundle#end()
+  filetype plugin indent on
+endif
+~~~
+`:PluginInstall`시 설치될 플러그인들의 정보   
+
+~~~vim
+" Load local config
+if filereadable($HOME."/.vimrc.local")
+  source $HOME/.vimrc.local
+endif
+~~~
+로컬 vim세팅이 있다면 적용  
+
+
+# vim 타이니팁
+
+1. 문서 내에서 파일 경로 입력할때 : (insert상태에서) `ctrl+x`+`ctrl+f`  
+![image](https://user-images.githubusercontent.com/15958325/151573681-bdb8a225-9db1-4f33-ba66-29228789223e.png)  
+
+2. 파일탐색기(netrw) 열기 : `:Lexplore`
+![image](https://user-images.githubusercontent.com/15958325/151586313-265b02c4-fd07-461c-9d33-a5ba362ff354.png)  
+
+3. 새로운 탭 열기 : `:tabnew`  
+![image](https://user-images.githubusercontent.com/15958325/151658041-65ef32fa-2c9e-4a63-b8b6-7a2b39f37a00.png)  
+
+4. 단어단위로 지우기 : `Alt+Backspace`  
+
+----

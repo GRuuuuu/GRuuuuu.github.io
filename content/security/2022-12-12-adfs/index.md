@@ -1,0 +1,156 @@
+---
+title: "Windows Server 2019 ADFS구축하기"
+slug: adfs
+tags:
+  - SSO
+date: 2022-12-12T13:00:00+09:00
+---
+
+## Active Directory Federation Services(AD FS)란?
+Microsoft사에서 개발한 SSO(Single Sign-On) 솔루션입니다.  
+Active Directory(AD)서비스와 인증하고자 하는 클라이언트 애플리케이션 사이의 인증과 권한을 관리하게 됩니다.  
+
+일반적으로 아래와 같은 프로세스를 탑니다.  
+
+1. 사용자가 ADFS에서 제공된 URL로 이동
+2. ADFS는 AD를 통해 사용자를 인증
+3. 인증이 완료되면 ADFS가 사용자에게 인증 클레임을 제공
+4. 인증클레임은 사용자의 브라우저에 전송되고, Federation Trust 서비스에 따라 액세스를 허용/거부
+
+## Install
+
+> 참고 : [Windows Server 2019 ADFS Step-By-Step](http://arnaudpain.com/2019/08/05/windows-server-2019-adfs-step-by-step/#sthash.PGjWjkhZ.dpbs)
+
+>⚠ ADFS 설치하기 이전에 Active Directory Domain Service가 구성되어 있어야 합니다.  
+>아래 링크를 참고하여 구성여부를 체크하고 없다면 설치해주도록 합니다.  
+>참고 : [Windows Server 2012: Set Up your first Domain Controller (step-by-step)](https://social.technet.microsoft.com/wiki/contents/articles/12370.windows-server-2012-set-up-your-first-domain-controller-step-by-step.aspx)  
+
+
+### 1. Powershell로 ADFS 설치
+관리자 권한으로 Powershell 열어서 아래 명령어 입력  
+~~~
+Install-WindowsFeature adfs-federation -IncludeManagementTools
+~~~
+
+### 2. ADFS role 설정
+> 이 단계를 진행하기 전에, ADFS에서 사용할 도메인의 SSL certificate를 미리 발급받아야 합니다.  
+>참고 -> [호다닥 공부해보는 x509와 친구들(2) - Let’s Encrypt](https://gruuuuu.github.io/security/letsencrypt/#lets-encrypt%EB%A1%9C-%EC%9D%B8%EC%A6%9D%EC%84%9C-%EB%B0%9C%EA%B8%89%EB%B0%9B%EA%B8%B0)  
+
+위에서 설치를 마치고 나면 아래 사진과 같이 pending되어있습니다.  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/1.png)   
+
+**Configure the federation service on this server**를 눌러 나머지 작업들을 진행합니다.  
+
+
+ADFS에서 사용할 도메인의 SSL certificate와 서비스 이름을 설정해줍니다.  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/2.png)  
+
+다음으로 넘어가기 전에, group Managed Service Account를 생성하기위해 `KDS Root Key`라는 키를 먼저 만들어야 합니다.  
+
+Powershell에서 아래 명령어로 키를 생성합니다.  
+~~~
+Add-KdsRootKey –EffectiveTime (Get-Date).AddHours(-10)
+~~~
+
+키 만들고나서 서비스 어카운트를 마저 생성해줍니다.  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/3.png)   
+
+데이터베이스는 새롭게 생성해주고  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/4.png)    
+
+> [참고한 문서](http://arnaudpain.com/2019/08/05/windows-server-2019-adfs-step-by-step/#sthash.PGjWjkhZ.dpbs)에 따르면, next로 넘어가기전에 group Managed Service Account를 Posershell로 미리 생성해주어야 한다고 합니다.(왜인지는 잘 모르겠지만 일단 잘 넘어갔으니 기록해둡니다.)  
+>
+>~~~
+>$Name = 'group-manager'
+>$DNS_Name = 'adfs.ce-window.XXX.com'
+>$PATRMP = 'XXX-prep0$'
+>New-ADServiceAccount -Name $Name -DNSHostName $DNS_Name -PrincipalsAllowedToRetrieveManagedPassword $PATRMP 
+>~~~
+
+그리고 넘어가게 되면 ADFS설치가 마무리됩니다.  
+
+### 3. 설치 확인
+
+ADFS가 정상적으로 설치되었는지 확인하려면 아래 링크를 눌러 xml문서가 출력되는지 확인해야 합니다.  
+~~~sh
+# https://{DOMAIN}/adfs/fs/federationserverservice.asmx
+https://adfs.ce-window.XXX.com/adfs/fs/federationserverservice.asmx
+~~~  
+
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/5.png)    
+
+### 4. 로그인 페이지 확인
+
+먼저 Powershell에서 ADFS의 sign on page를 활성화시켜줍니다.  
+~~~
+Set-AdfsProperties -EnableIdPInitiatedSignonPage $true 
+~~~
+
+그 다음 아래 url로 접속
+~~~sh
+# https://{DOMAIN}/adfs/ls/idpinitiatedsignon
+https://adfs.ce-window.XXX.com/adfs/ls/idpinitiatedsignon
+~~~
+
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/6.png)    
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/7.png)    
+
+
+## Appendix
+
+### 1. ADFS certificate 설정
+테스트를 안해봐서 확실하지는 않지만 와일드카드로 도메인을 만들어서 적용시키면 Token signing/decrypting에 사용되는 certificate가 self-signed로 만들어진 certificate를 사용하게 됩니다.  
+
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/8.png)    
+
+이렇게 되면 추후에 OIDC/SAML의 client들과 통신할때 애먹을수도 있으니 변경해주도록 합시다.  
+
+먼저 Powershell에서 아래 명령어로 인증서를 자동으로 rollover시켜주는 기능을 꺼주겠습니다.  
+~~~
+Set-ADFSProperties -AutoCertificateRollover $false
+~~~
+
+그 다음 Token signing/decrypting 모두 제대로 된 인증서를 추가해줍니다.  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/9.png)    
+
+새로 인증서가 추가되었습니다.  
+하지만 secondary로 설정되어있으니 새로 추가한 인증서를 primary로 변경해줍니다.  
+![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/main/2022/2022-12-12-adfs/10.png)    
+사진처럼 경고가 뜨지만 ok를 눌러줍니다.  
+
+이 당시 OIDC가 돌아가고있었는데 큰 문제없이 인증서가 갱신되었었습니다.  
+
+### 2. ADFS certificate 갱신하기
+3개월이 지나서 certificate를 갱신하려고 보니... 생각보다 직관적이지 않아서 헤맸기 때문에 기록용으로 남겨둡니다.  
+
+>참고 : [Managing SSL Certificates in AD FS and WAP in Windows Server 2016](https://learn.microsoft.com/en-us/windows-server/identity/ad-fs/operations/manage-ssl-certificates-ad-fs-wap)  
+
+현재 등록된 certificate 출력  
+~~~
+$ dir Cert:\LocalMachine\My\
+
+   PSParentPath: Microsoft.PowerShell.Security\Certificate::LocalMachine\My
+
+Thumbprint                                Subject
+----------                                -------
+EEA83C6D9B05D16012345604A223386762A386BC  CN=*.ce-window.xxx.com
+6F280F0B2E9112345664355897B7D12F103901B1  CN=*.ce-window.xxx.com
+~~~
+
+현재 ADFS에서 사용중인 certificate 출력
+~~~
+$ Get-AdfsSslCertificate
+~~~
+
+<img width="455" alt="image" src="https://user-images.githubusercontent.com/15958325/223140993-8e494ea6-0f4d-4acc-803b-8942afee52a5.png">  
+
+인증서 갱신
+~~~
+$ Set-AdfsSslCertificate -Thumbprint '<Thumbprint>'
+~~~
+
+<img width="463" alt="image" src="https://user-images.githubusercontent.com/15958325/223141426-36f61d88-f5d7-4007-898a-9fa541c54377.png">  
+
+갱신 완료!  
+
+----

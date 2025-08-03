@@ -1,0 +1,418 @@
+---
+title: "Kubernetes Volumes : Static & Dynamic Provisioning"
+slug: k8s-volume
+tags:
+  - Kubernetes
+  - Controller
+  - Volume
+  - NFS
+  - PersistentVolume
+date: 2019-12-12T13:00:00+09:00
+---
+
+## 1. Overview
+이번 문서에서는 `Kubernetes`(k8s)의 여러 볼륨에 대해서 알아보겠습니다.  
+
+>**수정)**  
+>21.06.08 : Volume의 AccessMode에서 접근 가능한 대상을 Pod->**Node**로 변경  
+>21.07.20 : nfs provisioner의 ServiceAccount namespace 설명 추가  
+
+## 2. Prerequisites
+
+본문에서 사용한 spec :  
+`OS : CentOS v7.6`  
+`Arch : x86`  
+
+k8s클러스터는 1마스터 2노드로 구성했습니다.  
+`Master` : 4cpu, ram16G  
+`Node` : 2cpu, ram4G  
+
+# 3. Volumes
+쿠버네티스에서의 볼륨은 pod에 종속되는 디스크입니다. 다시말해, 같은 pod에 있는 컨테이너들은 해당 디스크를 공유해서 사용할 수 있습니다.  
+## EmptyDir
+pod과 함께 생성되고 삭제되는 **임시 볼륨**입니다. 아무런 volume옵션을 주지 않았을 때 생성됩니다.   
+
+## Host Path
+로컬 디스크의 경로를 pod에 마운트해서 사용하는 방식입니다.  
+
+**pod이 올라간 노드의 로컬디스크를 사용**하는 것이기 때문에 <u>해당 노드의 로컬 마운트 포인트가 존재</u>하는지 확인해야 합니다.  
+
+또한 pod이 재시작되어 다른노드에서 기동될 경우에, 해당 노드의 로컬디스크를 사용하기 때문에 이전 노드에서 사용했던 로컬디스크는 액세스할 수 없게 됩니다.  
+
+노드의 **파일시스템을 접근**하는데 유용한 특성을 가지고 있으므로 노드의 로그파일을 읽어서 수집하는 **로그 에이전트**같은 경우에 유용하게 사용할 수 있습니다.  
+
+### 실습
+
+~~~yaml
+$ vim hostpath-nginx.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts: # pod의 path
+    - name: volumepath
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name : volumepath
+    hostPath: # 반드시 노드에 해당 path가 있는지 확인할 것
+      path: /root/hostdir
+      type: Directory
+~~~
+
+pod 실행 :   
+~~~sh
+$ kubectl apply -f hostpath-nginx.yaml
+$ kubectl get pod
+~~~
+![image](https://user-images.githubusercontent.com/15958325/70773891-07caa680-1dbc-11ea-8e07-59825bb596ec.png)  
+
+
+pod이 어디떠있는지 확인 :  
+~~~sh
+$ kubectl describe pod hostpath-nginx
+~~~
+![image](https://user-images.githubusercontent.com/15958325/70773928-2a5cbf80-1dbc-11ea-8ef8-77d222c838bb.png)  
+
+2번 노드에 떠있습니다.  
+
+2번 노드에 접속해서 해당 path에 파일을 하나 생성해봅시다.  
+![image](https://user-images.githubusercontent.com/15958325/70773982-482a2480-1dbc-11ea-9bd5-d3c991211091.png)  
+
+
+nginx앱 안에 들어가서 마운트 포인트를 확인해봅니다.  
+~~~sh
+$ kubectl exec -it hostpath-nginx /bin/bash
+~~~
+![image](https://user-images.githubusercontent.com/15958325/70774033-6a23a700-1dbc-11ea-9f45-25c37b2e7f7d.png)  
+방금전 2번 노드에서 생성한 파일이 그대로 보이는것을 확인할 수 있습니다.  
+
+## PersistentVolume & PersistentVolumeClaim
+임시나 로컬 디스크가 아닌 디스크 볼륨을 설정하려면 물리적인 스토리지를 생성해야하고, 관리까지 할 줄 알아야합니다. 이는 개발자들에게 있어 상당한 부담이 될 수 있습니다.   
+
+쿠버네티스는 인프라에 대한 복잡성을 추상화시키고 개발자들이 손쉽게 인프라 자원을 사용할 수 있도록 하는 개념을 가지고 있습니다.  
+
+* 시스템관리자 : 인프라에 대한 것들만  
+* 개발자 : 개발에 관한 것만  
+
+각자의 역할에 집중할 수 있도록 `PersistentVolume`(pv)과 `PersistentVolumeClaim`(pvc)이라는 개념을 도입하였습니다.  
+
+기본 시나리오 :   
+![Picture1](https://user-images.githubusercontent.com/15958325/70780659-6433c300-1dc8-11ea-877b-b34a02a1cec2.png)  
+
+시스템 관리자가 실제 스토리지를 생성하고, 이 디스크를 `PersistentVolume`으로 쿠버네티스에 등록합니다.  
+개발자는 pod을 생성할 때, 볼륨을 정의하고 이 부분에 `PersistentVolumeClaim`을 지정하여 시스템 관리자가 생성한 pv와 연결합니다.  
+
+### 실습 : Static Provisioning (with NFS)
+> 실습을 진행하기 전에, 물리적인 스토리지가 하나 반드시 필요합니다.  
+> 이 문서에서는 `NFS`를 사용하도록 하겠습니다.  
+> 참고링크 : [호롤리한하루/NFS 기초 연결 (LINUX)](https://gruuuuu.github.io/linux/basic-nfs/)  
+
+실제 스토리지와 연동되는 `PersistentVolume`을 만들어봅시다.  
+~~~yaml
+$ vim create-pv.yaml
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: x.x.x.x
+    path: /mount/point
+~~~
+
+> **accessMode** :  
+>- `ReadWriteOnce(RWO)` : 하나의 노드에만 마운트되고 하나의 노드에서만 읽고쓰기 가능.  
+>- `ReadOnlyMany(ROX)` : 여러개의 노드에 마운트가능, 여러개의 노드에서 동시에 읽기 가능, 쓰기는못함.
+>- `ReadWriteMany(RWX)` : 여러개의 노드에 마운트가능, 여러개의 노드에서 읽고쓰기 가능.  
+
+pod에서 어느정도의 볼륨을 사용할 것인지 `PersistentVolumeClaim`에 정의해줍니다.  
+~~~yaml
+$ vim claim-pvc.yaml
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+~~~
+
+
+~~~sh
+$ kubectl create -f create-pv.yaml
+$ kubectl create -f claim-pvc.yaml
+~~~
+
+![image](https://user-images.githubusercontent.com/15958325/70785664-4e290100-1dce-11ea-8937-2318127253e5.png)  
+
+
+pvc가 pv에 bound되어있는 것을 확인할 수 있습니다.  
+
+이제 pv,pvc를 사용할 pod을 생성해주겠습니다.  
+
+~~~yaml
+$ vim nginx-pv.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-demo
+spec:
+  selector:
+    matchLabels:
+      app: nginx-demo
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx-demo
+    spec:
+      containers:
+      - name: master
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /mnt # pod에서의 mount point
+          name: pvc-volume
+      volumes:
+      - name: pvc-volume
+        persistentVolumeClaim: #생성했던 pvc의 이름
+          claimName: pvc
+~~~
+
+~~~sh
+$ kubectl apply -f nginx-pv.yaml
+~~~
+
+잘 올라갔는지 확인  
+~~~sh
+$ kubectl describe pod nginx-demo
+$ kubectl get pod
+~~~
+![image](https://user-images.githubusercontent.com/15958325/70802768-b212f000-1df5-11ea-8164-a22f2368b923.png)  
+![image](https://user-images.githubusercontent.com/15958325/70802769-b3dcb380-1df5-11ea-83ae-53d68baa5fd4.png)  
+
+볼륨이 제대로 붙었는지 확인해봅시다.   
+~~~sh
+$ kubectl exec -it nginx-demo-6857b465bd-d82tb bash
+$ df -h
+~~~
+![image](https://user-images.githubusercontent.com/15958325/70802861-f7cfb880-1df5-11ea-9a64-e96cfb5f2347.png)  
+pvc에서 요청했던 **20G** 볼륨이 제대로 붙은 것을 확인할 수 있습니다.  
+
+> **나올 수 있는 에러 :**  
+>~~~sh
+>Warning  FailedMount  2s  kubelet, kube-n02  MountVolume.SetUp failed for volume "pv" : mount failed: exit status 32
+>Mounting command: systemd-run
+>Mounting arguments: --description=Kubernetes transient mount for /var/lib/kubelet/pods/677f3b6a-75c8-46b0-b2bf-06aba54ecf2e/volumes/kubernetes.io~nfs/pv --scope -- mount -t nfs fsf-dal1301k-fz.adn.networklayer.com:/IBM02SEV1869677_1/data01 /var/lib/kubelet/pods/677f3b6a-75c8-46b0-b2bf-06aba54ecf2e/volumes/kubernetes.io~nfs/pv
+>Output: Running scope as unit run-10679.scope.
+>mount: wrong fs type, bad option, bad superblock on fsf-dal1301k-fz.adn.networklayer.com:/IBM02SEV1869677_1/data01,
+>       missing codepage or helper program, or other error
+>       (for several filesystems (e.g. nfs, cifs) you might
+>       need a /sbin/mount.<type> helper program)
+>
+>       In some cases useful info is found in syslog - try
+>       dmesg | tail or so.
+>~~~
+>필요한 util이 깔려있지 않기 때문.  
+>노드마다 설치해주면 해결  
+>~~~sh
+>$ yum install cifs-utils
+>$ yum install nfs-utils
+>~~~
+
+
+### 실습 : Dynamic Provisioning (with NFS)
+
+위에서의 방법은 pod하나를 만들때마다 물리적인 볼륨도 만들어야하고(pv) pv에 따른 pvc도 만들어야하니 굉장히 귀찮은 방법입니다.  
+
+>누군가가 알아서 생성해주면 좋을텐데...
+
+이 파트에서는 누군가(`provisioner`)가 알아서(`dynamic`) 볼륨을 만들어서 붙여주는(`provisioning`) 방법인 **Dynamic Provisioning**을 직접 해보도록 하겠습니다.  
+
+위 실습과 동일하게 nfs를 사용합니다.  
+
+먼저 **Provisioner**가 사용할 `Service Account`를 만들어줍니다.  
+~~~yaml
+$ vim nfs-prov-sa.yaml
+
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: nfs-pod-provisioner-sa
+---
+kind: ClusterRole # Role of kubernetes
+apiVersion: rbac.authorization.k8s.io/v1 # auth API
+metadata:
+  name: nfs-provisioner-clusterRole
+rules:
+  - apiGroups: [""] # rules on persistentvolumes
+    resources: ["persistentvolumes"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list", "watch", "update"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "update", "patch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nfs-provisioner-rolebinding
+subjects:
+  - kind: ServiceAccount
+    name: nfs-pod-provisioner-sa 
+    namespace: default
+roleRef: # binding cluster role to service account
+  kind: ClusterRole
+  name: nfs-provisioner-clusterRole # name defined in clusterRole
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nfs-pod-provisioner-otherRoles
+rules:
+  - apiGroups: [""]
+    resources: ["endpoints"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nfs-pod-provisioner-otherRoles
+subjects:
+  - kind: ServiceAccount
+    name: nfs-pod-provisioner-sa # same as top of the file
+    # replace with namespace where provisioner is deployed
+    namespace: default
+roleRef:
+  kind: Role
+  name: nfs-pod-provisioner-otherRoles
+  apiGroup: rbac.authorization.k8s.io
+~~~
+**주의) `ClusterRoleBinding`과 `RoleBinding`의 `namespace`는 `Provisioner`를 배포한 namespace와 동일해야함!!**
+
+~~~sh
+$ kubectl apply -f nfs-prov-sa.yaml
+~~~
+![image](https://user-images.githubusercontent.com/15958325/70803799-41210780-1df8-11ea-8cc1-117ebd8c3f32.png)  
+
+그 다음으로는 스토리지 클래스를 만들어 줄겁니다.  
+> pvc에서 pv의 name을 지정하지 않고, 이제 **storageclass** name으로 볼륨요청을 하게됩니다.  
+
+~~~yaml
+$ vim storageclass-nfs.yaml
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-storageclass # IMPORTANT pvc needs to mention this name
+provisioner: nfs-test # name can be anything
+parameters:
+  archiveOnDelete: "false"
+~~~
+
+~~~sh
+$ kubectl apply -f storageclass-nfs.yaml
+$ kubectl get storageclass
+~~~
+![image](https://user-images.githubusercontent.com/15958325/70804381-af19fe80-1df9-11ea-9731-59231bb1ceac.png)  
+
+일일히 pv를 생성했던것과 달리 자동으로 pv를 생성해주는 provisioner를 만들어줍니다.  
+~~~yaml
+$ vim pod-provision-nfs.yaml
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nfs-pod-provisioner
+spec:
+  selector:
+    matchLabels:
+      app: nfs-pod-provisioner
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nfs-pod-provisioner
+    spec:
+      serviceAccountName: nfs-pod-provisioner-sa # name of service account
+      containers:
+        - name: nfs-pod-provisioner
+          image: quay.io/external_storage/nfs-client-provisioner:latest
+          volumeMounts:
+            - name: nfs-provisioner-v
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME # do not change
+              value: nfs-test # SAME AS PROVISIONER NAME VALUE IN STORAGECLASS
+            - name: NFS_SERVER # do not change
+              value: x.x.x.x # Ip of the NFS SERVER
+            - name: NFS_PATH # do not change
+              value: /.../data01  # path to nfs directory setup
+      volumes:
+       - name: nfs-provisioner-v # same as volumemouts name
+         nfs:
+           server: x.x.x.x
+           path: /.../data01
+~~~
+
+~~~sh
+$ kubectl apply -f pod-provision-nfs.yaml
+$ kubectl get pod
+~~~
+![image](https://user-images.githubusercontent.com/15958325/70804652-5b5be500-1dfa-11ea-999a-879775eeccc5.png)  
+
+
+provisioner가 성공적으로 배포되었으니, 볼륨 요청을 해보도록 하겠습니다.  
+~~~yaml
+$ vim test-claim.yaml
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc-test
+spec:
+  storageClassName: nfs-storageclass # SAME NAME AS THE STORAGECLASS
+  accessModes:
+    - ReadWriteMany #  must be the same as PersistentVolume
+  resources:
+    requests:
+      storage: 1Gi
+~~~
+1G만 요청해주고, storageClass를 명시해줍니다.  
+
+~~~sh
+$ kubectl apply -f test-claim.yaml
+$ kubectl get pv,pvc
+~~~
+![image](https://user-images.githubusercontent.com/15958325/70804919-0371ae00-1dfb-11ea-8339-0e01d55b3f70.png)  
+만들지 않았던 pv가 자동으로 생성되면서 pvc가 bound되는것을 확인할 수 있습니다.  
+
+그리고 nfs가 마운트된 폴더로 가서 확인해보면   
+![image](https://user-images.githubusercontent.com/15958325/70805007-46338600-1dfb-11ea-9f6a-47f35e6e5e5e.png)  
+긴 이름의 폴더가 새로 생긴것을 확인할 수 있습니다.  
+
+----

@@ -1,0 +1,453 @@
+---
+title: "Image Gallery using ICOS API"
+slug: icos-api
+tags:
+  - ICOS
+  - Cloud
+  - Nodejs
+date: 2019-04-08T13:00:00+09:00
+---
+
+## 1. Overview
+클라우드상에서 간단한 웹 애플리케이션을 제작할것입니다. 백엔드 저장소로 ICOS(IBM Cloud Object Storage)를 사용할 것이고, ICOS의 API를 이용해 통신할 것입니다.    
+만드려는 application의 기능은 웹상에서 ICOS에 이미지를 저장시키고, 이미지를 불러오는 기능입니다.  
+
+본 문서는 다음 튜토리얼을 직접 진행한 후 작성한 문서입니다.  
+튜토리얼 : [Tutorial: Image Gallery](https://console.bluemix.net/docs/services/cloud-object-storage/tutorials/web-application.html)
+
+## 2. Prerequisites
+
+`IBM Cloud`계정을 생성해 주세요.   
+`IBM Cloud` : [link](https://console.bluemix.net)  
+
+local개발환경을 위한 `Node.js`를 설치해주세요.  
+`Node.js` : [link](https://nodejs.org/ko/)
+
+local개발환경과 클라우드상 개발환경을 이어주기위한 Git을 설치합시다.  
+`Git` : [link](https://git-scm.com/downloads)  
+`Git Desktop` : [link](https://desktop.github.com/)
+
+## 3. Set up
+
+### Cloud Foundry App (Node.js)
+클라우드상에서 app을 deploy시키기위해 Cloud Foundry App을 만들어줍니다.  
+![image](https://user-images.githubusercontent.com/15958325/55725573-f5d47f00-5a48-11e9-8e0b-4953e9e8fc13.png)  
+
+Node.js기반으로 app을 작성할것이므로 SDK for Node.js선택하고 작성  
+![image](https://user-images.githubusercontent.com/15958325/55725634-1270b700-5a49-11e9-8e5b-a67fa6126052.png)   
+
+![image](https://user-images.githubusercontent.com/15958325/55725716-346a3980-5a49-11e9-9112-a4889c909cb3.png)    
+
+app을 실행해보면 다음과같은 화면이 뜹니다.
+![image](https://user-images.githubusercontent.com/15958325/55725960-b5293580-5a49-11e9-80a4-3db0897f49d7.png)  
+
+### Cloud Foundry CLI
+local환경에서 쉽게 개발하고 deploy할수있는 도구로 Cloud Foundry CLI가 있습니다.  
+
+다운로드 : [link](https://github.com/cloudfoundry/cli)  
+
+>다운로드 확인  
+>![image](https://user-images.githubusercontent.com/15958325/55726082-f4f01d00-5a49-11e9-8be7-4bf13201c913.png)  
+
+로그인은 다음과 같은 커맨드로 이뤄질 수 있습니다.  
+~~~bash
+$ cf login --sso
+~~~
+
+API endpoint를 적어주고 OneTimeCode를 적어주면 로그인 완료!  
+![image](https://user-images.githubusercontent.com/15958325/55726162-1bae5380-5a4a-11e9-971e-7d690e8ffca3.png)  
+
+>API endpoint는 앱의 Overview에서 확인 가능!  
+>![image](https://user-images.githubusercontent.com/15958325/55726226-426c8a00-5a4a-11e9-927e-ec8d8378ed37.png)  
+
+이제 뼈대가 되는 js소스코드를 clone받아서 수정한 뒤, cf push로 app을 deploy해보겠습니다.  
+~~~bash
+$ git clone https://github.com/IBMRedbooks/IBMRedbooks-SG248385-Cloud-Object-Storage-as-a-Service.git
+$ cd IBMRedbooks-SG248385-Cloud-Object-Storage-as-a-Service\COS-WebGalleryStart
+$ npm install
+$ npm start
+~~~  
+
+로컬환경에서 빌드한 [localhost:3000](https://localhost:3000)에 가보면 아까 클라우드상의 app과 글자빼고 똑같은 화면을 확인할 수 있습니다.  
+![image](https://user-images.githubusercontent.com/15958325/55726844-b2c7db00-5a4b-11e9-8654-a90a74dccde3.png)  
+
+미묘하게 다른 이 app을 아까전에 만들었던 foundry app에 deploy하기 위해서는 몇가지 파일을 수정해주어야 합니다.  
+
+manifest.yml파일을 열어서 name을 자신이 만든 app이름으로 수정해줍시다.  
+![image](https://user-images.githubusercontent.com/15958325/55726977-f3bfef80-5a4b-11e9-9ace-609544baba79.png)  
+
+다음으로는 package.json을 열어서 마찬가지로 name을 수정해줍니다.  
+![image](https://user-images.githubusercontent.com/15958325/55726980-f589b300-5a4b-11e9-9931-9db54973d7f3.png)  
+
+그다음 push커맨드를 통해 쉽게 deploy가능합니다.  
+~~~bash
+$ cf push
+~~~  
+![image](https://user-images.githubusercontent.com/15958325/55727128-40a3c600-5a4c-11e9-924b-c3b8605f66e0.png)  
+
+app을 실행시켜보면 문구가 로컬의 app처럼 변경된 것을 확인해볼 수 있습니다.   
+![image](https://user-images.githubusercontent.com/15958325/55727161-56b18680-5a4c-11e9-9af7-6e3e8ae6680b.png)  
+![image](https://user-images.githubusercontent.com/15958325/55727166-5913e080-5a4c-11e9-9737-75c335b02ee5.png)  
+
+### Continuos Delivery
+이제 app 코딩을 하기전에 IBM Cloud Platform 과 로컬 개발환경 둘다 접근가능한 소스 레포지토리가 필요합니다. 로컬에서 개발하면 소스 저장소와 클라우드 플랫폼 둘다 push되어야하고 클라우드플랫폼에서 변경이 발생한다면 로컬에도 pull되어야 합니다. 이를 위해 dellivery pipeline을 만들어 봅시다.  
+
+Overview에서 지속적딜리버리 사용 클릭  
+![image](https://user-images.githubusercontent.com/15958325/55727349-c889d000-5a4c-11e9-9d1b-f254437c9e71.png)  
+
+저장소유형은 새로작성, 개인용으로 설정된 체크는 해제해주도록 합니다.  
+![image](https://user-images.githubusercontent.com/15958325/55727506-1a325a80-5a4d-11e9-852a-cac22f5af6d3.png)  
+
+API작성은 작성버튼을 눌러서 쉽게 생성가능합니다.  
+![image](https://user-images.githubusercontent.com/15958325/55727560-37672900-5a4d-11e9-9641-f898546a3d7f.png)  
+
+구성된것 확인.  
+![image](https://user-images.githubusercontent.com/15958325/55727630-6087b980-5a4d-11e9-84ec-536215317cd9.png)  
+
+연결된 git repository를 확인해보면 지금은 텅텅비어있습니다.  
+![image](https://user-images.githubusercontent.com/15958325/55727858-e572d300-5a4d-11e9-9346-d9d7818d6b3e.png)  
+
+git desktop을 열어서 clone해줍니다.  
+![image](https://user-images.githubusercontent.com/15958325/55727862-e7d52d00-5a4d-11e9-91d6-bda646e62134.png)  
+
+clone한 폴더에 이전에 만들었던 starter파일들을 복사합니다.  
+![image](https://user-images.githubusercontent.com/15958325/55727900-f9b6d000-5a4d-11e9-9d50-abfc904a2be3.png)  
+
+이제 다시 repository에 push하기전에, 중요한 할일이 있습니다.  
+repository에 로컬에서 커밋하려면 접근하기위한 access token이 필요합니다!  
+
+오른쪽 상단 프로필 -> Settings -> Access Tokens 탭으로 이동.  
+이름과 권한 범위를 입력한 뒤 token create버튼을 눌러 토큰을 생성합니다.  
+
+![image](https://user-images.githubusercontent.com/15958325/55728091-5e722a80-5a4e-11e9-98e3-0ea717894683.png)   
+>Name이 id이고, token이 password입니다. 커밋할때 git Desktop에 정보를 입력해주시면 됩니다.  
+
+push!  
+![image](https://user-images.githubusercontent.com/15958325/55728293-cb85c000-5a4e-11e9-965c-f8bd5de42071.png)  
+
+### COS Storage 설정
+[https://gruuuuu.github.io/simple-tutorial/mnist-tuto/#cloud-object-storage](https://gruuuuu.github.io/simple-tutorial/mnist-tuto/#cloud-object-storage)   
+
+>생성할때 `access_key_id`와 `secret_access_key`는 메모해둡시다.  
+
+
+bucket도 작성해줍니다. tutorial에서의 bucket 이름은 `web-images`  
+![image](https://user-images.githubusercontent.com/15958325/55728397-f7a14100-5a4e-11e9-9166-c0c74e8cd3c0.png)  
+
+런타임탭으로 이동해서 메모해뒀던 `access_key_id`와 `secret_access_key`를 환경변수로 추가해줍니다.  
+![image](https://user-images.githubusercontent.com/15958325/55728407-fa039b00-5a4e-11e9-85b9-d67f5de8417e.png)  
+
+이상으로 개발을 위한 환경세팅은 마무리되었습니다. 다음 챕터에서는 소스코드에 대한 분석을 진행하겠습니다!  
+
+## 4. Develop Application (Node.js)
+
+만드려고 하는 app의 기능은 다음과 같습니다.    
+1. Upload images from a web browser to the Object Storage bucket.
+2. View the images in the Object Storage bucket in a web browser.  
+
+>완성본 소스코드 : [link](https://github.com/GRuuuuu/GRuuuuu.github.io/tree/master/assets/resources/simple-tutorial/ICOS01/icos-web-gallery)  
+
+### directory structure
+MVC아키텍처를 사용하고 있기 떄문에 디렉토리 구조도 다음과 같이 구성해줍니다.  
+><b>views</b> : EJS  
+><b>routes</b> : express routes  
+><b>controllers</b> : controller logic  
+
+![image](https://user-images.githubusercontent.com/15958325/55785651-c9267300-5aed-11e9-9c36-1a5c006c9b96.png)  
+
+
+### app.js
+기존 코드에 추가되는 부분은 많지 않습니다. 새로 추가되는 페이지에 대한 라우트만 추가해주시면 됩니다.  
+~~~js
+var imageUploadRouter = require('./src/routes/imageUploadRoutes')(title);
+var galleryRouter = require('./src/routes/galleryRoutes')(title);
+
+app.use('/gallery', galleryRouter);
+app.use('/', imageUploadRouter);
+~~~
+
+### views
+껍데기는 pass  
+
+### routes
+app.js에서 표기한 주소 (REST API)에 따라 다르게 처리해야하기 때문에 중간다리인 라우터가 필요합니다.  
+본 튜토리얼에서의 코드는 기본주소('/') 일때 imageUploadRouter를 호출하고 ('/gallery')일때 galleryRouter를 호출하고있습니다.  
+어떤일을 하는지 각 소스코드를 살펴봅시다.  
+
+#### imageUploadRoutes.js
+~~~js
+var express = require('express');
+var imageUploadRouter = express.Router();
+var status = '';
+
+var router = function(title) {
+    //galleryController를 가져옴
+    var galleryController =
+        require('../controllers/galleryController')(title);
+        //현재위치 (https://url/)에서 post로 request
+        imageUploadRouter.route('/')
+        .post(
+            //Controller의 uprload함수를 호출
+            galleryController.upload.array('img-file', 1), function (req, res, next) {
+                if(res.statusCode===200 && req.files.length > 0) 
+                {//성공시
+                    status = 'uploaded file successfully';
+                }
+                else 
+                {//실패
+                    status = 'upload failed';
+                }
+                //이상의 결과(status와 title)를 담아서 index.ejs에 렌더링
+                res.render('index', {status: status, title: title});
+            });
+    return imageUploadRouter;
+};
+//app.js에서 해당 모듈을 require해서 사용할수있게 export
+module.exports = router;
+~~~  
+
+#### galleryRoutes.js
+~~~js
+var express = require('express');
+var galleryRouter = express.Router();
+
+var router = function(title) {
+
+    //galleryController를 가져옴
+    var galleryController =
+        require('../controllers/galleryController')(title);
+    //현재위치 (https://url/)에서 get으로 request
+    //Controller의 getGalleryImages함수 호출
+    galleryRouter.route('/')
+        .get(galleryController.getGalleryImages);
+
+    return galleryRouter;
+};
+//app.js에서 해당 모듈을 require하여 사용할수있게 export
+module.exports = router;
+~~~
+
+### Controllers
+
+><b>S3란?</b>  
+>S3는 객체를 저장하기위한 인터페이스 프로토콜입니다.    
+>HTTP 프로토콜로 파일 업로드 및 다운로드가 가능합니다.  
+
+#### header
+
+>파일을 전송하기 위해 사용하는 몇가지 함수 중 `fileReader.readAsBinaryString()`이라는 함수가 있습니다. 이함수를 통해 front에서 back으로 파일을 올리면 back단에서 파일을 처리하는데 몇가지 문제가 발생할 수 있습니다. (예:인코딩, 원래파일의 정보)  
+>
+>위의 문제를 해결하기 위해 이 문서에서는 파일업로드를 하기 위해 `multer`모듈을 사용하고 있습니다.  
+>`multer`는 파일업로드에 사용되는 `multipart/form-data`를 다루기 위한 `node.js`의 미들웨어입니다.  
+>추가로, `multipart`가 아닌 폼에서는 동작하지 않습니다.
+
+~~~js
+var galleryController = function(title) {
+    var aws = require('aws-sdk'); //aws api를 사용하기위해 추가
+    var multer = require('multer'); //파일업로드를 도와주는 multer모듈추가
+    var multerS3 = require('multer-s3');//업로드한 파일을 S3에 바로 저장시키기위한 multer-s3
+
+    //s3프로토콜을 위한 정보 기입
+    var ep = new aws.Endpoint('https://s3.us-south.cloud-object-storage.appdomain.cloud');
+    var s3 = new aws.S3({endpoint: ep, region: 'us-south'});
+    //cos bucket name
+    var myBucket = 'web-images-bucket';
+
+    ...
+    return {
+        getGalleryImages: getGalleryImages,
+        upload: upload
+    };
+};
+
+module.exports = galleryController;
+~~~  
+
+s3프로토콜을 위한 정보는 cos의 endpoint와 지역정보가 있습니다.  
+
+cos>Buckets>Configuration에서 해당 정보를 확인할 수 있습니다.  
+![image](https://user-images.githubusercontent.com/15958325/55774768-89519280-5ad1-11e9-8bf6-ea9a5cf7577b.png)   
+
+#### upload
+
+파일을 업로드하는 함수  
+~~~js
+    var upload = multer({
+        storage: multerS3({
+            s3: s3,
+            bucket: myBucket,
+            key: function (req, file, cb) {
+                cb(null, file.originalname);
+                console.log(file);
+            }
+        })
+    });
+
+~~~   
+>multer의 첫번째 옵션은 `dest`와 `storage`이고 쉽게 이미지만 업로드할것이라면 `dest`옵션을 사용하면 되지만, 좀더 세밀한 컨트롤을 하려면 `storage`옵션을 사용해서 커스텀해 줄 수 있습니다.   
+
+헤더부분에서 작성했던 s3정보와 버킷정보가 들어가고, file에 대한 정보가 있을때만 업로드를 실행합니다.  
+
+>cb 콜백함수를 통해 전송될 파일의 이름 설정  
+
+또한 파일을 업로드하였을때 콘솔에 출력되는 화면은 다음과 같습니다.  
+~~~js
+{ fieldname: 'img-file',
+  originalname: 'nyan.gif',
+  encoding: '7bit',
+  mimetype: 'image/gif' }
+~~~  
+
+#### getGalleryImages(1)
+버킷에 저장된 이미지들을 웹 화면에 출력해주는 코드입니다. 
+>(중요) aws-sdk : 2.16.0  
+
+~~~js
+    var getGalleryImages = function (req, res) {
+
+        var imageUrlList = [];
+        var params = {Bucket: myBucket};
+        //버킷에 있는 개체의 데이터를 반환
+        s3.listObjectsV2(params, function (err, data) {
+            if(data) {
+                var bucketContents = data.Contents;
+                //버킷에 들어있는 데이터 개수만큼
+                for (var i = 0; i < bucketContents.length; i++) {
+                    var bcKey=bucketContents[i].Key;
+                    //파일확장자 jpg png gif만 처리
+                    if(bcKey.search(/.jpg/) > -1||bcKey.search(/.png/) > -1||bcKey.search(/.gif/) > -1) {
+                        var urlParams = {Bucket: myBucket, Key: bucketContents[i].Key};
+                        //개체의 버킷 이름 및 키를 전달하면 모든 개체에 대해 사인된 URL을 반환
+                        s3.getSignedUrl('getObject', urlParams, function (err, url) {
+                            imageUrlList[i] = url;
+                        });
+                    }
+                }
+            }
+            //galleryView.ejs로 렌더링
+            res.render('galleryView', {
+                title: title,
+                imageUrls: imageUrlList
+            });
+        });
+    };
+~~~
+
+local환경에서 aws-sdk:2.16.0일 경우에 정상적으로 실행되지만 sdk버전이 낮아서 경고문구가 발생합니다.  
+~~~bash
+added 6 packages from 55 contributors, removed 1 package, updated 1 package and audited 3030 packages in 6.894s
+found 4 vulnerabilities (2 low, 2 moderate)
+  run `npm audit fix` to fix them, or `npm audit` for details
+~~~  
+cloud환경에서도 정상적으로 동작합니다.  
+
+#### getGalleryImages(2)
+위의 경고를 없애기 위해서 aws-sdk를 최신버전으로 올렸습니다.  
+> `aws-sdk : ^2.437.0`  << 19/4/9 기준
+
+버전을 올리고나서 로컬에서 getGalleryImages(1)의 코드를 돌려보면 갤러리이미지들이 뜨지 않는 현상을 확인할 수 있습니다.  
+
+원인은 `s3.listObjectsV2`과 `s3.getSignedUrl`함수가 비동기로 돌아가기 때문에 이 함수를 실행하는동안 다른 로직이 먼저 실행되기 때문입니다.  
+
+>`aws-sdk:2.16.0`에서는 잘 돌아가는데 버전이 높아지면서 api가 변경된 것 같습니다. 정확히 버전몇부터 바뀐건지는 파악하지 못했습니다. 추후에 업데이트하겠습니다.  
+
+비동기함수가 포함된 로직을 동기함수처럼 동작하게 하려면 callback함수를 사용하거나 promise를 사용해야합니다.  
+하단의 코드는 promise를 사용하여 재설계한 소스입니다.  
+
+~~~js
+ var getGalleryImages = function (req, res) {
+
+        var imageUrlList = [];
+        var params = {Bucket: myBucket};
+        function getBucketData_promise(params){
+          //첫번째 promise함수선언
+            return new Promise(function(resolve, reject){
+                s3.listObjectsV2(params, function (err, data) {
+                    if(data) {
+                        var bucketContents = data.Contents;
+                        resolve(bucketContents);
+                    }
+                    else{
+                        reject(err);
+                    }
+                });
+            });
+        }
+        function getImageUrl_promise(urlParams){
+            //두번째 promise함수선언
+            return new Promise(function(resolve, reject){
+                s3.getSignedUrl('getObject', urlParams, function (err, url) {
+                    if(url) {
+                        resolve(url);
+                    }
+                    else{
+                        reject(err);
+                    }
+                });
+            });
+        }
+        //첫번째 promise함수실행
+        getBucketData_promise(params)
+            //await함수를 사용하기위해 async함수가있다는것을 알림
+            .then(async function(bucketContents){
+                for (var i = 0; i < bucketContents.length; i++) {
+                    var bcKey=bucketContents[i].Key;
+                    if(bcKey.search(/.jpg/) > -1||bcKey.search(/.png/) > -1||bcKey.search(/.gif/) > -1) {
+                        var urlParams = {Bucket: myBucket, Key: bucketContents[i].Key};
+                        //두번째 promise함수가 실행될때까지 기다려줌 (await)
+                        await getImageUrl_promise(urlParams)
+                            .then(async function(url){
+                                imageUrlList[i] = url;
+                            });
+                    }
+                }
+                return imageUrlList;
+            })//첫번째 promise함수가 끝나면 렌더링
+            .then(function(urlData){
+                res.render('galleryView', {
+                    title: title,
+                    imageUrls: urlData
+                });
+            });
+    };
+~~~  
+getGalleryImages(1)와 결과는 똑같습니다. 단지 실행되는 코드블럭을 분리해서 promise함수로 만든것뿐입니다.  
+
+<b>로컬환경에서 정상적으로 경고문구 없이 실행됩니다.</b>  
+>로컬환경 env  
+>`node :10.15.3`  
+>`npm :6.4.1`  
+
+하지만 치명적인 문제가 하나 있는데, cloud상에 올리면 돌아가지 않습니다.   
+![image](https://user-images.githubusercontent.com/15958325/55786884-11469500-5af0-11e9-937b-8c59c82c2544.png)
+  
+
+에러가나는 부분은 `.then` 부분 입니다. 아무래도 node나 npm의 버전차이인듯 싶습니다.  
+
+>클라우드 env  
+>`node : 6.9.4`  
+>`npm : 3.10.10`  
+
+IBM cloud는 사용자가 임의로 환경을 설정할 수 없으니 사실상 getGalleryImages(2)의 소스코드를 본 튜토리얼에서 사용하는건 불가능하고, 현재(19/04/09)는 getGalleryImages(1)를 사용해야합니다.  
+
+하지만 추후에 IBM cloud의 업데이트됨에 따라 `node.js sdk`버전이 올라간다면 getGalleryImages(2)를 사용할수있을테니 그때는 최-신 `aws-sdk`를 사용하시는것을 추천드립니다.  
+>미래를 위해 참고로 적은거지 절대 삽질해서 적어둔것이 아님을 밝힙니다...  
+
+## 5. Deploy Application
+완성된 코드를 git repository에 push합시다.  
+그러면 tool chain에 의해 자동으로 cloud foundry app에 deploy되게 됩니다.  
+![image](https://user-images.githubusercontent.com/15958325/55784764-30432800-5aec-11e9-8a29-bc19fbd7be7e.png)  
+
+**Image Upload**
+![image](https://user-images.githubusercontent.com/15958325/55784906-844e0c80-5aec-11e9-8ec3-dc9d5a03fd89.png)  
+
+>파일 확장자에 대한 제한을 걸지않아서 사실은 표시된 확장자가 아니더라도 업로드는 됩니다.  
+
+**Image Gallery**
+![image](https://user-images.githubusercontent.com/15958325/55784920-89ab5700-5aec-11e9-90bd-394f71f57690.png)
+(푸딩햄스터, 토끼, 냥이, 쿼카)  
+위 소스코드에 따라 파일 확장자가 jpg, png, gif인 파일만 출력되는 것을 확인할 수 있습니다.  
+
+끄-읕!
+
+----

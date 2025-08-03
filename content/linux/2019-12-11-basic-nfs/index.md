@@ -1,0 +1,60 @@
+---
+title: "NFS 기초 연결 (LINUX)"
+slug: basic-nfs
+tags:
+  - NFS
+  - CentOS
+  - RHEL
+date: 2019-12-11T13:00:00+09:00
+---
+## 1. Overview
+**CentOS** 에서 nfs를 마운트하는 방법입니다.  
+
+## 2. Prerequisites
+`OS : CentOS v7.6`  
+`Arch : x86`
+
+## 3. How to
+
+클라이언트 사이드에서 필요한 패키지들을 다운받아줍니다.  
+~~~sh
+$ yum install cifs-utils
+$ yum install nfs-utils
+~~~
+
+마운트할 공유 폴더를 생성해줍니다.  
+~~~sh
+$ mkdir -m 0777 mountdir
+~~~
+
+마운트!  
+~~~sh
+$ mount -t nfs {nfs mount point} /root/mountdir/
+~~~
+
+>nfs의 mount point는 nfs의 {hostname}:{mount할위치}  
+>![image](https://user-images.githubusercontent.com/15958325/70622783-04220d00-1c60-11ea-88e6-d257d614feed.png)  
+
+
+잘 마운트되었는지 확인  
+~~~sh
+$ df -h |grep mountdir
+~~~
+
+![image](https://user-images.githubusercontent.com/15958325/70622947-506d4d00-1c60-11ea-937e-c561528bd5f3.png)  
+
+
+## (1) 부팅할때 자동마운트하기
+~~~sh
+$ vim /etc/fstab
+
+#mount nfs
+fsf-dal1301k-fz.adn.networklayer.com:/-----/data01 /root/mountdir/  nfs     defaults        0 0
+~~~
+
+## (2) 마운트 해제
+~~~sh
+$ umount /root/mountdir
+~~~
+
+----

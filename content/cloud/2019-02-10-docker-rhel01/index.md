@@ -1,0 +1,99 @@
+---
+title: "Install Docker on RHEL"
+tags:
+  - RHEL
+  - Docker
+  - Power
+slug: docker-rhel01
+date: 2019-03-22
+---
+`OS: RedHat Enterprise Linux 7.4 LE`  
+`Architect: IBM Power 8`
+
+## 1. Overview
+이 문서에서는 RHEL7.4에서 도커환경을 구성하는 것에 대해 기술하겠습니다.
+
+[참고링크: IBM Developer Blog](https://developer.ibm.com/linuxonpower/docker-on-power/)
+
+## 2. Prerequisites
+`vim`, `wget`, `yum`,`yum-utils`, `rpm` 설치가 되어있어야 합니다.
+
+## 3. Install Docker on RHEL
+도커를 설치하기 위해 저장소를 추가해줍니다.
+
+### 3.1 수동으로 yum저장소 추가
+yum저장소는 yum을 통한 패키지 설치에 꼭 필요합니다. yum저장소를 통해 다운로드를 하기 때문입니다. 저장소가 없으면 설치도 할 수 없게 됩니다.  
+
+아래 명령어를 통해 yum저장소의 목록을 확인할 수 있습니다. 
+~~~bash
+$ yum repolist
+~~~
+![1](https://user-images.githubusercontent.com/15958325/54922250-1847a200-4f4b-11e9-91e1-6f8b6c4099b3.png)
+
+
+yum의 저장소 위치는 `/etc/yum.repos.d`이고, 저장소 파일은 `.repo`형식입니다. 한 저장소 파일 내에 여러 저장소 정보가 들어갈 수 있다는게 특징!  
+
+수동으로 yum저장소를 추가하는 방법은 다음과 같습니다:
+~~~bash
+$ vim /etc/yum.repos.d/저장소이름.repo
+
+[저장소 이름]
+name=저장소 표시이름
+baseurl=저장소 주소
+enabled=활성화 여부 (0 or 1)
+gpgcheck=gpg 서명키 사용여부 (0 or 1)
+gpgkey= 서명키를 사용한다면 서명키 주소 입력
+~~~
+### 3.2 docker를 위한 yum저장소 추가
+
+~~~bash
+$ cat > /etc/yum.repos.d/docker.repo << EOF
+[docker]
+name=Docker
+baseurl=http://ftp.unicamp.br/pub/ppc64el/rhel/7/docker-ppc64el/
+enabled=1
+gpgcheck=0
+EOF
+~~~
+
+>주의!  
+>참고한 블로그에서는 이 뒤에 바로 `yum install docker-ce`를 통해 docker-ce를 설치합니다. 근데, 이대로 하면 의존성 문제가 생김!  
+>~~~bash
+>
+>Error: Package: >docker-ce-18.03.1.ce-1.el7.centos.ppc64le (docker)
+>           Requires: pigz
+ >You could try using --skip-broken to work around the problem
+> You could try running: rpm -Va --nofiles —nodigest
+>~~~
+>
+>이런 에러가 발생한다면 3.3을 통해 추가적인 저장소 등록이 필요하고, 발생하지 않는다면 3.4로 넘어가 주세요.
+
+### 3.3 epel 추가
+`Extra Packages for Enterprise Linux`의 약자. 단어 그대로 엔터프라이즈 리눅스를 위한 추가 패키지 입니다. 기본 RHEL의 패키지정책은 보수적이고 안정성 위주여서 최신 패키지가 업데이트되지 않을수도 있습니다. 최신 패키지를 다운받고 싶을 때에는 EPEL을 추가해보자!
+
+~~~bash
+$ wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+$ rpm -ivh epel-release-latest-7.noarch.rpm
+~~~
+
+>오늘의 리빙포인트)  <b>rpm의 명령어</b>   
+>- 패키지 설치 : `rpm -ivh`  
+>- 패키지 목록 : `rpm -qa`  
+>- 패키지 제거 : `rpm -ev`  
+>- 패키지 업데이트 : `rpm -Uvh`
+
+### 3.4 docker 설치
+대망의 도커를 설치해봅시다. ^ㅇ^
+~~~bash
+$ yum install docker-ce
+~~~
+설치가 완료되었다면 서비스를 시작하고, 도커 버전을 확인해봅시다!
+~~~bash
+$ service docker start
+Redirecting to /bin/systemctl start   docker.service  
+$ docker -v  
+Docker version 18.03.1-ce, build ccde200
+~~~
+완-료  
+
+----
