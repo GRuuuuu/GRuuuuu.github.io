@@ -66,7 +66,7 @@ $ tree .
 정적파일을 두는 곳입니다. task에서는 files폴더에서 필요한 파일들을 끌어다가 사용할 수 있습니다.  
 
 ### handlers
-참고: [[Ansible] Handlers](https://gruuuuu.github.io/ansible/ansible-handler/#)  
+참고: [[Ansible] Handlers](https://gruuuuu.github.io/automation/ansible-handler/#)  
 task에서 사용할 handler들을 두는 폴더입니다.  
 
 ### meta
