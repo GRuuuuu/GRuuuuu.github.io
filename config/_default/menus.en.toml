@@ -1,0 +1,135 @@
+# -- Main Menu --
+# The main menu is displayed in the header at the top of the page.
+# Acceptable parameters are name, pageRef, page, url, title, weight.
+# 
+# The simplest menu configuration is to provide:
+#   name = The name to be displayed for this menu link
+#   pageRef = The identifier of the page or section to link to
+#
+# By default the menu is ordered alphabetically. This can be
+# overridden by providing a weight value. The menu will then be
+# ordered by weight from lowest to highest.
+[[main]]
+  name = "About"
+  pre = "eye"
+  weight = 1
+  pageRef = "about"
+
+[[main]]
+  name = "Blog"
+  pre = "pencil"
+  weight = 10
+
+
+
+[[main]]
+  name = "Cloud"
+  parent = "Blog"
+  pageRef = "cloud"
+  weight = 10
+[[main]]
+  name = "Openshift"
+  parent = "Blog"
+  pageRef = "ocp"
+  weight = 20
+[[main]]
+  name = "Linux"
+  parent = "Blog"
+  pageRef = "linux"
+  weight = 30
+[[main]]
+  name = "IBM"
+  parent = "Blog"
+  pageRef = "ibm"
+  weight = 40
+[[main]]
+  name = "AI"
+  parent = "Blog"
+  pageRef = "ai"
+  weight = 50
+[[main]]
+  name = "Data"
+  parent = "Blog"
+  pageRef = "data"
+  weight = 60
+[[main]]
+  name = "Security"
+  parent = "Blog"
+  pageRef = "security"
+  weight = 70
+[[main]]
+  name = "Automation"
+  parent = "Blog"
+  pageRef = "automation"
+  weight = 80
+[[main]]
+  name = "Programming"
+  parent = "Blog"
+  pageRef = "dev"
+  weight = 90
+[[main]]
+  name = "Quantum"
+  parent = "Blog"
+  pageRef = "quantum"
+  weight = 100
+[[main]]
+  name = "simple-tutorial"
+  parent = "Blog"
+  pageRef = "simple-tutorial"
+  weight = 110
+[[main]]
+  name = "Error"
+  parent = "Blog"
+  pageRef = "error"
+  weight = 120
+
+[[main]]
+  name = "sawtooth-starter"
+  parent = "Blog"
+  pageRef = "sawtooth-starter"
+  weight = 1000
+
+[[main]]
+  name = "Something"
+  pre = "globe"
+  pageRef="retrospective"
+  weight = 10
+
+[[main]]
+  name = "Tags"
+  pageRef = "tags"
+  weight = 20
+
+
+#[[subnavigation]]
+#  name = "An interesting topic"
+#  pageRef = "tags/interesting-topic"
+#  weight = 10
+
+#[[subnavigation]]
+#  name = "My Awesome Category"
+#  pre = "github"
+#  pageRef = "categories/awesome"
+#  weight = 20
+
+
+#[[main]]
+#  name = "Tags"
+#  pageRef = "tags"
+#  weight = 30
+
+
+# -- Footer Menu --
+# The footer menu is displayed at the bottom of the page, just before
+# the copyright notice. Configure as per the main menu above.
+
+
+# [[footer]]
+#   name = "Tags"
+#   pageRef = "tags"
+#   weight = 10
+
+# [[footer]]
+#   name = "Categories"
+#   pageRef = "categories"
+#   weight = 20

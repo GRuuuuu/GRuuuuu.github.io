@@ -1,25 +1,25 @@
 disabled = false
 languageCode = "en"
-languageName = "Korean"
+languageName = "English"
 weight = 1
 title = "Hololy Day"
 
 [params]
-  displayName = "KR"
+  displayName = "EN"
   isoCode = "en"
   rtl = false
   dateFormat = "2 January 2006"
   logo = "img/p1_dev.png"
   secondaryLogo = "img/p2_chum.png"
-  description = "호롤리"
-  copyright = "구리구리잡다구리"
+  description = "Hololy"
+  copyright = "Odds and Ends"
 
 [params.author]
-  name = "호롤리한 하루"
+  name = "Hololy Day"
   email = "sygy0509@naver.com"
   image = "img/p.jpg"
   imageQuality = 96
-  headline = "잡다구리한 기술들을 잘 먹습니다."
+  headline = "Odds and Ends"
   bio = "A little bit about you"
   links = [
 #    { email = "sygy0509@naver.com" },
