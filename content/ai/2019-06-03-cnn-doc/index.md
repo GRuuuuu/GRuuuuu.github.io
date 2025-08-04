@@ -88,7 +88,7 @@ Multi Channel CNN에서 주의해서 보아야 할 점은 이렇습니다.
 
 ### 1-4 Padding
 
-[1-1 Convolution](https://gruuuuu.github.io/docs/2019-06-03-cnn-doc/#1-1-convolution) 파트를 잠시 떠올려봅시다.  
+[1-1 Convolution](#1-1-convolution) 파트를 잠시 떠올려봅시다.  
 ![Picture6](https://user-images.githubusercontent.com/15958325/58845937-20912b80-86b8-11e9-8aaa-92fdaa3bbf10.png)   
 
 `Convolution` 레이어에서는 Filter와 Stride의 작용으로 `Feature map`의 크기는 입력데이터보다 작습니다.  

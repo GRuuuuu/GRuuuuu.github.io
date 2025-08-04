@@ -8,7 +8,7 @@ tags:
   - GRU
 date: 2019-10-13T13:00:00+09:00
 ---
-[호다닥 공부해보는 RNN 친구들(1) - RNN(Recurrent Neural Networks)](https://gruuuuu.github.io/machine-learning/lstm-doc/)에서 이어지는 글입니다.  
+[호다닥 공부해보는 RNN 친구들(1) - RNN(Recurrent Neural Networks)](https://gruuuuu.github.io/ai/lstm-doc/)에서 이어지는 글입니다.  
 
 ## RNN의 고질적인 문제
 이전의 계산결과를 바탕으로 계산한다는 RNN의 특징은 어찌보면 사람의 뇌와 많이 닮았습니다. 그래서 Neural Network라는 이름을 붙인것일지도 모릅니다.  
@@ -58,7 +58,7 @@ sigmoid와 tanh 모두 미분함수가 절댓값 x 가 커질수록 0에 수렴�
 > ![image](https://user-images.githubusercontent.com/15958325/66532803-b13ab500-eb4b-11e9-99e2-e01c372b5d93.png)   
 >
 > Vanishing Gradient Problem의 해결책 중 가장 일반적인 해결책은 기존의 `sigmoid`나 `tanh`을 `relu`로 바꾸는 것입니다.  
-> 하지만 본문에서 `relu`를 언급하지 않은 이유는, [이전 편](https://gruuuuu.github.io/machine-learning/lstm-doc/#activation-function)에서 언급했듯이 RNN계열은 **같은 레이어를 반복하는 특징**이 있기 때문입니다.  
+> 하지만 본문에서 `relu`를 언급하지 않은 이유는, [이전 편](https://gruuuuu.github.io/ai/lstm-doc/#activation-function)에서 언급했듯이 RNN계열은 **같은 레이어를 반복하는 특징**이 있기 때문입니다.  
 > RNN계열이 아닌 다른 네트워크 모델들은 relu가 훨---씬 효과적이니 참고하세요!
 
 

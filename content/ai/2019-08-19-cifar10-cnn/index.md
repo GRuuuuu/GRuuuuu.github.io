@@ -24,7 +24,7 @@ date: 2019-08-20T13:00:00+09:00
 
 # CNN Archtecture
 > **[참고]**  
->[CNN이란?](https://gruuuuu.github.io/machine-learning/cnn-doc/)  
+>[CNN이란?](https://gruuuuu.github.io/ai/cnn-doc/)  
 
 본문에서 사용한 CNN의 각 레이어 구조는 다음과 같습니다.  
 ![feature extraction](https://user-images.githubusercontent.com/15958325/63317956-c23b2700-c34f-11e9-82c2-6a40787579ec.png)
@@ -34,9 +34,9 @@ date: 2019-08-20T13:00:00+09:00
 >**[용어 설명]**  
 >**3channel** : color이미지  
 >**ReLu** : 0이상의 값들은 그대로 출력하게하는 활성화함수   
->**Padding(Same)** : 입력크기==출력크기 [[INFO]](https://gruuuuu.github.io/machine-learning/cnn-doc/#1-4-padding)  
+>**Padding(Same)** : 입력크기==출력크기 [[INFO]](https://gruuuuu.github.io/ai/cnn-doc/#1-4-padding)  
 >**Dropout** : 무작위로 뉴런들을 버림 [[INFO]](https://gruuuuu.github.io/simple-tutorial/overfitting-handle/#dropout)  
->**Pooling** : 크기도 줄이고 특정 feature를 강조 [[INFO]](https://gruuuuu.github.io/machine-learning/cnn-doc/#1-5-pooling)    
+>**Pooling** : 크기도 줄이고 특정 feature를 강조 [[INFO]](https://gruuuuu.github.io/ai/cnn-doc/#1-5-pooling)    
 >**Softmax** : classification [[INFO]](https://gruuuuu.github.io/simple-tutorial/iris-tensorflow/#4-softmax)  
 
   

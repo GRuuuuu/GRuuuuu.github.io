@@ -22,7 +22,7 @@ series_order: 2
 > [Wiki : Quantum logic gate](https://en.wikipedia.org/wiki/Quantum_logic_gate)  
 > [IBM Q Experience : Introduction to Quantum Circuits](https://quantum-computing.ibm.com/support/guides/introduction-to-quantum-circuits?page=5cae6f7735dafb4c01214bbe#the-pauli-operators)
 
-
+{{< katex >}}
 
 # Quantum Bit
 게이트에 대해서 말하기 전에, 퀀텀비트 줄여서 **Qubit**라고 부르는 비트에 대해서 짚고 넘어가도록 하겠습니다.  
@@ -36,10 +36,10 @@ series_order: 2
 
 그래서 추상적인 벡터와 선형 범함수를 표현하는 데 사용하는 `ket-vector`를 표준 표기법으로 사용합니다.  
 
-> 확률진폭이 $$\alpha$$일때, 0인 상태 : $$ \alpha \vert \mathsf{0}\rangle $$     
-> 확률진폭이 $$\beta$$일때, 1인 상태 : $$ \beta \vert \mathsf{1}\rangle $$
+> 확률진폭이 \(\alpha\) 일때, 0인 상태 : \(\alpha \vert \mathsf{0}\rangle \)    
+> 확률진폭이 \(\beta\)일때, 1인 상태 : \(\beta \vert \mathsf{1}\rangle\)  
 
-bar($$ \vert $$)와 꺽쇠($$\rangle$$)기호를 사용하여 표기합니다.  
+bar(\(\vert\))와 꺽쇠(\(\rangle\))기호를 사용하여 표기합니다.  
 
 그래서 하나의 Qubit 상태는 다음과 같이 표현될 수 있습니다.  
 
