@@ -12,7 +12,7 @@ title = "Hololy Day"
   logo = "img/p1_dev.png"
   secondaryLogo = "img/p2_chum.png"
   description = "Hololy"
-  copyright = "Odds and Ends"
+  copyright = "Odds & Ends"
 
 [params.author]
   name = "Hololy Day"
