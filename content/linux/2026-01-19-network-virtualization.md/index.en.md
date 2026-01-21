@@ -1,5 +1,5 @@
 ---
-title: "“A Quick Dive into Network Virtualization(feat. DPDK, SR-IOV)"
+title: "A Quick Dive into Network Virtualization(feat. DPDK, SR-IOV)"
 slug: network-virtualization
 tags:
   - Linux
