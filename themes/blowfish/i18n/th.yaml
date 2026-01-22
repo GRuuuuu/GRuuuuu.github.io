@@ -25,9 +25,17 @@ article:
   part: "ตอนที่"
   this_article: "บทความนี้"
   related_articles: "บทความที่เกี่ยวข้อง"
+  reply_by_email: "ตอบกลับทางอีเมล"
   zen_mode_title:
     enable: "เปิดโหมดเซน"
     disable: "ปิดโหมดเซน"
+
+a11y:
+  title: "การตั้งค่าการเข้าถึง"
+  disable_blur: "ปิดการเบลอ"
+  disable_images: "ปิดการแสดงรูปภาพ"
+  show_link_underline: "แสดงเส้นใต้ลิงก์"
+  font_size: "ขนาดตัวอักษร"
 
 author:
   byline_title: "ผู้เขียน"

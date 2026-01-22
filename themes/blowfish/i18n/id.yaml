@@ -25,6 +25,14 @@ article:
   part: "Bagian"
   this_article: "Artikel ini"
   related_articles: "Terkait"
+  reply_by_email: "Balas melalui email"
+
+a11y:
+  title: "Pengaturan aksesibilitas"
+  disable_blur: "Nonaktifkan blur"
+  disable_images: "Nonaktifkan gambar"
+  show_link_underline: "Tampilkan garis bawah tautan"
+  font_size: "Ukuran font"
 
 author:
   byline_title: "Penulis"

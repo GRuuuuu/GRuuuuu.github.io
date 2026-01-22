@@ -22,6 +22,14 @@ article:
   part: "Parte"
   this_article: "Esse Artigo"
   related_articles: "Relacionados"
+  reply_by_email: "Responder por email"
+
+a11y:
+  title: "Configurações de acessibilidade"
+  disable_blur: "Desativar desfoque"
+  disable_images: "Desativar imagens"
+  show_link_underline: "Mostrar sublinhado de links"
+  font_size: "Tamanho da fonte"
 
 author:
   byline_title: "Autor"

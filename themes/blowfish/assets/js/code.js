@@ -1,70 +1,78 @@
 var scriptBundle = document.getElementById("script-bundle");
-var copyText =
-  scriptBundle && scriptBundle.getAttribute("data-copy") ? scriptBundle.getAttribute("data-copy") : "Copy";
-var copiedText =
-  scriptBundle && scriptBundle.getAttribute("data-copied")
-    ? scriptBundle.getAttribute("data-copied")
-    : "Copied";
+var copyText = scriptBundle?.getAttribute("data-copy") || "Copy";
+var copiedText = scriptBundle?.getAttribute("data-copied") || "Copied";
 
-function createCopyButton(highlightDiv) {
+function createCopyButton(highlightWrapper) {
   const button = document.createElement("button");
   button.className = "copy-button";
   button.type = "button";
   button.ariaLabel = copyText;
   button.innerText = copyText;
-  button.addEventListener("click", () => copyCodeToClipboard(button, highlightDiv));
-  addCopyButtonToDom(button, highlightDiv);
+  button.addEventListener("click", () => copyCodeToClipboard(button, highlightWrapper));
+  highlightWrapper.insertBefore(button, highlightWrapper.firstChild);
 }
 
-async function copyCodeToClipboard(button, highlightDiv) {
-  const codeToCopy = highlightDiv.querySelector(":last-child").innerText;
+async function copyCodeToClipboard(button, highlightWrapper) {
+  const codeToCopy = getCodeText(highlightWrapper);
+
+  function fallback(codeToCopy, highlightWrapper) {
+    const textArea = document.createElement("textArea");
+    textArea.contentEditable = "true";
+    textArea.readOnly = "false";
+    textArea.className = "copy-textarea";
+    textArea.value = codeToCopy;
+    highlightWrapper.insertBefore(textArea, highlightWrapper.firstChild);
+    const range = document.createRange();
+    range.selectNodeContents(textArea);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    textArea.focus();
+    textArea.setSelectionRange(0, 999999);
+    document.execCommand("copy");
+    highlightWrapper.removeChild(textArea);
+  }
+
   try {
     result = await navigator.permissions.query({ name: "clipboard-write" });
     if (result.state == "granted" || result.state == "prompt") {
       await navigator.clipboard.writeText(codeToCopy);
     } else {
-      copyCodeBlockExecCommand(codeToCopy, highlightDiv);
+      fallback(codeToCopy, highlightWrapper);
     }
   } catch (_) {
-    copyCodeBlockExecCommand(codeToCopy, highlightDiv);
+    fallback(codeToCopy, highlightWrapper);
   } finally {
-    codeWasCopied(button);
+    button.blur();
+    button.innerText = copiedText;
+    setTimeout(function () {
+      button.innerText = copyText;
+    }, 2000);
   }
 }
 
-function copyCodeBlockExecCommand(codeToCopy, highlightDiv) {
-  const textArea = document.createElement("textArea");
-  textArea.contentEditable = "true";
-  textArea.readOnly = "false";
-  textArea.className = "copy-textarea";
-  textArea.value = codeToCopy;
-  highlightDiv.insertBefore(textArea, highlightDiv.firstChild);
-  const range = document.createRange();
-  range.selectNodeContents(textArea);
-  const sel = window.getSelection();
-  sel.removeAllRanges();
-  sel.addRange(range);
-  textArea.setSelectionRange(0, 999999);
-  document.execCommand("copy");
-  highlightDiv.removeChild(textArea);
-}
+function getCodeText(highlightWrapper) {
+  const highlightDiv = highlightWrapper.querySelector(".highlight");
+  if (!highlightDiv) return "";
 
-function codeWasCopied(button) {
-  button.blur();
-  button.innerText = copiedText;
-  setTimeout(function () {
-    button.innerText = copyText;
-  }, 2000);
-}
+  const codeBlock = highlightDiv.querySelector("code");
+  const inlineLines = codeBlock?.querySelectorAll(".cl"); // linenos=inline
+  const tableCodeCell = highlightDiv?.querySelector(".lntable .lntd:last-child code"); // linenos=table
 
-function addCopyButtonToDom(button, highlightDiv) {
-  highlightDiv.insertBefore(button, highlightDiv.firstChild);
-  const wrapper = document.createElement("div");
-  wrapper.className = "highlight-wrapper";
-  highlightDiv.parentNode.insertBefore(wrapper, highlightDiv);
-  wrapper.appendChild(highlightDiv);
+  if (!codeBlock) return "";
+
+  if (inlineLines.length > 0) {
+    const cleanedLines = Array.from(inlineLines).map((line) => line.textContent.replace(/\n$/, ""));
+    return cleanedLines.join("\n");
+  }
+
+  if (tableCodeCell) {
+    return tableCodeCell.textContent.trim();
+  }
+
+  return codeBlock.textContent.trim();
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
-  document.querySelectorAll(".highlight").forEach((highlightDiv) => createCopyButton(highlightDiv));
+  document.querySelectorAll(".highlight-wrapper").forEach((highlightWrapper) => createCopyButton(highlightWrapper));
 });

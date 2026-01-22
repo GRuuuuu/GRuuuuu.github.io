@@ -25,9 +25,17 @@ article:
   part: "パート"
   this_article: "この記事"
   related_articles: "関連記事"
+  reply_by_email: "メールで返信"
   zen_mode_title:
     enable: "Zenモードを有効にする"
     disable: "Zenモードを無効にする"
+
+a11y:
+  title: "アクセシビリティ設定"
+  disable_blur: "ぼかしを無効にする"
+  disable_images: "背景画像を無効にする"
+  show_link_underline: "リンクの下線を表示する"
+  font_size: "フォントサイズ"
 
 author:
   byline_title: "著者"
@@ -76,3 +84,20 @@ shortcode:
 
 recent:
   show_more: "もっと見る"
+
+admonition:
+  abstract: 概要
+  bug: バグ
+  caution: 注意
+  danger: 危険
+  example: 例
+  failure: 失敗
+  important: 重要
+  info: 情報
+  note: ノート
+  question: 質問
+  quote: 引用
+  success: 成功
+  tip: ヒント
+  todo: TODO
+  warning: 警告

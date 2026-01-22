@@ -27,6 +27,8 @@ Blowfish はいくつもの [FontAwesome 6](https://fontawesome.com/icons) の�
 | bug                  | {{< icon bug >}}                  |
 | check                | {{< icon check >}}                |
 | circle-info          | {{< icon circle-info >}}          |
+| cloud                | {{< icon cloud >}}                |
+| cloud-moon           | {{< icon cloud-moon >}}           |
 | code                 | {{< icon code>}}                  |
 | codeberg             | {{< icon codeberg >}}             |
 | codepen              | {{< icon codepen >}}              |
@@ -42,6 +44,7 @@ Blowfish はいくつもの [FontAwesome 6](https://fontawesome.com/icons) の�
 | expand               | {{< icon expand >}}               |
 | eye                  | {{< icon eye >}}                  |
 | facebook             | {{< icon facebook >}}             |
+| fediverse            | {{< icon fediverse >}}            |
 | fire                 | {{< icon fire >}}                 |
 | flickr               | {{< icon flickr >}}               |
 | fork                 | {{< icon fork >}}                 |
@@ -52,6 +55,7 @@ Blowfish はいくつもの [FontAwesome 6](https://fontawesome.com/icons) の�
 | globe                | {{< icon globe >}}                |
 | goodreads            | {{< icon goodreads >}}            |
 | google               | {{< icon google >}}               |
+| google-scholar       | {{< icon google-scholar >}}       |
 | graduation-cap       | {{< icon graduation-cap >}}       |
 | hackernews           | {{< icon hackernews >}}           |
 | hashnode             | {{< icon hashnode >}}             |
@@ -61,6 +65,7 @@ Blowfish はいくつもの [FontAwesome 6](https://fontawesome.com/icons) の�
 | instagram            | {{< icon instagram >}}            |
 | itch-io              | {{< icon itch-io >}}              |
 | keybase              | {{< icon keybase >}}              |
+| keyoxide             | {{< icon keyoxide >}}             |
 | kickstarter          | {{< icon kickstarter >}}          |
 | ko-fi                | {{< icon ko-fi >}}                |
 | language             | {{< icon language >}}             |
@@ -73,6 +78,7 @@ Blowfish はいくつもの [FontAwesome 6](https://fontawesome.com/icons) の�
 | location-dot         | {{< icon location-dot >}}         |
 | lock                 | {{< icon lock >}}                 |
 | mastodon             | {{< icon mastodon >}}             |
+| matrix               | {{< icon matrix >}}               |
 | medium               | {{< icon medium >}}               |
 | microsoft            | {{< icon microsoft >}}            |
 | moon                 | {{< icon moon >}}                 |
@@ -95,6 +101,7 @@ Blowfish はいくつもの [FontAwesome 6](https://fontawesome.com/icons) の�
 | scale-balanced       | {{< icon scale-balanced >}}       |
 | search               | {{< icon search >}}               |
 | shield               | {{< icon shield >}}               |
+| signal               | {{< icon signal >}}               |
 | skull-crossbones     | {{< icon skull-crossbones >}}     |
 | slack                | {{< icon slack >}}                |
 | snapchat             | {{< icon snapchat >}}             |
@@ -116,6 +123,7 @@ Blowfish はいくつもの [FontAwesome 6](https://fontawesome.com/icons) の�
 | twitter              | {{< icon twitter >}}              |
 | wand-magic-sparkles  | {{< icon wand-magic-sparkles >}}  |
 | whatsapp             | {{< icon whatsapp >}}             |
+| worktree             | {{< icon worktree >}}             |
 | x-twitter            | {{< icon x-twitter >}}            |
 | xing                 | {{< icon xing >}}                 |
 | xmark                | {{< icon xmark >}}                |

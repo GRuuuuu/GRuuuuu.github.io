@@ -29,9 +29,17 @@ article:
   part: "Part"
   this_article: "This Article"
   related_articles: "Related"
+  reply_by_email: "Відповісти електронною поштою"
   zen_mode_title:
     enable: "Enable zen mode"
     disable: "Disable zen mode"
+
+a11y:
+  title: "Налаштування доступності"
+  disable_blur: "Вимкнути розмиття"
+  disable_images: "Вимкнути зображення"
+  show_link_underline: "Показати підкреслення посилань"
+  font_size: "Розмір шрифту"
 
 author:
   byline_title: "Автор"

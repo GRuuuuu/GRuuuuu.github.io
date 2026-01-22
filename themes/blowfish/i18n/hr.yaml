@@ -25,6 +25,10 @@ article:
   part: "Part"
   this_article: "This Article"
   related_articles: "Related"
+  reply_by_email: "Odgovori e-poštom"
+
+a11y:
+  title: "Postavke pristupačnosti"
 
 author:
   byline_title: "Autor"

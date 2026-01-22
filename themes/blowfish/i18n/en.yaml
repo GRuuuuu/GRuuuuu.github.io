@@ -25,9 +25,17 @@ article:
   part: "Part"
   this_article: "This Article"
   related_articles: "Related"
+  reply_by_email: "Reply by Email"
   zen_mode_title:
     enable: "Enable zen mode"
     disable: "Disable zen mode"
+
+a11y:
+  title: "Accessibility settings"
+  disable_blur: "Disable blur"
+  disable_images: "Disable background image"
+  show_link_underline: "Show link underline"
+  font_size: "Font size"
 
 author:
   byline_title: "Author"
@@ -70,9 +78,27 @@ sharing:
   bluesky: "Post on Bluesky"
   whatsapp: "Share via WhatsApp"
   telegram: "Share via Telegram"
+  mastodon: "Share via Mastodon"
 
 shortcode:
   recent_articles: "Recent"
 
 recent:
   show_more: "Show More"
+
+admonition:
+  abstract: "Abstract"
+  bug: "Bug"
+  caution: "Caution"
+  danger: "Danger"
+  example: "Example"
+  failure: "Failure"
+  important: "Important"
+  info: "Info"
+  note: "Note"
+  question: "Question"
+  quote: "Quote"
+  success: "Success"
+  tip: "Tip"
+  todo: "Todo"
+  warning: "Warning"

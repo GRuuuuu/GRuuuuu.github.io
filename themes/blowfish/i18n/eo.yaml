@@ -25,9 +25,17 @@ article:
   part: "Parto"
   this_article: "Tiu ĉi artikolo"
   related_articles: "Rilataj"
+  reply_by_email: "Respondu per retpoŝto"
   zen_mode_title:
     enable: "Ŝalti zen-reĝimon"
     disable: "Malŝalti zen-reĝimon"
+
+a11y:
+  title: "Alirebleco-agordoj"
+  disable_blur: "Malŝalti malklarigon"
+  disable_images: "Malŝalti bildojn"
+  show_link_underline: "Montri substrekojn de ligiloj"
+  font_size: "Tipara grandeco"
 
 author:
   byline_title: "Aŭtoro"

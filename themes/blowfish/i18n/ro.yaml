@@ -19,6 +19,14 @@ article:
   part: "Part"
   this_article: "This Article"
   related_articles: "Related"
+  reply_by_email: "Răspunde prin email"
+
+a11y:
+  title: "Setări de accesibilitate"
+  disable_blur: "Dezactivează estomparea"
+  disable_images: "Dezactivează imaginile"
+  show_link_underline: "Afișează sublinierea linkurilor"
+  font_size: "Dimensiunea fontului"
 
 author:
   byline_title: "Autor"

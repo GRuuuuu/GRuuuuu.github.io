@@ -13,15 +13,17 @@
 
   {{/* Gather partials for this context */}}
   {{ $shouldShowDate := false }}
-  {{ if and (eq $scope "single") (.Params.showDateOnlyInArticle | default (.Site.Params.article.showDateOnlyInArticle | default false)) }}
-    {{ $shouldShowDate = true }}
-  {{ end }}
-
-  {{/* showDate has higher priority than showDateOnlyInArticle */}}
   {{ if .Params.showDate | default (.Site.Params.article.showDate | default true) }}
     {{ $shouldShowDate = true }}
   {{ else }}
     {{ $shouldShowDate = false }}
+  {{ end }}
+
+  {{ if (.Params.showDateOnlyInArticle | default (.Site.Params.article.showDateOnlyInArticle | default false)) }}
+    {{ if (ne $scope "single") }}
+      {{/* only takes effect when not called directly in the header of single.html */}}
+      {{ $shouldShowDate = false }}
+    {{ end }}
   {{ end }}
 
   {{ if $shouldShowDate }}
@@ -71,7 +73,7 @@
 
     {{/* Output draft label */}}
     {{ if and (eq $scope "single") (and .Draft .Site.Params.article.showDraftLabel) }}
-      <span class="pl-2">{{ partial "badge.html" (i18n "article.draft" | emojify) }}</span>
+      <span class="ps-2">{{ partial "badge.html" (i18n "article.draft" | emojify) }}</span>
     {{ end }}
   </div>
 
@@ -81,10 +83,10 @@
         {{ if (eq $taxonomy "authors") }}
           {{ if (gt (len ($context.GetTerms $taxonomy)) 0) }}
             {{ range $i, $a := $context.GetTerms $taxonomy }}
-              {{ if not (eq $i 0) }},&nbsp;{{ end }}
-              <div class="cursor-pointer" onclick="window.open({{ $a.RelPermalink }},'_self');return false;">
-                {{ $a.LinkTitle }}
-              </div>
+              {{ if not (eq $i 0) }}
+                ,&nbsp;
+              {{ end }}
+              <a href="{{ $a.RelPermalink }}" class="relative">{{ $a.LinkTitle }}</a>
             {{ end }}
           {{ end }}
         {{ end }}
@@ -99,11 +101,9 @@
         {{ if and (not (eq $taxonomy "authors")) (not (eq $taxonomy "series")) }}
           {{ if (gt (len ($context.GetTerms $taxonomy)) 0) }}
             {{ range $context.GetTerms $taxonomy }}
-              <span
-                class="mr-2 mt-[0.5rem]"
-                onclick="window.open({{ .RelPermalink }},'_self');return false;">
+              <a class="relative mt-[0.5rem] me-2" href="{{ .RelPermalink }}">
                 {{ partial "badge.html" .LinkTitle }}
-              </span>
+              </a>
             {{ end }}
           {{ end }}
         {{ end }}
@@ -115,9 +115,9 @@
   {{ if .Params.showCategoryOnly | default (.Site.Params.article.showCategoryOnly | default false) }}
     <div class="flex flex-row flex-wrap items-center">
       {{ range (.GetTerms "categories") }}
-        <span class="mr-2 mt-[0.5rem]" onclick="window.open({{ .RelPermalink }},'_self');return false;">
+        <a class="relative mt-[0.5rem] me-2" href="{{ .RelPermalink }}">
           {{ partial "badge.html" .LinkTitle }}
-        </span>
+        </a>
       {{ end }}
     </div>
   {{ end }}

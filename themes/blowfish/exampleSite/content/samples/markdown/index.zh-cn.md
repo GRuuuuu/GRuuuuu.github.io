@@ -65,7 +65,7 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
 
 ## 代码块
 
-### 带反引号的代码块
+### 一般的代码块
 
 ```html
 <!DOCTYPE html>
@@ -80,23 +80,9 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
 </html>
 ```
 
-### 缩进四个空格的代码块
+### 带有标题和行高亮的代码块
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="utf-8">
-      <title>Example HTML5 Document</title>
-    </head>
-    <body>
-      <p>Test</p>
-    </body>
-    </html>
-
-### 带有 Hugo 内部高亮简码的代码块
-
-{{< highlight html "linenos=table,hl_lines=4 7-9" >}}
-
+```html {title="example.html" lineNos=inline hl_lines=[4,"7-9"]}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,7 +93,7 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
   <p>Test</p>
 </body>
 </html>
-{{< /highlight >}}
+```
 
 ## 列表
 
@@ -144,3 +130,27 @@ X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
 Press <kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd> to end the session.
 
 Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+
+## Images
+
+In addition to the [Figure Shortcode]({{< ref "../../docs/shortcodes#figure" >}}), you can define images using the following Markdown syntax:
+
+```md
+![Alt text](image.jpg "Image caption")
+```
+
+![Alt text](../../docs/shortcodes/abstract.jpg "Image caption")
+
+You can also leverage Hugos ['Markdown attributes'](https://gohugo.io/content-management/markdown-attributes/) feature to add custom attributes to the created HTML element.
+For example, to set the width of an image to 50%:
+
+```md
+![Alt text](image.jpg "Image caption")
+{style="width:50%;"}
+```
+
+![Alt text](../../docs/shortcodes/abstract.jpg "Half width image caption")
+{style="width:50%;"}
+
+Note that the 'Markdown attributes' feature requires configuration of the Goldmark renderer.
+See the Hugo [documentation](https://gohugo.io/content-management/markdown-attributes/) for more information.

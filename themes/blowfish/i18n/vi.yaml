@@ -25,9 +25,17 @@ article:
   part: "Phần"
   this_article: "Bài viết này"
   related_articles: "Bài viết liên quan"
+  reply_by_email: "Trả lời qua email"
   zen_mode_title:
     enable: "Bật zen mode"
     disable: "Tắt zen mode"
+
+a11y:
+  title: "Cài đặt khả năng truy cập"
+  disable_blur: "Tắt làm mờ"
+  disable_images: "Tắt hình ảnh"
+  show_link_underline: "Hiển thị gạch chân liên kết"
+  font_size: "Cỡ chữ"
 
 author:
   byline_title: "Tác giả"

@@ -19,6 +19,14 @@ article:
   part: "Part"
   this_article: "This Article"
   related_articles: "Related"
+  reply_by_email: "Válasz emailben"
+
+a11y:
+  title: "Akadálymentességi beállítások"
+  disable_blur: "Elmosódás kikapcsolása"
+  disable_images: "Képek kikapcsolása"
+  show_link_underline: "Link aláhúzásának megjelenítése"
+  font_size: "Betűméret"
 
 author:
   byline_title: "Szerző"

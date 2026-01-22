@@ -9,8 +9,10 @@ colorScheme = "blowfish"
 defaultAppearance = "dark" # valid options: light or dark
 autoSwitchAppearance = true
 
+enableA11y = false
 enableSearch = true
 enableCodeCopy = true
+enableStructuredBreadcrumbs = true
 
 replyByEmail = false
 
@@ -25,6 +27,8 @@ disableTextInHeader = false
 defaultBackgroundImage = "/img/background.svg"
 defaultFeaturedImage = "/img/featured.svg"
 defaultSocialImage = "/img/blowfish_banner.png"
+hotlinkFeatureImage = false
+# imagePosition = "50% 50%"
 
 highlightCurrentMenuArea = true
 smartTOC = true
@@ -59,7 +63,7 @@ fingerprintAlgorithm = "sha512" # Valid values are "sha512" (default), "sha384",
 
 [article]
   showDate = false
-  showViews = false
+  showViews = true
   showLikes = false
   showDateOnlyInArticle = false
   showDateUpdated = false
@@ -82,8 +86,8 @@ fingerprintAlgorithm = "sha512" # Valid values are "sha512" (default), "sha384",
   showTableOfContents = true
   showRelatedContent = true
   relatedContentLimit = 9
-  showTaxonomies = true 
-  showAuthorsBadges = true 
+  showTaxonomies = true
+  showAuthorsBadges = true
   showWordCount = false
   sharingLinks = [ "linkedin", "twitter", "bluesky", "reddit", "whatsapp", "telegram", "pinterest", "facebook", "email", "line"]
   showZenMode = true
@@ -128,15 +132,15 @@ fingerprintAlgorithm = "sha512" # Valid values are "sha512" (default), "sha384",
   groupByYear = false
   cardView = true
   cardViewScreenWidth = false
-  
+
 [firebase]
-  #apiKey = "AIzaSyB5tqlqDky77Vb4Tc4apiHV4hRZI18KGiY"
-  #authDomain = "blowfish-21fff.firebaseapp.com"
-  #projectId = "blowfish-21fff"
-  #storageBucket = "blowfish-21fff.appspot.com"
-  #messagingSenderId = "60108104191"
-  #appId = "1:60108104191:web:039842ebe1370698b487ca"
-  #measurementId = "G-PEDMYR1V0K"
+  apiKey = "AIzaSyB5tqlqDky77Vb4Tc4apiHV4hRZI18KGiY"
+  authDomain = "blowfish-21fff.firebaseapp.com"
+  projectId = "blowfish-21fff"
+  storageBucket = "blowfish-21fff.appspot.com"
+  messagingSenderId = "60108104191"
+  appId = "1:60108104191:web:039842ebe1370698b487ca"
+  measurementId = "G-PEDMYR1V0K"
 
 [fathomAnalytics]
   # site = "ABC12345"
@@ -158,7 +162,7 @@ fingerprintAlgorithm = "sha512" # Valid values are "sha512" (default), "sha384",
   globalWidget = true
   globalWidgetMessage = ""
   globalWidgetColor = "#FFDD00"
-  globalWidgetPosition = "Right"
+  globalWidgetPosition = "right"
 
 [verification]
   # google = ""

@@ -1,7 +1,8 @@
 {{ define "main" }}
   {{ .Scratch.Set "scope" "list" }}
-  {{ if .Site.Params.taxonomy.showHero | default false }}
-    {{ $heroStyle := print "hero/" .Site.Params.taxonomy.heroStyle ".html" }}
+  {{ $showHero := .Params.showHero | default site.Params.taxonomy.showHero | default false }}
+  {{ if $showHero }}
+    {{ $heroStyle := print "hero/" site.Params.taxonomy.heroStyle ".html" }}
     {{ if templates.Exists ( printf "partials/%s" $heroStyle ) }}
       {{ partial $heroStyle . }}
     {{ else }}
@@ -9,13 +10,9 @@
     {{ end }}
   {{- end -}}
 
-  {{ $toc := and (.Params.showTableOfContents | default (.Site.Params.taxonomy.showTableOfContents | default false)) (in
-    .TableOfContents "<ul")
-  }}
 
-
-  <header>
-    {{ if .Params.showBreadcrumbs | default (.Site.Params.taxonomy.showBreadcrumbs | default false) }}
+  <header class="mt-5">
+    {{ if .Params.showBreadcrumbs | default (site.Params.taxonomy.showBreadcrumbs | default false) }}
       {{ partial "breadcrumbs.html" . }}
     {{ end }}
     <h1 class="mt-5 text-4xl font-extrabold text-neutral-900 dark:text-neutral">{{ .Title }}</h1>
@@ -30,7 +27,7 @@
       </div>
     </section>
     {{ $jsPage := resources.Get "js/page.js" }}
-    {{ $jsPage = $jsPage | resources.Minify | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+    {{ $jsPage = $jsPage | resources.Minify | resources.Fingerprint (site.Params.fingerprintAlgorithm | default "sha512") }}
     <script
       type="text/javascript"
       src="{{ $jsPage.RelPermalink }}"
@@ -39,7 +36,7 @@
       data-oid-likes="likes_taxonomy_{{ .Data.Plural }}"></script>
   {{ end }}
 
-  {{ if .Site.Params.taxonomy.cardView }}
+  {{ if site.Params.taxonomy.cardView }}
     <section class="w-full grid gap-4 sm:grid-cols-2 md:grid-cols-3">
       {{ range .Data.Terms }}
         {{ partial "term-link/card.html" . }}

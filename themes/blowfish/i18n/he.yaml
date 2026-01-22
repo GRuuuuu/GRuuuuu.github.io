@@ -19,6 +19,14 @@ article:
   part: "Part"
   this_article: "This Article"
   related_articles: "Related"
+  reply_by_email: "השב בדוא\"ל"
+
+a11y:
+  title: "הגדרות נגישות"
+  disable_blur: "השבת טשטוש"
+  disable_images: "השבת תמונות"
+  show_link_underline: "הצג קו תחתון לקישורים"
+  font_size: "גודל גופן"
 
 author:
   byline_title: "מחבר"

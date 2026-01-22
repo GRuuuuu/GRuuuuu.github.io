@@ -16,12 +16,12 @@ series_order: 8
 `alert` ショートコードを使うと、記事の中にスタイリッシュなメッセージボックスを表示できます。読者に見逃してほしくない重要な情報を目立たせるのに便利です。
 
 <!-- prettier-ignore-start -->
-| パラメータ   | 説明                                                                                                                                                                                  |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `icon`      | **オプション** 左端に表示するアイコン。<br>**デフォルト:** `exclamation triangle icon` (アイコンの使用方法の詳細については、[アイコンショートコード](#アイコン)をご覧ください。)                    |
-| `iconColor` | **オプション** 基本的な CSS スタイルのアイコンの色。<br>HEX値 (`#FFFFFF`) または色の名前 (`white`) のいずれかで指定できます。<br>デフォルトでは、現在のカラースキームに基づいて選択されます。            |
+| パラメータ | 説明 |
+| --- | --- |
+| `icon` | **オプション** 左端に表示するアイコン。<br>**デフォルト:** `exclamation triangle icon` (アイコンの使用方法の詳細については、[アイコンショートコード](#アイコン)をご覧ください。) |
+| `iconColor` | **オプション** 基本的な CSS スタイルのアイコンの色。<br>HEX値 (`#FFFFFF`) または色の名前 (`white`) のいずれかで指定できます。<br>デフォルトでは、現在のカラースキームに基づいて選択されます。 |
 | `cardColor` | **オプション** 基本的な CSS スタイルのカードの背景色。<br>HEX値 (`#FFFFFF`) または色の名前 (`white`) のいずれかを指定できます。<br>デフォルトでは、現在のカラースキームに基づいて選択されます。 |
-| `textColor` | **オプション** 基本的な CSS スタイルのテキストの色。<br>HEX値 (`#FFFFFF`) または色の名前 (`white`) のいずれかを指定できます。<br>デフォルトでは、現在のカラースキームに基づいて選択されます。            |
+| `textColor` | **オプション** 基本的な CSS スタイルのテキストの色。<br>HEX値 (`#FFFFFF`) または色の名前 (`white`) のいずれかを指定できます。<br>デフォルトでは、現在のカラースキームに基づいて選択されます。 |
 <!-- prettier-ignore-end -->
 
 入力は Markdown で記述されているため、自由にフォーマットできます。
@@ -64,6 +64,38 @@ Twitter で私を[フォロー](https://twitter.com/nunocoracao)するのを忘�
 
 <br/><br/><br/>
 
+## Admonition
+
+Admonitions は、文書内で読者の注意を引くための強調表示を挿入するための機能です。
+
+Admonitions は alert ショートコードと同様の目的を持ちますが、Hugo の render hooks を用いて実装されています。両者の主な違いは構文にあります。admonitions は Markdown 構文を使用するため、異なるプラットフォーム間でも扱いやすく、一方、ショートコードは Hugo 固有の仕組みです。構文は GitHub の alerts に近い形式です。
+
+```md
+> [!TIP]
+> Tip タイプの表示例。
+
+> [!TIP]+ カスタムタイトル
+> タイトルを指定した折りたたみ可能な表示例。
+{icon="twitter"}
+```
+
+> [!TIP]
+> Tip タイプの表示例。
+
+> [!TIP]+ カスタムタイトル
+> タイトルを指定した折りたたみ可能な表示例。
+{icon="twitter"}
+
+記号（`+` または `-`）は任意で、表示を折りたたむかどうかを制御します。なお、この記号は Obsidian のみ対応しています。
+
+> [!INFO]- 対応しているタイプ
+> 使用可能なタイプには、[GitHub alert タイプ](https://github.blog/changelog/2023-12-14-new-markdown-extension-alerts-provide-distinctive-styling-for-significant-content/) および [Obsidian callout タイプ](https://help.obsidian.md/callouts) が含まれます。タイプ名は大文字・小文字を区別しません。
+>
+> **GitHub タイプ：** `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`  
+> **Obsidian タイプ：** `note`, `abstract`, `info`, `todo`, `tip`, `success`, `question`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`
+
+<br/><br/><br/>
+
 ## 記事
 
 `Article` は、1つの記事を Markdown ファイルに埋め込みます。埋め込むファイルへの `link` は、埋め込むファイルの `.RelPermalink` である必要があります。ショートコードは、親を参照している場合は何も表示しないことに注意してください。*注: Blowfish (/blowfish/ など) のようなサブフォルダでウェブサイトを実行している場合は、そのパスをリンクに含めてください。*
@@ -72,15 +104,17 @@ Twitter で私を[フォロー](https://twitter.com/nunocoracao)するのを忘�
 | パラメータ | 説明                                              |
 | --------- | -------------------------------------------------------- |
 | `link`    | **必須** ターゲット記事への `.RelPermalink`。 |
+| `showSummary` | **オプション** のブール値で、記事の要約を表示するかどうかを示します。設定されていない場合は、サイトのデフォルト設定が使用されます。 |
+| `compactSummary` | **オプション** のブール値で、要約をコンパクトモードで表示するかどうかを示します。デフォルトは false です。 |
 <!-- prettier-ignore-end -->
 
 **例:**
 
 ```md
-{{</* article link="/docs/welcome/" */>}}
+{{</* article link="/ja/docs/welcome/" showSummary=true compactSummary=true */>}}
 ```
 
-{{< article link="/docs/welcome/" >}}
+{{< article link="/ja/docs/welcome/" showSummary=true compactSummary=true >}}
 
 <br/><br/><br/>
 
@@ -125,8 +159,8 @@ Twitter で私を[フォロー](https://twitter.com/nunocoracao)するのを忘�
 `carousel` は、複数の画像をインタラクティブで魅力的に表示するために使用されます。これにより、ユーザーは画像1枚分の縦方向のスペースのみを使って、複数の画像をスライドさせながら表示できます。すべての画像は、親コンポーネントの幅いっぱいに表示され、`16:9`、`21:9`、または `32:9` の事前に決められたアスペクト比のいずれかを使用して表示されます。
 
 <!-- prettier-ignore-start -->
-| パラメータ     | 説明                                                                                                       |
-| ------------- | ----------------------------------------------------------------------------------------------------------------- |
+| パラメータ | 説明 |
+| --- | --- |
 | `images`      | **必須** 画像名または URL に一致する正規表現文字列。                                                        |
 | `aspectRatio` | **オプション** カルーセルのアスペクト比。`16-9`、`21-9`、または `32-9` のいずれか。デフォルトでは `16-9` に設定されています。 |
 | `interval`    | **オプション** 自動スクロールの間隔。ミリ秒単位で指定します。デフォルトは `2000` (2秒) です。             |
@@ -248,16 +282,16 @@ Blowfish には、コンテンツに画像を追加するための `figure` シ�
 `figure` ショートコードは、6つのパラメータを受け付けます。
 
 <!-- prettier-ignore-start -->
-| パラメータ | 説明                                                                                                                                                                                                                                                                                                                                                                               |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src`     | **必須** 画像のローカルパス/ファイル名または URL。パスとファイル名を指定すると、テーマは次の優先順位を使用して画像の特定を試みます。まず、ページにバンドルされた[ページリソース](https://gohugo.io/content-management/page-resources/)として、次に `assets/` ディレクトリ内のアセット、最後に `static/` ディレクトリ内の静的画像。 |
-| `alt`     | 画像の[代替テキスト](https://moz.com/learn/seo/alt-text)。                                                                                                                                                                                                                                                                                                         |
-| `caption` | 画像の下に表示される画像キャプションの Markdown。                                                                                                                                                                                                                                                                                                                  |
-| `class`   | 画像に適用する追加の CSS クラス。                                                                                                                                                                                                                                                                                                                                             |
-| `href`    | 画像をリンクする URL。                                                                                                                                                                                                                                                                                                                                                   |
-| `target`  | `href` URL のターゲット属性。                                                                                                                                                                                                                                                                                                                                                  |
-| `nozoom`  | `nozoom=true` は、画像の「ズーム」機能を無効にします。これは、`href` リンクと組み合わせて使用​​するのが最も役立ちます。                                                                                                                                                                                                                                                                             |
-| `default` | Hugoのデフォルトの `figure` の動作に戻すための特別なパラメータ。`default=true` を指定し、通常の [Hugo ショートコード構文](https://gohugo.io/content-management/shortcodes/#figure)を使用します。                                                                                                                                                                                       |
+| パラメータ | 説明 |
+| --- | --- |
+| `src` | **必須** 画像のローカルパス/ファイル名または URL。パスとファイル名を指定すると、テーマは次の優先順位を使用して画像の特定を試みます。まず、ページにバンドルされた[ページリソース](https://gohugo.io/content-management/page-resources/)として、次に `assets/` ディレクトリ内のアセット、最後に `static/` ディレクトリ内の静的画像。 |
+| `alt` | 画像の[代替テキスト](https://moz.com/learn/seo/alt-text)。 |
+| `caption` | 画像の下に表示される画像キャプションの Markdown。 |
+| `class` | 画像に適用する追加の CSS クラス。 |
+| `href` | 画像をリンクする URL。 |
+| `target` | `href` URL のターゲット属性。 |
+| `nozoom` | `nozoom=true` は、画像の「ズーム」機能を無効にします。これは、`href` リンクと組み合わせて使用​​するのが最も役立ちます。 |
+| `default` | Hugoのデフォルトの `figure` の動作に戻すための特別なパラメータ。`default=true` を指定し、通常の [Hugo ショートコード構文](https://gohugo.io/content-management/shortcodes/#figure)を使用します。 |
 <!-- prettier-ignore-end -->
 
 Blowfish も、標準の Markdown 構文を使用して含まれる画像の自動変換もサポートしています。次の形式を使用するだけで、テーマが処理してくれます。
@@ -418,6 +452,7 @@ Blowfish も、標準の Markdown 構文を使用して含まれる画像の自�
 | パラメータ | 説明                                           |
 | --------- | ----------------------------------------------------- |
 | `repo`    | [文字列] `username/repo` 形式の github リポジトリ |
+| `showThumbnail` | [ブール値] サムネイルを表示するかどうか。デフォルトは `true`。 |
 <!-- prettier-ignore-end -->
 
 **例1:**
@@ -451,6 +486,35 @@ Blowfish も、標準の Markdown 構文を使用して含まれる画像の自�
 ```
 
 {{< gitlab projectID="278964" >}}
+
+<br/><br/><br/>
+
+## Hugging Face カード
+
+`huggingface` を使用すると、Hugging Face のモデルやデータセットを素早くリンクし、いいね数やダウンロード数などのリアルタイム情報を表示できます。
+
+| パラメータ | 説明                                                          |
+|-----------|---------------------------------------------------------------|
+| `model`   | [文字列] `ユーザー名/モデル名` の形式での Hugging Face モデル  |
+| `dataset` | [文字列] `ユーザー名/データセット名` の形式での Hugging Face データセット |
+
+**注意:** `model` または `dataset` パラメータのどちらか一方を使用してください。
+
+**例1（モデル）:**
+
+```md
+{{</* huggingface model="google-bert/bert-base-uncased" */>}}
+```
+
+{{< huggingface model="google-bert/bert-base-uncased" >}}
+
+**例2（データセット）:**
+
+```md
+{{</* huggingface dataset="stanfordnlp/imdb" */>}}
+```
+
+{{< huggingface dataset="stanfordnlp/imdb" >}}
 
 <br/><br/><br/>
 
@@ -558,12 +622,12 @@ Blowfish も、標準の Markdown 構文を使用して含まれる画像の自�
 `List` は、最近の記事のリストを表示します。このショートコードには、リストを制限するための制限値が必要です。さらに、記事をパラメータでフィルタリングするために、`where` と `value` をサポートしています。このショートコードは、その親ページを表示しませんが、制限値にはカウントされることに注意してください。
 
 <!-- prettier-ignore-start -->
-| パラメータ  | 説明                                                                                                                                             |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `limit`    | **必須** 表示する最近の記事の数。                                                                                                 |
-| `title`    | オプションのリストのタイトル。デフォルトは `Recent` です。                                                                                                        |
-| `cardView` | オプションのカードビュー。リストに対して有効化されます。デフォルトは `false` です。                                                                                             |
-| `where`    | 記事のクエリに使用される変数。例: `Type`                                                                                           |
+| パラメータ | 説明 |
+| --- | --- |
+| `limit` | **必須** 表示する最近の記事の数。 |
+| `title` | オプションのリストのタイトル。デフォルトは `Recent` です。 |
+| `cardView` | オプションのカードビュー。リストに対して有効化されます。デフォルトは `false` です。 |
+| `where` | 記事のクエリに使用される変数。例: `Type` |
 | `value`    | `where` で定義されたパラメータに一致する必要がある値。記事のクエリに使用されます。例: `where` == `Type` の場合、有効な値は `sample` です。 |
 
 {{< alert >}}
@@ -679,6 +743,74 @@ B-->C[利益]
 
 <br/><br/><br/>
 
+## Tabs
+
+`tabs` ショートコードは、特定の手順における異なるバリアントを提示する際によく使用される。例えば、VS Code を各種プラットフォームにインストールする方法を示す場合などに利用できる。
+
+**例**
+
+````md
+{{</* tabs */>}}
+
+    {{</* tab label="Windows" */>}}
+    Chocolatey を使用してインストール:
+
+    ```pwsh
+    choco install vscode.install
+    ```
+
+    または WinGet を使用してインストール
+
+    ```pwsh
+    winget install -e --id Microsoft.VisualStudioCode
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="macOS" */>}}
+    ```bash
+    brew install --cask visual-studio-code
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="Linux" */>}}
+    [ドキュメント](https://code.visualstudio.com/docs/setup/linux#_install-vs-code-on-linux)を参照。
+    {{</* /tab */>}}
+
+{{</* /tabs */>}}
+````
+
+**出力**
+
+{{< tabs >}}
+
+    {{< tab label="Windows" >}}
+    Chocolatey を使用してインストール:
+
+    ```pwsh
+    choco install vscode.install
+    ```
+
+    または WinGet を使用してインストール
+
+    ```pwsh
+    winget install -e --id Microsoft.VisualStudioCode
+    ```
+    {{< /tab >}}
+
+    {{< tab label="macOS" >}}
+    ```bash
+    brew install --cask visual-studio-codeqweqwe
+    ```
+    {{< /tab >}}
+
+    {{< tab label="Linux" >}}
+    [ドキュメント](https://code.visualstudio.com/docs/setup/linux#_install-vs-code-on-linux)を参照。
+    {{< /tab >}}
+
+{{< /tabs >}}
+
+<br/><br/><br/>
+
 ## タイムライン
 
 `timeline` は、さまざまなユースケース (例: 職務経歴、プロジェクトの成果など) で使用できる視覚的なタイムラインを作成します。`timeline` ショートコードは、メインタイムライン内の各アイテムを定義するために `timelineItem` サブショートコードに依存しています。各アイテムには、次のプロパティを設定できます。
@@ -686,6 +818,7 @@ B-->C[利益]
 <!-- prettier-ignore-start -->
 | パラメータ   | 説明                                  |
 | ----------- | -------------------------------------------- |
+| `md`        |  コンテンツを Markdown としてレンダリングする  (true/false) |
 | `icon`      | タイムラインのビジュアルで使用するアイコン |
 | `header`    | 各エントリのヘッダーー                        |
 | `badge`     | 右上のバッジ内に配置するテキスト     |
@@ -772,17 +905,17 @@ HTML コード付き
 Blowfish は、`shortcode` を使用して TypeIt 機能のサブセットを実装しています。`typeit` ショートコード内にテキストを記述し、次のパラメータを使用して、必要な動作を設定します。
 
 <!-- prettier-ignore-start -->
-| パラメータ          | 説明                                                                                                                                        |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tag`              | [文字列] 文字列のレンダリングに使用される `html` タグ。                                                                                       |
-| `classList`        | [文字列] `html` 要素に適用する `css` クラスのリスト。                                                                                     |
-| `initialString`    | [文字列] 書き込まれて表示され、置き換えられる初期文字列。                                                                             |
-| `speed`            | [数値] 各ステップ間のミリ秒単位で測定されるタイピング速度。                                                                                 |
-| `lifeLike`         | [ブール値] 実際の人間が行っているかのように、タイピングのペースを不規則にします。                                                                        |
-| `startDelay`       | [数値] プラグインが初期化されてからタイピングを開始するまでの時間。                                                               |
+| パラメータ | 説明 |
+| --- | --- |
+| `tag` | [文字列] 文字列のレンダリングに使用される `html` タグ。 |
+| `classList` | [文字列] `html` 要素に適用する `css` クラスのリスト。 |
+| `initialString` | [文字列] 書き込まれて表示され、置き換えられる初期文字列。 |
+| `speed` | [数値] 各ステップ間のミリ秒単位で測定されるタイピング速度。 |
+| `lifeLike` | [ブール値] 実際の人間が行っているかのように、タイピングのペースを不規則にします。 |
+| `startDelay` | [数値] プラグインが初期化されてからタイピングを開始するまでの時間。 |
 | `breakLines`       | [ブール値] 複数の文字列が互いに上に印刷されるか (true)、削除されて互いに置き換えられるか (false)。              |
 | `waitUntilVisible` | [ブール値] インスタンスがロードされたときに開始するか、ターゲット要素がビューポートに表示されたときにのみ開始するかを決定します。デフォルトは `true` です。 |
-| `loop`             | [ブール値] 文字列が完了後に継続的にループするかどうか。                                                                             |
+| `loop` | [ブール値] 文字列が完了後に継続的にループするかどうか。 |
 
 <!-- prettier-ignore-end -->
 
@@ -843,6 +976,54 @@ consectetur adipiscing elit.
 "イヤとは言わせない。" ゴッドファーザー (1972)
 "トト、私たちもうカンザスにいないみたい。" オズの魔法使い (1939)
 {{< /typeit >}}
+
+<br/><br/><br/>
+
+## Video
+
+Blowfish には、ローカルまたは外部の動画を本文に埋め込むための `video` ショートコードがあります。ショートコードは `<figure>` で包んだレスポンシブな動画プレーヤーと、任意のキャプションを出力します。
+
+`video` ショートコードは次のパラメータを受け取ります:
+
+<!-- prettier-ignore-start -->
+| パラメータ | 説明 |
+| --- | --- |
+| `src` | **必須。** 動画のURLまたはローカルパス。ローカルの検索順: ページリソース → `assets/` → `static/`。 |
+| `poster` | 任意のポスター画像URLまたはローカルパス。省略時は、ページバンドル内で同名の画像を試します。 |
+| `caption` | 動画下に表示するMarkdownキャプション（任意）。 |
+| `autoplay` | `true`/`false`。`true` で自動再生。既定: `false`。 |
+| `loop` | `true`/`false`。`true` でループ再生。既定: `false`。 |
+| `muted` | `true`/`false`。`true` でミュート。既定: `false`。 |
+| `controls` | `true`/`false`。`true` でブラウザ標準の再生コントロールを表示。既定: `true`。 |
+| `playsinline` | `true`/`false`。`true` でモバイルのインライン再生。既定: `true`。 |
+| `preload` | `metadata`（情報のみ読み込み）、`none`（帯域節約）、`auto`（より多く事前読み込み）。既定: `metadata`。 |
+| `start` | 任意の開始秒。 |
+| `end` | 任意の終了秒。 |
+| `ratio` | プレーヤーの予約アスペクト比。`16/9`、`4/3`、`1/1`、またはカスタム `W/H` に対応。既定: `16/9`。 |
+| `fit` | 比率への収まり方: `contain`（切り抜きなし）、`cover`（切り抜いて埋める）、`fill`（引き伸ばす）。既定: `contain`。 |
+<!-- prettier-ignore-end -->
+
+ブラウザが動画を再生できない場合、プレーヤーは英語の簡潔なフォールバック文とダウンロードリンクを表示します。
+
+**例:**
+
+```md
+{{</* video
+    src="https://upload.wikimedia.org/wikipedia/commons/5/5a/CC0_-_Public_Domain_Dedication_video_bumper.webm"
+    poster="https://upload.wikimedia.org/wikipedia/commons/e/e0/CC0.jpg"
+    caption="**パブリックドメインのデモ** — CC0 の動画とポスター。"
+    loop=true
+    muted=true
+*/>}}
+```
+
+{{< video
+  src="https://upload.wikimedia.org/wikipedia/commons/5/5a/CC0_-_Public_Domain_Dedication_video_bumper.webm"
+  poster="https://upload.wikimedia.org/wikipedia/commons/e/e0/CC0.jpg"
+  caption="**パブリックドメインのデモ** — CC0 の動画とポスター。"
+  loop=true
+  muted=true
+>}}
 
 <br/><br/><br/>
 

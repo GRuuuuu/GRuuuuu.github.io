@@ -25,6 +25,14 @@ article:
   part: "부분"
   this_article: "이 글"
   related_articles: "관련 글"
+  reply_by_email: "이메일로 답장"
+
+a11y:
+  title: "접근성 설정"
+  disable_blur: "흐림 효과 끄기"
+  disable_images: "이미지 끄기"
+  show_link_underline: "링크 밑줄 표시"
+  font_size: "글꼴 크기"
 
 author:
   byline_title: "작성자"

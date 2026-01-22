@@ -1,7 +1,8 @@
 {{ define "main" }}
   {{ .Scratch.Set "scope" "term" }}
-  {{ if .Site.Params.term.showHero | default false }}
-    {{ $heroStyle := print "hero/" .Site.Params.term.heroStyle ".html" }}
+  {{ $showHero := .Params.showHero | default site.Params.term.showHero | default false }}
+  {{ if $showHero }}
+    {{ $heroStyle := print "hero/" site.Params.term.heroStyle ".html" }}
     {{ if templates.Exists ( printf "partials/%s" $heroStyle ) }}
       {{ partial $heroStyle . }}
     {{ else }}
@@ -9,11 +10,9 @@
     {{ end }}
   {{- end -}}
 
-  {{ $toc := and (.Params.showTableOfContents | default (.Site.Params.term.showTableOfContents | default false)) (in
-    .TableOfContents "<ul")
-  }}
-  <header>
-    {{ if .Params.showBreadcrumbs | default (.Site.Params.term.showBreadcrumbs | default false) }}
+
+  <header class="mt-5">
+    {{ if .Params.showBreadcrumbs | default (site.Params.term.showBreadcrumbs | default false) }}
       {{ partial "breadcrumbs.html" . }}
     {{ end }}
     <h1 class="mt-5 text-4xl font-extrabold text-neutral-900 dark:text-neutral">{{ .Title }}</h1>
@@ -28,7 +27,7 @@
         {{ .Content }}
       </div>
       {{ $jsPage := resources.Get "js/page.js" }}
-      {{ $jsPage = $jsPage | resources.Minify | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+      {{ $jsPage = $jsPage | resources.Minify | resources.Fingerprint (site.Params.fingerprintAlgorithm | default "sha512") }}
       <script
         type="text/javascript"
         src="{{ $jsPage.RelPermalink }}"
@@ -39,9 +38,9 @@
   </section>
 
   {{ if gt .Pages 0 }}
-    {{ $cardView := .Params.cardView | default (.Site.Params.term.cardView | default false) }}
-    {{ $cardViewScreenWidth := .Site.Params.term.cardViewScreenWidth | default false }}
-    {{ $groupByYear := .Params.groupByYear | default ($.Site.Params.term.groupByYear | default false) }}
+    {{ $cardView := .Params.cardView | default (site.Params.term.cardView | default false) }}
+    {{ $cardViewScreenWidth := site.Params.term.cardViewScreenWidth | default false }}
+    {{ $groupByYear := .Params.groupByYear | default (site.Params.term.groupByYear | default false) }}
 
     {{ if not $cardView }}
 
@@ -88,7 +87,7 @@
       {{ if $groupByYear }}
 
         {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
-          <div class="relative w-screen max-w-[1600px] px-[30px] left-[calc(max(-50vw,-800px)+50%)]">
+          <div class="relative w-screen max-w-[1600px] px-[30px] start-[calc(max(-50vw,-800px)+50%)]">
             <h2 class="mt-12 mb-3 text-2xl font-bold text-neutral-700 first:mt-8 dark:text-neutral-300">
               {{ .Key }}
             </h2>
@@ -102,7 +101,7 @@
 
       {{ else }}
 
-        <div class="relative w-screen max-w-[1600px] px-[30px] left-[calc(max(-50vw,-800px)+50%)]">
+        <div class="relative w-screen max-w-[1600px] px-[30px] start-[calc(max(-50vw,-800px)+50%)]">
           <section class="w-full grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
               {{ range .Pages }}
@@ -124,5 +123,4 @@
   {{ end }}
 
   {{ partial "pagination.html" . }}
-
 {{ end }}

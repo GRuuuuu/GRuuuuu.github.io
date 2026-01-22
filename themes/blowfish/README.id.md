@@ -1,8 +1,8 @@
-**[English](https://github.com/nunocoracao/blowfish/blob/main/README.md) | Indonesian | [简体中文](https://github.com/nunocoracao/blowfish/blob/main/README.zh-cn.md) | [日本語](https://github.com/nunocoracao/blowfish/blob/main/README.ja.md)**  
+[English](https://github.com/nunocoracao/blowfish/blob/main/README.md) | [Français](https://github.com/nunocoracao/blowfish/blob/main/README.fr.md) | [Deutsch](https://github.com/nunocoracao/blowfish/blob/main/README.de.md) | [Português (PT)](https://github.com/nunocoracao/blowfish/blob/main/README.pt-pt.md) | [Português (BR)](https://github.com/nunocoracao/blowfish/blob/main/README.pt-br.md) | [Español](https://github.com/nunocoracao/blowfish/blob/main/README.es.md) | [日本語](https://github.com/nunocoracao/blowfish/blob/main/README.ja.md) | [简体中文](https://github.com/nunocoracao/blowfish/blob/main/README.zh-cn.md) | Indonesian
 
 # Blowfish  
 [![Netlify Status](https://api.netlify.com/api/v1/badges/6e5256d4-3148-4d69-879c-310341020fe9/deploy-status)](https://app.netlify.com/sites/snazzy-dango-efb2ec/deploys)
-[![Minimum Hugo Version](https://img.shields.io/static/v1?label=min-HUGO-version&message=0.87.0&color=blue&logo=hugo)](https://github.com/gohugoio/hugo/releases/tag/v0.87.0)
+[![Minimum Hugo Version](https://img.shields.io/static/v1?label=min-HUGO-version&message=0.141.0&color=blue&logo=hugo)](https://github.com/gohugoio/hugo/releases/tag/v0.141.0)
 [![GitHub](https://img.shields.io/github/license/nunocoracao/blowfish)](https://github.com/nunocoracao/blowfish/blob/main/LICENSE)
 [![Blowfish](https://img.shields.io/badge/Hugo--Themes-@Blowfish-blue)](https://themes.gohugo.io/themes/blowfish/)
 ![code-size](https://img.shields.io/github/languages/code-size/nunocoracao/blowfish)
@@ -40,7 +40,8 @@ Blowfish dirancang sebagai tema yang kuat dan ringan untuk [Hugo](https://gohugo
 - Daftar isi yang dapat digulir  
 - Dukungan untuk konten multibahasa termasuk bahasa RTL  
 - Kemampuan untuk menautkan ke artikel di situs web pihak ketiga  
-- Dukungan untuk beberapa shortcode seperti Galeri, Timeline, Kartu GitHub, dan Carousel  
+- Dukungan untuk beberapa shortcode seperti Galeri, Timeline, Kartu GitHub, dan Carousel
+- Sintaks GitHub Alerts, 15 jenis, dukungan lipat
 - Integrasi BuyMeACoffee  
 - Pencarian situs berbasis klien dengan Fuse.js  
 - Diagram dan visualisasi menggunakan Mermaid  
@@ -77,7 +78,7 @@ Instruksi terperinci untuk setiap metode dapat ditemukan dalam [dokumentasi inst
 
 ### Instalasi Cepat Menggunakan Blowfish Tools  
 
-> **Catatan:** Pastikan Anda sudah menginstal **Node.js**, **Git**, **Go**, dan **Hugo**, serta telah membuat proyek Hugo sebelum melanjutkan.  
+> **Catatan:** Pastikan Anda sudah menginstal **Node.js**, **Git**, dan **Hugo**, serta telah membuat proyek Hugo sebelum melanjutkan.  
 
 Kami baru saja meluncurkan alat CLI baru untuk membantu Anda memulai dengan Blowfish. Ini akan membuat proyek Hugo baru, menginstal tema, dan mengatur file konfigurasi tema untuk Anda.  
 
@@ -98,7 +99,7 @@ blowfish-tools new mynewsite
 
 ### Instalasi Cepat Menggunakan Git Submodules  
 
-> **Catatan:** Pastikan Anda sudah menginstal **Git**, **Go**, dan **Hugo**, serta telah membuat proyek Hugo sebelum melanjutkan.  
+> **Catatan:** Pastikan Anda sudah menginstal **Git** dan **Hugo**, serta telah membuat proyek Hugo sebelum melanjutkan.  
 
 1. Dari direktori proyek Anda, inisialisasi git:  
    ```shell
@@ -110,7 +111,7 @@ blowfish-tools new mynewsite
    git submodule add -b main https://github.com/nunocoracao/blowfish.git themes/blowfish
    ```
 
-3. Hapus file `config.toml` di root proyek dan salin file `*.toml` dari tema ke dalam folder `config/_default/`.  
+3. Hapus file `hugo.toml` di root proyek dan salin file `*.toml` dari tema ke dalam folder `config/_default/`.  
 
 4. Ikuti petunjuk [Memulai](https://blowfish.page/docs/getting-started/) untuk mengonfigurasi situs web Anda.  
 

@@ -10,16 +10,16 @@
 
 <div
   {{ if not ($.Scratch.Get "cardColor") }}
-    class="flex px-4 py-3 rounded-md bg-primary-100 dark:bg-primary-900"
+    class="flex px-4 py-3 rounded-md shadow bg-primary-100 dark:bg-primary-900"
   {{ else }}
-    class="flex px-4 py-3 rounded-md" style="background-color: {{ $.Scratch.Get "cardColor" }}"
+    class="flex px-4 py-3 rounded-md shadow" style="background-color: {{ $.Scratch.Get "cardColor" }}"
   {{ end }}
   >
   <span
     {{ if not ($.Scratch.Get "iconColor") }}
-      class="text-primary-400 ltr:pr-3 rtl:pl-3 flex items-center"
+      class="text-primary-400 pe-3 flex items-center"
     {{ else }}
-      class="ltr:pr-3 rtl:pl-3 flex items-center" style="color: {{ $.Scratch.Get "iconColor" }}"
+      class="pe-3 flex items-center" style="color: {{ $.Scratch.Get "iconColor" }}"
     {{ end }}
     >
     {{ partial "icon.html" ($.Scratch.Get "icon") }}

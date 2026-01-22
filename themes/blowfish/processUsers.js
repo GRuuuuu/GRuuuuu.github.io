@@ -9,10 +9,10 @@ const usersFolderPath = "./exampleSite/content/users/";
 
 let cache = {};
 
-function generateDirName(seed) {
+function generateDirName(seed, index) {
   const hash = crypto.createHash("md5");
   hash.update(seed);
-  return hash.digest("hex");
+  return index + "-" + hash.digest("hex");
 }
 
 async function convert(text, from, to) {
@@ -72,8 +72,10 @@ async function translateFrontMatterTags(block, targetLang, tags) {
   const rawdata = await fs.readFile(usersFolderPath + "users.json", "utf8");
   const users = JSON.parse(rawdata);
   const userDict = {};
+  var index = 0;
   for (const user of users) {
-    userDict[generateDirName(user.url)] = true;
+    userDict[generateDirName(user.url, index)] = true;
+    index++;
   }
 
   const files = await fs.readdir(usersFolderPath);
@@ -117,22 +119,26 @@ async function translateFrontMatterTags(block, targetLang, tags) {
       "                layoutBackgroundHeaderSpace: false\n" +
       "                \r---\n";
 
-    const dir = usersFolderPath + generateDirName(user.url);
+    const dir = usersFolderPath + generateDirName(user.url, i);
 
     try {
       await fs.access(dir);
     } catch {
       await fs.mkdir(dir);
-    }
+    
 
     console.log(i, user.title, dir);
     await fs.writeFile(dir + "/index.md", userMDFile);
-    for (const lang of targetLangs) {
+    for (var lang of targetLangs) {
+      const langfilename = lang
+      if (lang == "pt-br" || lang == "pt-pt")
+        lang = "pt"
       const content = await translateFrontMatterTags(userMDFile, lang, user.tags);
-      await fs.writeFile(dir + `/index.${lang}.md`, content);
+      await fs.writeFile(dir + `/index.${langfilename}.md`, content);
     }
     await page.goto(user.url);
-    await page.screenshot({ path: dir + "/feature.jpg", type: "webp", quality: 50 });
+    await page.screenshot({ path: dir + "/feature.webp", type: "webp", quality: 50 });
+    }
   }
 
 
