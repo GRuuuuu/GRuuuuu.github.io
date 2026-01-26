@@ -431,8 +431,8 @@ Max inline data : 0[B]
 rdma_cm QPs: OFF
 Data ex. method : Ethernet
 -------------------------------------------------------
-local address : LID 0x8f QPN 0x012b PSN 0x608adb RKey 0x040600 VAddr 0x007fbdb57fa000
-remote address : LID 0x90 QPN 0x0049 PSN 0x786ecd RKey 0x008600 VAddr 0x007f001e6e3000
+local address : LID 0x8f QPN 0x012b PSN 0x608xxx RKey 0x040xxx VAddr 0x007fbdb5xxxxxx
+remote address : LID 0x90 QPN 0x0049 PSN 0x786xxx RKey 0x008xxx VAddr 0x007f001exxxxxx
 --------------------------------------------------------
 #bytes #iterations    BW peak[Gb/sec]     BW average[Gb/sec]    MsgRate[Mpps]
 Conflicting CPU frequency values detected: 3135.245000 != 4000.000000 CPU Frequency is not max.
@@ -463,8 +463,8 @@ Max inline data : 0[B]
 rdma_cm QPs: OFF
 Data ex. method : Ethernet
 -------------------------------------------------------
-local address : LID 0x8f QPN 0x012b PSN 0x608adb RKey 0x040600 VAddr 0x007fbdb57fa000
-remote address : LID 0x90 QPN 0x0049 PSN 0x786ecd RKey 0x008600 VAddr 0x007f001e6e3000
+local address : LID 0x8f QPN 0x012b PSN 0x608xxx RKey 0x040xxx VAddr 0x007fbdb5xxxxxx
+remote address : LID 0x90 QPN 0x0049 PSN 0x786xxx RKey 0x008xxx VAddr 0x007f001exxxxxx
 --------------------------------------------------------
 #bytes     #iterations    BW peak[Gb/sec]     BW average[Gb/sec]    MsgRate[Mpps]
 8388608       5000       373.98                      373.64                   0.005568
