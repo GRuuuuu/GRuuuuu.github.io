@@ -125,7 +125,7 @@ dc:00.0 Infiniband controller: Mellanox Technologies MT2910 Family [ConnectX-7]
 ### 2. Subnet Manager 확인하기
 Infiniband는 반드시 망 내의 IB Fabric을 관리하는 SDN(Software Defined Network) Controller가 필요합니다.  
 
-이를 **Subnet Manager(SM)**이라고 부르고, 망 내에 새로운 디바이스가 추가되면 LID(고유번호)를 부여하고 장치의 Link Up/Down이나 Failover를 감지하는 역할을 합니다.  
+이를 **Subnet Manager(SM)** 이라고 부르고, 망 내에 새로운 디바이스가 추가되면 LID(고유번호)를 부여하고 장치의 Link Up/Down이나 Failover를 감지하는 역할을 합니다.  
 
 Infiniband 망 내에는 최소 1개의 SM이 필요하고, 여러개 실행할 수 있지만 active SM은 하나입니다.  
 SM의 역할은 IB Switch가 될 수도 있고, 단순 서버가 될 수도 있습니다.  
@@ -267,7 +267,7 @@ ibp94s0 - mlx5_2 - 5e:00
 
 ### 6 `SriovNetworkNodePolicy` 생성
 
-~~~
+~~~yaml
 apiVersion: sriovnetwork.openshift.io/v1
 kind: SriovNetworkNodePolicy
 metadata:
@@ -320,7 +320,7 @@ vf 1 .....
 ### 8 `sriovIBNetwork` 배포하기
 이제 드디어 pod Network를 만들차례입니다!   
 
-~~~
+~~~yaml
 apiVersion: sriovnetwork.openshift.io/v1
 kind: SriovIBNetwork
 metadata:
@@ -351,7 +351,7 @@ spec:
 
 ### 9. Test pod띄우기
 
-~~~
+~~~yaml
 apiVersion: v1
 kind: Pod
 metadata:
