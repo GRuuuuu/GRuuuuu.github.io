@@ -94,3 +94,380 @@ Infiniband는 HPC환경에서 고속, 저지연 상호 연결을 위해 설계�
 ## Infiniband 네트워크 구성하기 - Openshift
 그럼 드디어! Infiniband를 SR-IOV로 Openshift의 서브 네트워크를 구성하여 pod끼리 RDMA통신 실습을 해보겠습니다.  
 
+### 1. Infiniband 장치 확인하기
+
+서버에 장착된 Infiniband가 제대로 보이는지 확인합니다.  
+~~~
+# lspci |grep Infiniband
+
+3c:00.0 Infiniband controller: Mellanox Technologies MT2910 Family [ConnectX-7]
+4d:00.0 Infiniband controller: Mellanox Technologies MT2910 Family [ConnectX-7]
+5e:00.0 Infiniband controller: Mellanox Technologies MT2910 Family [ConnectX-7]
+9c:00.0 Infiniband controller: Mellanox Technologies MT2910 Family [ConnectX-7]
+bc:00.0 Infiniband controller: Mellanox Technologies MT2910 Family [ConnectX-7]
+dc:00.0 Infiniband controller: Mellanox Technologies MT2910 Family [ConnectX-7]
+~~~
+
+~~~
+# ip a
+10: ibp60s0: <BRODCAST,MULTICAST,UP,LOWER_UP> mtu 4092 qdisc mq state UP group default qlen 256
+        link/infiniband 00:00:00:6c:fe:80:00:00:00:00:00:00:7c:8c:09:03:00:ae:4c:1c brd 00:ff:ff:ff:ff:12:40:1b:ff:ff:00:00:00:00:00:00:ff:ff:ff:ff
+11: ibp77s0: <BRODCAST,MULTICAST,UP,LOWER_UP> mtu 4092 qdisc mq state UP group default qlen 256
+        link/infiniband 00:00:00:6c:fe:80:00:00:00:00:00:00:7c:8c:09:03:00:ad:0b:5e brd 00:ff:ff:ff:ff:12:40:1b:ff:ff:00:00:00:00:00:00:ff:ff:ff:ff
+...
+~~~
+
+>IPoIB 장치에는 20 바이트 하드웨어 주소가 있습니다.  
+>- 처음 4바이트는 플래그 및 큐 쌍 번호
+>- 다음 8바이트는 서브넷 prefix(기본 서브넷 prefix는 `0xfe:80:00:00:00:00`)
+>- 마지막 8바이트는 IPoIB 장치에 연결되는 InfiniBand 포트의 GUID
+
+### 2. Subnet Manager 확인하기
+Infiniband는 반드시 망 내의 IB Fabric을 관리하는 SDN(Software Defined Network) Controller가 필요합니다.  
+
+이를 **Subnet Manager(SM)**이라고 부르고, 망 내에 새로운 디바이스가 추가되면 LID(고유번호)를 부여하고 장치의 Link Up/Down이나 Failover를 감지하는 역할을 합니다.  
+
+Infiniband 망 내에는 최소 1개의 SM이 필요하고, 여러개 실행할 수 있지만 active SM은 하나입니다.  
+SM의 역할은 IB Switch가 될 수도 있고, 단순 서버가 될 수도 있습니다.  
+
+이번 문서에서는 단순 서버에 UFM(Unified Fabric Manager)라는 소프트웨어를 올려서 Fabric전체를 관리하고 모니터링하도록 SM노드를 만들었다는 전제하에 진행하겠습니다.  
+
+Infiniband Fabric 망 내 아무 노드에서 SM노드의 정보확인 :  
+~~~
+# sminfo
+sminfo: sm lid 1 sm guid 0xe89e4903003xxxxx, activity count 6306612 priority 15 state 3 SMINFO_MASTER
+~~~
+
+LID가 1인 장비가 SM인 것을 확인할 수 있습니다.  
+
+Infiniband Switch정보 확인:  
+~~~
+# ibswitches
+Switch : 0xfc6a1c0300xxxxxx ports 65 "Quantum-2 Mellanox Technologies" base port 0 lid 6 lmc 0
+Switch : 0xfc6a1c0300xxxxxx ports 65 "Quantum-2 Mellanox Technologies" base port 0 lid 5 lmc 0
+Switch : 0xfc6a1c0300xxxxxx ports 65 "Quantum-2 Mellanox Technologies" base port 0 lid 63 lmc 0
+Switch : 0xfc6a1c0300xxxxxx ports 65 "Quantum-2 Mellanox Technologies" base port 0 lid 97 lmc 0
+Switch : 0xfc6a1c0300xxxxxx ports 65 "Quantum-2 Mellanox Technologies" base port 0 lid 42 lmc 0
+Switch : 0xfc6a1c0300xxxxxx ports 65 "Quantum-2 Mellanox Technologies" base port 0 lid 64 lmc 0
+Switch : 0xfc6a1c0300xxxxxx ports 65 "Quantum-2 Mellanox Technologies" base port 0 lid 3 lmc 0
+Switch : 0xfc6a1c0300xxxxxx ports 65 "Quantum-2 Mellanox Technologies" base port 0 lid 7 lmc 0
+Switch : 0xfc6a1c0300xxxxxx ports 65 "Quantum-2 Mellanox Technologies" base port 0 lid 4 lmc 0
+~~~
+
+전체 Fabric의 Topology를 확인하려면:  
+~~~
+# ibnetdiscover
+~~~
+위 명령어를 치면 노드가 속한 Fabric의 전체 연결 구성도를 확인할 수 있습니다.  
+
+### 3. 간단한 통신테스트! 
+그럼 이제 Infiniband 장치끼리 잘 통신이 되는지 간단한 테스트를 진행해보겠습니다.  
+
+임시 서버 역할을 할 노드에서 :  
+~~~
+# ibping -S -C mlx5_4 -P 1
+~~~
+`-C` : ping받아줄 ib 장치이름  
+`-P` : 포트넘버  
+
+클라이언트 역할 노드:  
+~~~
+# ibping -C mlx5_2 -P 1 -L 81
+...
+Pong from allllmst-cluster-3 (Lid 81): time 0.016ms
+Pong from allllmst-cluster-3 (Lid 81): time 0.007ms
+Pong from allllmst-cluster-3 (Lid 81): time 0.008ms
+Pong from allllmst-cluster-3 (Lid 81): time 0.007ms
+Pong from allllmst-cluster-3 (Lid 81): time 0.008ms
+--- alllmst-cluster-3 (Lid 81) ibping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4045ms
+rtt min/avg/max = 0.007/0.009/0.016 ms
+~~~
+
+`-C` : ping보낼 클라쪽 장치이름   
+`-P`: 포트넘버  
+`-L` : destination쪽 ib장치의 lid 
+
+> 장치이름과 lid는 `ibv_devices`와 `ibv_devinfo`를 참고
+### 4. 필수 Operator 설치
+위에는 Linux에서 Infiniband의 기본 기능들을 확인했다면, 이제부터는 Openshift위에서 Infiniband Pod network를 구성해보도록 하겠습니다.  
+
+Openshift 설치 및 기본 구성까지는 다 되어있다는 전제 하에 진행하겠습니다.  
+
+>**테스트 환경:**  
+>- Openshift v4.18  
+>- Infiniband붙은 WorkerNode들은 Baremetal임(VM안됨)
+
+먼저 노드의 PCIe장치를 인식하게 하기 위해서 `NFD Operator`를 설치하고 `NodeFeatureDiscovery`를 생성해줍니다.(이 포스팅에서는 기본 template으로 진행)  
+
+그럼 Daemonset들이 돌면서 Node에 라벨링을 해주는데, 우리가 확인해줘야할 것은 Infiniband가 존재하는 노드에 `network-sriov.capable=true`라는 라벨이 붙었는지 입니다.  
+만약 붙지 않았다면, 아래 과정을 진행할 수 없으니 반드시 확인하고 넘어가야 합니다.  
+
+>**확인해볼 것 :**   
+>- 장치에 Infiniband가 제대로 보이는지 (`lspci`)  
+>- BIOS에서 SR-IOV설정이 enable상태인지
+
+label이 정상적으로 붙었다면, `SR-IOV Operator`를 설치합니다.  
+
+### 5. Pod Network로 사용할 Infiniband 식별하기 
+이제 Pod Network로 사용할 Infiniband(이하 `ib`)를 식별할 차례입니다.  
+
+총 6개의 `ib`가 존재하고 4개는 Fabric1, 2개는 Fabric2 이런식으로 별도의 망으로 분리되어있다고 가정하겠습니다.  
+우리가 Pod Network로 만들 ib는 fabric1, 총 4개의 `ib`입니다.  
+
+#### 5.1 vendor:device id 식별
+일단 `lspci`를 통해 vendor와 device id를 확인합니다.  
+~~~
+# lspci -nn |grep Infiniband
+
+3c:00.0 Infiniband controller: Mellanox Technologies MT2910 Family [ConnectX-7] [15b3:1021] ...
+4d:00.0 Infiniband controller: Mellanox Technologies MT2910 Family [ConnectX-7] [15b3:1021] ...
+...
+~~~
+
+위와 비슷한 출력값이 나올텐데 `15b3:1021`(vendor:device_id)에 해당하는 부분을 저장해둡니다.  
+
+#### 5.2 `sriovOperatorConfig` 생성
+다음으로 SR-IOV Operator에서 `sriovOperatorConfig`를 default값으로 생성해줍니다.  
+
+#### 5.3 Infiniband 식별
+
+아래 명령어로 `ib` 인터페이스가 어떤 이름을 갖고 있는지 확인할 수 있습니다.  
+~~~
+# ls -al /sys/class/net/ib*/device/infiniband
+~~~
+
+혹은 `lshw`를 사용할 수 있다면:  
+~~~
+# lshw -c network -businfo
+BUS info               device        class            Description
+===========================================
+pci@0000:3c:00.0   ibp60s0     network   MT2910 Family [ConnectX-7]
+....
+~~~
+device이름과 pci주소를 같이 확인할 수 있습니다. 그러나 interface이름은 확인할 수 없죠.  
+
+첫번째 명령어로 인터페이스 이름을 확인했다면, 아래 명령어로 한번에 확인할 수 있습니다.  
+~~~
+# ls -al /sys/class/net/ib*/device/infiniband/mlx5*/device 
+~~~
+`mlx5*`부분에 위에서 확인한 인터페이스 이름 prefix를 넣어주시면 됩니다.  
+이렇게 하면 pci bus info까지 확인할 수 있습니다.  
+
+매핑정보를 아래와 같이 정리해두고 pod Network에 추가할 ib가 어떤녀석인지 확인합니다.  
+이번 문서에서는 위의 4개만 사용하도록 하겠습니다.  
+~~~
+ibp188s0 - mlx5_4 - bc:00
+ibp222s0 - mlx5_5 - dc:00
+ibp60s0 - mlx5_0 - 3c:00
+ibp77s0 - mlx5_1 - 4d:00
+ibp156s0 - mlx5_3 - 9c:00
+ibp94s0 - mlx5_2 - 5e:00
+~~~
+
+### 6 `SriovNetworkNodePolicy` 생성
+
+~~~
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: mlx-policy
+  namespace: openshift-sriov-network-operator
+spec:
+  resourceName: mlx_test # policy이름
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+  numVfs: 8  #노드당 vf 개수
+ nicSelector:
+    vendor: "15b3"
+    deviceID: "1021"
+    rootDevices:
+      - "0000:3c:00.0"
+      - "0000:4d:00.0"
+      - "0000:bc:00.0"
+      - "0000:dc:00.0"
+    deviceType: netdevice
+    isRdma: true
+~~~
+`nicSelector`아래에 위에서 확인했었던 `vendor`와 `deviceID`정보를 넣고, `rootDevices`에 위에서 찾은 ib의 pci주소를 적어줍니다.  
+
+이걸 배포하게되면 mcp가 돌면서 조건에 맞는 노드들은 전부 재부팅됩니다.  
+
+### 7 vf확인하기
+mcp가 완료되었다면, 총 4개의 pf와 8개씩 쪼개진 vf가 정상적으로 보이는지 노드에서 확인합니다.  
+
+vf안쪼개진상태:  
+~~~
+# ip a
+...
+10: ibp60s0: <BROADCAST, MULTICAST, UP, LOWER_UP> mtu 4092 qdisc mq state UP group default qlen 256
+  link/infiniband 00:00:09:e8:fe:80:00:00:00:00:00:00:38:25:f3:03:00:90:85:90 brd 00:ff:ff:ff:ff:12:40:1b:ff:ff:00:00:00:00:00:00:ff:ff:ff:ff
+...
+~~~
+
+vf가 정상적으로 쪼개진 상태:  
+~~~
+# ip a
+...
+10: ibp60s0: <BROADCAST, MULTICAST, UP, LOWER_UP> mtu 4092 qdisc mq state UP group default qlen 256
+  link/infiniband 00:00:09:e8:fe:80:00:00:00:00:00:00:38:25:f3:03:00:90:85:90 brd 00:ff:ff:ff:ff:12:40:1b:ff:ff:00:00:00:00:00:00:ff:ff:ff:ff
+  vf 0 link/infiniband 00:00:03:51:fe:80:00:00:00:00:00:00:38:25:f3:03:00:85:1d:ae brd 00:ff:ff:ff:ff:12:40:1b:ff:ff:00:00:00:00:00:00:ff:ff:ff:ff, spoof checking off, NODE_GUID 59:ca:bb:00:97:92:74:5f, PORT_GUID 59:ca:bb:00:97:92:74:5f, link-state disable, trust off, query_rss off
+vf 1 .....
+~~~
+
+>정상적으로 vf가 쪼개지지 않았다면, BIOS에서 sriov가 활성화 상태인지 확인해봅시다.  
+
+### 8 `sriovIBNetwork` 배포하기
+이제 드디어 pod Network를 만들차례입니다!   
+
+~~~
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovIBNetwork
+metadata:
+  name: sriov-network-ib-test
+  namespace: openshift-sriov-network-operator
+spec:
+  resourceName: mlx_test
+  linkState: enable
+  networkNamespace: test
+  ipam: |
+    {
+      "type": "whereabouts",
+      "range": "100.100.100.0/1",
+      "range_start": "100.100.100.101",
+      "range_end": "100.100.100.212",
+      "routes": [{
+        "dst": "0.0.0.0/0"
+      }],
+      "gateway": "100.100.100.1"
+      }
+~~~
+
+`ipam`에는 ib의 vf가 연결된 pod들이 가질 ip range와 gateway정보를 넣습니다.  
+4개의 pf를 8개의 vf로 쪼갰으니, 총 32개의 vf를 사용할 수 있겠습니다. 그럼 ip도 최소 32개가 필요하겠죠!    
+
+이것까지 배포가 완료되었으면, Infiniband를 SR-IOV로 연결한 Pod Network는 구성 끝입니다!   
+
+
+### 9. Test pod띄우기
+
+~~~
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sriov-demo-pod-1
+  namespace: test
+  annotations:
+    k8s.v1.cni.cncf.io/networks: sriov-network-ib-test
+spec:
+  container:
+  - name: sriov-container
+    imagePullPolicy: Always
+    image: {REGISTRY}/nvidia/doca/doca:3.1.0-full-rt-host
+    command:
+    - sleep
+    - inf
+    securityContext:
+      capabilities:
+        add: [ "IPC_LOCK" ]
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "2"
+      limits:
+        memory: "1Gi"
+        cpu: "2"
+~~~
+
+여기서 유의해야할 점은, pod의 기본네트워크(Ethernet)는 그대로 붙어있고, ib를 사용하는 SR-IOV 네트워크가 secondary로 추가 할당된다는 것입니다.  
+
+pod를 생성하고 내부에서 `ip a`를 입력해보시면 확인할 수 있습니다.   
+
+## 간단한 통신 테스트
+
+### 1. `rping`
+>테스트 pod를 두개 띄우고, 한쪽은 서버, 다른 한쪽은 클라이언트로 사용.  
+
+`rping`은 IP주소로 RDMA통신이 되는지 확인하는 테스트 도구입니다.  
+
+서버 :  
+~~~
+# rping -s
+~~~
+
+클라이언트 : 
+~~~
+# rping -c -a 100.100.100.101 -C 1 -v -d mlx5_21
+~~~
+
+### 2. `ib_write_bw`
+`ib_write_bw`는 RDMA시, 실제로 성능이 제대로 나오는지 RDMA write 방식으로 Bandwidth를 측정하는 성능테스트 도구입니다.  
+
+서버:  
+~~~
+# ib_write_bw -d mlx5_16 -a --report_gbits
+
+*************************************
+*Wating for client to connect... *
+*************************************
+~~~
+
+클라이언트 : 
+~~~
+# ib_write_bw -d mlx5_21 -a --report_bgits 100.100.100.101
+-----------------------------------------------------
+    RDMA_Write BW Test
+Dual-port : OFF                  Device : mlx5_21
+Number of qps : 1              Transport type : IB
+Connection type: RC            Using SRQ : OFF
+PCIe relax order: ON            Lock-free : OFF
+ibv_wr* API :ON                  Using DDP : OFF
+TX depth: 128
+CQ Moderation: 100
+CQE Poll Batch : 16
+Mtu : 4096[B]
+Link type : IB
+Max inline data : 0[B]
+rdma_cm QPs: OFF
+Data ex. method : Ethernet
+-------------------------------------------------------
+local address : LID 0x8f QPN 0x012b PSN 0x608adb RKey 0x040600 VAddr 0x007fbdb57fa000
+remote address : LID 0x90 QPN 0x0049 PSN 0x786ecd RKey 0x008600 VAddr 0x007f001e6e3000
+--------------------------------------------------------
+#bytes #iterations    BW peak[Gb/sec]     BW average[Gb/sec]    MsgRate[Mpps]
+Conflicting CPU frequency values detected: 3135.245000 != 4000.000000 CPU Frequency is not max.
+2          5000         0.064789       0.064266       4.016633
+...
+~~~
+
+클라이언트에서 `ib_write_bw`날린 이후 서버의 로그:  
+~~~
+# ib_write_bw -d mlx5_16 -a --report_gbits
+
+*************************************
+*Wating for client to connect... *
+*************************************
+
+-----------------------------------------------------
+    RDMA_Write BW Test
+Dual-port : OFF                  Device : mlx5_6
+Number of qps : 1              Transport type : IB
+Connection type: RC            Using SRQ : OFF
+PCIe relax order: ON            Lock-free : OFF
+ibv_wr* API :ON                  Using DDP : OFF
+CQ Moderation: 100
+CQE Poll Batch : 16
+Mtu : 4096[B]
+Link type : IB
+Max inline data : 0[B]
+rdma_cm QPs: OFF
+Data ex. method : Ethernet
+-------------------------------------------------------
+local address : LID 0x8f QPN 0x012b PSN 0x608adb RKey 0x040600 VAddr 0x007fbdb57fa000
+remote address : LID 0x90 QPN 0x0049 PSN 0x786ecd RKey 0x008600 VAddr 0x007f001e6e3000
+--------------------------------------------------------
+#bytes     #iterations    BW peak[Gb/sec]     BW average[Gb/sec]    MsgRate[Mpps]
+8388608       5000       373.98                      373.64                   0.005568
+~~~
+
+----
