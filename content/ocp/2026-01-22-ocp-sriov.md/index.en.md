@@ -194,12 +194,12 @@ On the client node:
 ~~~
 # ibping -C mlx5_2 -P 1 -L 81
 ...
-Pong from allllmst-cluster-3 (Lid 81): time 0.016ms
-Pong from allllmst-cluster-3 (Lid 81): time 0.007ms
-Pong from allllmst-cluster-3 (Lid 81): time 0.008ms
-Pong from allllmst-cluster-3 (Lid 81): time 0.007ms
-Pong from allllmst-cluster-3 (Lid 81): time 0.008ms
---- alllmst-cluster-3 (Lid 81) ibping statistics ---
+Pong from test-cluster-3 (Lid 81): time 0.016ms
+Pong from test-cluster-3 (Lid 81): time 0.007ms
+Pong from test-cluster-3 (Lid 81): time 0.008ms
+Pong from test-cluster-3 (Lid 81): time 0.007ms
+Pong from test-cluster-3 (Lid 81): time 0.008ms
+--- test-cluster-3 (Lid 81) ibping statistics ---
 5 packets transmitted, 5 received, 0% packet loss, time 4045ms
 rtt min/avg/max = 0.007/0.009/0.016 ms
 ~~~
