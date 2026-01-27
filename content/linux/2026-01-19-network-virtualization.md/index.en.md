@@ -119,7 +119,7 @@ At this point, you should have a rough idea of how VM networking works.
 
 Compared to bare metal, the original data path remains the same, but additional layers are introduced:  
 
-Internet - Physical Switch - Physical NIC - Host OS - **Linux Bridge (또는 OVS) - TAP - QEMU/KVM - virtual NIC** - VM OS  
+Internet - Physical Switch - Physical NIC - Host OS - **Linux Bridge (or OVS) - TAP - QEMU/KVM - virtual NIC** - VM OS  
 
 ### CPU Overhead
 Network packets must traverse multiple software layers before reaching a VM, which introduces CPU overhead, latency, and jitter.  
