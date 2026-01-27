@@ -182,7 +182,7 @@ Host DPDK
 Guest virtio-net (Guest Memory)
  ↓
 Guest kernel net stack
- ↓ copy (Guest에서도 DPDK쓰면 copy안함)
+ ↓ copy (no copy when DPDK is used in guest)
 Guest user app
 ~~~
 
@@ -202,7 +202,7 @@ To enable multiple VFs to operate on top of a single PF, the device internally u
 When a single queue is used, it is referred to as Single Root (SR), and when multiple queues are used, it is called MR-IOV (Multi-Root I/O Virtualization).  
 
 ![](https://raw.githubusercontent.com/GRuuuuu/hololy-img-repo/refs/heads/main/2026/2026-01-19-network-virtualization.md/4.png)  
->이미지 출처 : [SR-IOV, PCI Passthrough, and OVS-DPDK](https://study-ccnp.com/sr-iov-pci-passthrough-ovs-dpdk/)  
+>reference : [SR-IOV, PCI Passthrough, and OVS-DPDK](https://study-ccnp.com/sr-iov-pci-passthrough-ovs-dpdk/)  
 
 As mentioned earlier, in a typical virtualized system, communication with a physical NIC requires traversing multiple layers.  
 
@@ -218,7 +218,7 @@ By mapping only the memory addresses that each VF is allowed to access, the syst
 This isolation ensures that DMA operations can be performed safely.  
  
 ### vs PCI Passthrough
-Refer : [PCI Passthrough](https://gruuuuu.hololy.org/linux/kvm-gpu-passthrough/#pci-passthrough)  
+Reference : [PCI Passthrough](https://gruuuuu.hololy.org/linux/kvm-gpu-passthrough/#pci-passthrough)  
 
 PCI Passthrough is another technique that assigns a PCI device directly to a VM without going through the host.  
 
