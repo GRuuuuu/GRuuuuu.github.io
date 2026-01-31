@@ -58,7 +58,7 @@ I initially thought this approach would be sufficient.
 >4. Due to packet forwarding and masquerading, the source becomes Baremetal 1 (`192.168.0.23`) and is routed to Baremetal 2 
 >5. Upon arrival, the load balancer on Baremetal 2 forwards the packet to either master1 or master2 based on port `22623`  
 
-### 문제 발생
+### Problem Encountered
 Although the OpenShift installation initially appeared to proceed normally,  
 I soon discovered that certain pods attempted to communicate directly via node IPs, not via HTTP.    
 
@@ -72,7 +72,7 @@ VMs needed to be able to directly reach VMs on the other host.
 
 This led to my second idea: creating an L2 tunnel using VXLAN.  
 
-### VXLAN이란?
+### VXLAN?
 **VXLAN (Virtual eXtensible Local Area Network)** is a technology that uses UDP to allow devices to communicate as if they were on the same L2 network, even when they are separated across L3 networks.   
 
 In other words, it’s a network overlay technology that enables communication beyond the physical IP-based network topology.  
@@ -182,7 +182,7 @@ This results in:
 Outbound traffic is unrestricted, while inbound traffic is limited to responses.
    
 
-### 문제 발생
+### Problem Encountered
 Although VXLAN enabled direct VM communication, a new issue arose:  
 TLS handshake timeouts caused by MTU mismatches.  
 
