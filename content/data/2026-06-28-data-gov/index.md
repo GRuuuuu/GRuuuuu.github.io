@@ -63,7 +63,7 @@ Column의 이름은 전부 다르지만 의미는 동일합니다. 개인 식별
 위의 예시에서는 `개인식별번호`라는 **Business Term**을 만들고 `SSN`, `SIN`, `UID`, `RRN`등 동일한 의미를 가진 Column을 연결할 수 있겠죠.  
 
 ### Classification
-`Classification`은 의미보다는 이 **데이터를 얼마나 조심해서 다루어야 하는지**를 나타냅니다.  
+`Classification`은 의미보다는 이 **데이터가 얼마나 민감한지, 얼마나 보호되어야 하는지**를 나타냅니다.  
 
 Personal Information, Personally Identifiable Information (PII), Sensitive Personal Information, Confidential 등 여러 보안 등급을 라벨링하여 데이터를 보다 쉽게 컨트롤할 수 있게 됩니다.  
 
